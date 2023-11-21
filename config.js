@@ -13,24 +13,26 @@ module.exports = {
   willNotRunAgainFilename: 'will-not-run-again',
   archive: {
     url: process.env.ARCHIVE_URL || 'url to archive endpoint',
-    subscriptionKey: process.env.ARCHIVE_SUBSCRIPTION_KEY || 'key to archive endpoint'
+    scope: process.env.ARCHIVE_SCOPE || 'skuuupet for at arkivera'
   },
   statistics: {
     url: process.env.STATISTICS_URL || 'url to statistics endpoint',
-    subscriptionKey: process.env.STATISTICS_SUBSCRIPTION_KEY || 'key to statistics endpoint'
+    apiKey: process.env.STATISTICS_API_KEY || 'key to statistics endpoint'
   },
   autoConvertFileFormats: ((process.env.AUTO_CONVERT_FILE_FORMATS && process.env.AUTO_CONVERT_FILE_FORMATS.split(',')) || ['JPG', 'JPEG', 'XLSX', 'XLS', 'RTF', 'MSG', 'PPT', 'PPTX', 'DOCX', 'DOC', 'PNG']).map(ext => ext.toLowerCase()),
-  graphClient: {
-    clientId: process.env.GRAPH_CLIENT_ID ?? 'superId',
-    clientSecret: process.env.GRAPH_CLIENT_SECRET ?? 'hemmelig hemmelig',
-    tenantId: process.env.GRAPH_TENANT_ID ?? 'tenant id',
+  appReg: {
+    clientId: process.env.APP_REG_CLIENT_ID || 'ei klient id',
+    clientSecret: process.env.APP_REG_CLIENT_SECRET || 'megahemmelig',
+    tenantId: process.env.APP_REG_TENANT_ID || 'tenant id'
+  },
+  graph: {
+    url: process.env.GRAPH_URL || 'tullballfinnessikkertikkeeleer.sharepoint.com',
     scope: process.env.GRAPH_SCOPE ?? 'etSkikkeligSkuup'
   },
-  graphUrl: process.env.GRAPH_URL || 'tullballfinnes.sharepoint.com',
-  sharepointClient: {
-    clientId: process.env.GRAPH_CLIENT_ID ?? 'superId',
-    tenantId: process.env.GRAPH_TENANT_ID ?? 'tenant id',
-    tenantName: process.env.SP_TENANT_NAME ?? 'vtfk',
+  sharepointCredentials: {
+    clientId: process.env.APP_REG_CLIENT_ID ?? 'superId',
+    tenantId: process.env.APP_REG_TENANT_ID ?? 'tenant id',
+    tenantName: process.env.SP_TENANT_NAME ?? 'vestfoldfylke',
     pfxPath: process.env.SP_PFX_PATH ?? '',
     pfxBase64: process.env.SP_PFX_BASE64 ?? '',
     pfxPassphrase: process.env.SP_PFX_PASSPHRASE ?? null,

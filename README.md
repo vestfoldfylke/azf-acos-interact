@@ -143,6 +143,8 @@ roomService er en egen timertrigger som kjører tre ganger om dagen. Den sjekker
       - User.Read
     - SharePoint
       - Sites.ReadWrite.All
+    - Archive API
+     - Archive
   - Remember to grant admin consent for the permissions
 - Make sure you have a valid certificate that can be used for SharePoint requests. Can be [created as a self signed certificate in an Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/certificates/quick-create-portal#add-a-certificate-to-key-vault)
   - Upload certificate as pfx to an Azure Key Vault (if you did not create it there)
@@ -164,13 +166,13 @@ roomService er en egen timertrigger som kjører tre ganger om dagen. Den sjekker
     "STORAGE_ACCOUNT_CONNECTION_STRING": "connection string to storage account",
     "STORAGE_ACCOUNT_CONTAINER_NAME": "name of blob storage container",
     "RETRY_INTERVALS_MINUTES": "1,5,30,240", // number of retry intervals in minutes
-    "ARCHIVE_SUBSCRIPTION_KEY": "subscription key",
+    "ARCHIVE_SCOPE": "archive scope",
     "ARCHIVE_URL": "archive api url",
-    "STATISTICS_SUBSCRIPTION_KEY": "subscription key",
+    "STATISTICS_API_KEY": "api key",
     "STATISTICS_URL": "url to statistics api",
-    "GRAPH_CLIENT_ID": "app registration client id",
-    "GRAPH_CLIENT_SECRET": "app registration client secret",
-    "GRAPH_TENANT_ID": "your tenant id",
+    "APP_REG_CLIENT_ID": "app registration client id",
+    "APP_REG_CLIENT_SECRET": "app registration client secret",
+    "APP_REG_TENANT_ID": "your tenant id",
     "GRAPH_SCOPE": "graph scope",
     "GRAPH_URL": "url to graph",
     "SP_TENANT_NAME": "name of sharePoint tenant",

@@ -12,7 +12,8 @@ module.exports = {
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          ssn: flowStatus.parseXml.result.ArchiveData.Fnr
+          ssn: flowStatus.parseXml.result.ArchiveData.Fnr,
+          forceUpdate: true // optional - forces update of privatePerson instead of quick return if it exists
         }
       }
     }
