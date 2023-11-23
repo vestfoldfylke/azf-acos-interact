@@ -65,7 +65,7 @@ Man kan manipulere nextRun (sett tidligere dato) og runs (sett lavere siffer).
 ## Jobber som kan brukes
 Jobbene er listet opp i rekkefølgen de vil bli kjørt
 ### parseXml
-Denne jobben gjør om XML fra Acos-avleveringen til JSON. Jobben leser også websak_hode-fila fra Acos og henter ut vedleggsmetadata. Denne jobben må være med.
+Denne jobben gjør om XML fra Acos-avleveringen til JSON. Jobben leser også XML-metadata-fila fra Acos og henter ut vedleggsmetadata. Denne jobben må være med.
 
 ### syncElevmappe
 Denne jobben får inn fødselsnummer eller annen persondata (kan også generere opp fiktive fødselsnummer), oppretter eller oppdaterer elevmappe for elev. Returnerer persondata og saksnummer. [Se eksempler her](./example-flows/EX001-elevmappe.js)
