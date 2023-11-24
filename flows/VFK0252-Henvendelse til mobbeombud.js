@@ -79,7 +79,7 @@ string InnsenderFnr
                 IsManualText: true
               },
               {
-                ArchiveCode: flowStatus.syncPrivatePersonElev.result.privatePerson.ssn, //xmlData.ElevFnr,
+                ArchiveCode: flowStatus.syncPrivatePersonElev.result.privatePerson.ssn, // xmlData.ElevFnr,
                 ArchiveType: 'FNR',
                 IsManualText: true,
                 Sort: 4

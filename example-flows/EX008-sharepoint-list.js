@@ -17,12 +17,8 @@ module.exports = {
         if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            testSiteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            testPath: 'sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            testListId: '76d4a6be-73f1-4c6a-baeb-feadb2b2decc',
-            prodSiteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            prodPath: 'sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            prodListId: '76d4a6be-73f1-4c6a-baeb-feadb2b2decc',
+            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
+            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -55,12 +51,8 @@ module.exports = {
         if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            testSiteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            testPath: 'sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            testListId: '76d4a6be-73f1-4c6a-baeb-feadb2b2decc',
-            prodSiteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            prodPath: 'sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            prodListId: '76d4a6be-73f1-4c6a-baeb-feadb2b2decc',
+            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
+            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -81,10 +73,8 @@ module.exports = {
             }
           },
           {
-            siteId: 'en annen siteId',
-            siteName: 'BDK-Jrgensteste-team2',
-            path: 'sites/BDK-Jrgensteste-team2/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
-            listId: 'en annen listId',
+            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
+            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
