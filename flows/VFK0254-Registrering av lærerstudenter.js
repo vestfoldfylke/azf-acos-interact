@@ -12,19 +12,19 @@ module.exports = {
   /*
 XML file from Acos:
 ArchiveData {
-string Fnr
-string Fornavn
-string Etternavn
-string Adresse
-string Postnr
-string Poststed
-string Mobilnr
-string Epost
-string Skole
-string TidsromFra
-string TidsromTil
-string Fag
-string Veileder
+    string Fnr
+    string Fornavn
+    string Etternavn
+    string Adresse
+    string PostnrSted
+    string Mobilnr
+    string Epost
+    string Skole
+    string Fagvalg
+    string Tid_fra
+    string Til_til
+    string Fag
+    string Veileder
 }
 */
 
@@ -36,12 +36,8 @@ string Veileder
         if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
         return [
           {
-            testSiteId: 'bd1751d5-ad4d-48ab-aaf3-7d90df6da8f5',
-            testPath: 'sites/RVS-PersonaletpRe2-Praksisstudenter/Lists/TEST%20%20Informasjon%20lrerstudenter/AllItems.aspx',
-            testListId: 'a4e7becb-398e-4132-82e5-d14033a25394',
-            prodSiteId: 'bd1751d5-ad4d-48ab-aaf3-7d90df6da8f5',
-            prodPath: 'sites/RVS-PersonaletpRe2-Praksisstudenter/Lists/Studentinformasjon/AllItems.aspx',
-            prodListId: '12bc5fa2-e0af-49f2-93cb-358f8ce67a14',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/dev-test/Lists/Studentinformasjon%20test%20VFK0254/AllItems.aspx',
+            prodListUrl: 'Husk å legg inn!',
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
@@ -50,7 +46,7 @@ string Veileder
               Etternavn: xmlData.Etternavn,
               Adresse: xmlData.Adresse,
               Postnummer: xmlData.Postnr,
-              Poststed: xmlData.Poststed,
+              PostSted: xmlData.Sted,
               Mobil: xmlData.Mobilnr,
               E_x002d_post: xmlData.Epost,
               Skole: xmlData.Skole,
