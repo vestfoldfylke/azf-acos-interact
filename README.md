@@ -71,7 +71,7 @@ Denne jobben gjør om XML fra Acos-avleveringen til JSON. Jobben leser også XML
 Denne jobben får inn fødselsnummer eller annen persondata (kan også generere opp fiktive fødselsnummer), oppretter eller oppdaterer elevmappe for elev. Returnerer persondata og saksnummer. [Se eksempler her](./example-flows/EX001-elevmappe.js)
 
 ### syncPrivatePerson
-Denne jobben får inn fødselsnummer eller annen persondata (kan også generere opp fiktive fødselsnummer), oppretter eller oppdaterer privatperson i arkiv. Returnerer persondata og recno. [Se eksempler her](./example-flows/EX003-sync-private-person.js)
+Denne jobben får inn fødselsnummer eller annen persondata (kan også generere opp fiktive fødselsnummer), oppretter eller oppdaterer privatperson i arkiv. Returnerer persondata og recno. Denne jobben kan du også kjøre så mange ganger du vil i løpet av en flow. Bare bruk "syncPrivatePerson" som prefix i jobbnavnet. [Se eksempler her](./example-flows/EX003-sync-private-person.js)
 
 ### syncEmployee
 Denne jobben får inn fødselsnummer og UPN, oppretter eller oppdaterer personalprosjekt i arkiv. Returnerer persondata, tilgangsgrupper og prosjektnummer. [Se eksempler her](./example-flows/EX004-sync-employee.js)
