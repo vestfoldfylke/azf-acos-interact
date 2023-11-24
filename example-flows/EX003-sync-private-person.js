@@ -23,15 +23,25 @@ module.exports = {
           zipPlace: flowStatus.parseXml.result.ArchiveData.Sted,
           forceUpdate: true // optional - forces update of privatePerson instead of quick return if it exists
         }
-      },
-      mapper2: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      }
+    }
+  },
+  syncPrivatePersonNumber2OrWhateverYouLikeToCallIt: { // Jobname is valid as long as it starts with "syncPrivatePerson"
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr,
           forceUpdate: true // optional - forces update of privatePerson instead of quick return if it exists
         }
-      },
-      mapper3: (flowStatus) => { // for å opprette person manuelt uten oppslag i Freg (Eks. utenlandske elever)
+      }
+    }
+  },
+  syncPrivatePersonAgain: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => { // for å opprette person manuelt uten oppslag i Freg (Eks. utenlandske elever)
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           manualData: true,
