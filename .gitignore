@@ -114,3 +114,6 @@ cert/*
 .pem
 .key
 .cer
+
+# File cache
+/.file-cache
