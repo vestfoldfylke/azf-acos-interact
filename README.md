@@ -76,6 +76,9 @@ Denne jobben får inn fødselsnummer eller annen persondata (kan også generere 
 ### syncEmployee
 Denne jobben får inn fødselsnummer og UPN, oppretter eller oppdaterer personalprosjekt i arkiv. Returnerer persondata, tilgangsgrupper og prosjektnummer. [Se eksempler her](./example-flows/EX004-sync-employee.js)
 
+### syncEnterprise
+Denne jobben får inn orgnr, oppretter eller oppdaterer virksomhet i arkiv. Returnerer virksomhetsdata og recno. [Se eksempler her](./example-flows/EX014-sync-enterprise.js)
+
 ### handleProject
 Denne jobben får inn metadata for et prosjekt, og eventuelt en getProject-parameter for å se om et prosjekt finnes allerede før den oppretter. Returnerer prosjektnummer og recno. 
 [Se eksempler her](./example-flows/EX013-handle-project.js)
