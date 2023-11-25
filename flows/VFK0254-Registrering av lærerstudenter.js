@@ -2,7 +2,7 @@ const description = 'Registrering av praksis for lærerstudenter'
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: false
+    doNotRemoveBlobs: true
   },
   parseXml: {
     enabled: true,
@@ -46,12 +46,12 @@ ArchiveData {
               Etternavn: xmlData.Etternavn,
               Adresse: xmlData.Adresse,
               Postnummer: xmlData.Postnr,
-              PostSted: xmlData.Sted,
+              Poststed: xmlData.Sted,
               Mobil: xmlData.Mobilnr,
               E_x002d_post: xmlData.Epost,
               Skole: xmlData.Skole,
-              Tid_x003a_Fra: xmlData.TidsromFra,
-              Tid_x003a_Til: xmlData.TidsromTil,
+              Tid_x003a_Fra: xmlData.Tid_fra,
+              Tid_x003a_Til: xmlData.Tid_til,
               Fag: xmlData.Fag,
               Veielder: xmlData.Veileder
             }
