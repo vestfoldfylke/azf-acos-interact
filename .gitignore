@@ -117,3 +117,6 @@ cert/*
 
 # File cache
 /.file-cache
+
+# Mock results
+tests/jobs/mock-results/*
