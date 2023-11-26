@@ -1,6 +1,5 @@
 const description = 'Sender til elevmappe'
-// const { nodeEnv } = require('../config')
-const { schoolInfo } = require('../lib/data-sources/vfk-schools')
+const { nodeEnv } = require('../config')
 module.exports = {
   config: {
     enabled: true,
@@ -42,14 +41,12 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.SkoleOrgNr)
-        if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.SkoleOrgNr}`)
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: school.tilgangsgruppe,
+            AccessGroup: 'Fagopplæring',
             Category: 'Dokument inn',
             Contacts: [
               {
@@ -65,15 +62,15 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Søknad om studiedag før eksamen',
+                Title: 'Oppmelding til fag-/svenneprøve for praksiskandidater',
                 VersionFormat: 'A'
               }
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseNumber: xmlData.SkoleOrgNr,
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Søknad om studiedag før eksamen',
+            Title: 'Oppmelding til fag-/svenneprøve for praksiskandidater',
             // UnofficialTitle: '',
             Archive: 'Elevdokument',
             CaseNumber: elevmappe.CaseNumber
@@ -137,9 +134,9 @@ module.exports = {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
           company: 'Opplæring',
-          department: 'Eksamen',
+          department: 'Fag- og yrkesopplæring',
           description,
-          type: 'Søknad om studiedag før eksamen', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Oppmelding til fag-/svenneprøve for praksiskandidater', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like

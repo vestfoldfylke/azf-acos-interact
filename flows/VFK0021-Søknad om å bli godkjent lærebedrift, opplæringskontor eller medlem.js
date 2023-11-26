@@ -22,24 +22,14 @@ ArchiveData {
 }
 
   */
-  syncPrivatePersonInnsender: {
+  syncEnterprise: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => { // for å opprette organisasjon basert på orgnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
+        console.log(flowStatus.parseXml.result.ArchiveData.orgNr.replaceAll(' ', ''))
         return {
-          ssn: flowStatus.parseXml.result.ArchiveData.InnsenderFnr
-        }
-      }
-    }
-  },
-  syncPrivatePersonElev: {
-    enabled: true,
-    options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
-        // Mapping av verdier fra XML-avleveringsfil fra Acos.
-        return {
-          ssn: flowStatus.parseXml.result.ArchiveData.ElevFnr
+          orgnr: flowStatus.parseXml.result.ArchiveData.orgNr.replaceAll(' ', '')
         }
       }
     }
@@ -53,7 +43,7 @@ ArchiveData {
           service: 'CaseService',
           method: 'CreateCase',
           parameter: {
-            CaseType: 'Ombud',
+            CaseType: 'Sak',
             Title: `Lærebedrift - ${xmlData.bedriftsnavn}`,
             Status: 'B',
             AccessCode: 'U',
@@ -61,25 +51,20 @@ ArchiveData {
 
             ArchiveCodes: [
               {
-                ArchiveCode: '---',
-                ArchiveType: 'FELLESKLASSE PRINSIPP',
-                Sort: 1
-              },
-              {
                 ArchiveCode: 'A53',
                 ArchiveType: 'FAGKLASSE PRINSIPP',
-                Sort: 2
+                Sort: 1
               }
             ],
 
             Contacts: [
               {
                 Role: 'Sakspart',
-                ReferenceNumber: xmlData.orgNr,
-                IsUnofficial: true
+                ReferenceNumber: xmlData.orgNr.replaceAll(' ', ''),
+                IsUnofficial: false
               }
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200421' : '200065'
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019'
           }
         }
       }
@@ -92,6 +77,15 @@ ArchiveData {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const caseNumber = flowStatus.handleCase.result.CaseNumber
+        const p360Attachments = attachments.map(att => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: 'F',
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
@@ -101,7 +95,7 @@ ArchiveData {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: xmlData.orgNr,
+                ReferenceNumber: xmlData.orgNr.replaceAll(' ', ''),
                 Role: 'Avsender',
                 IsUnofficial: true
               }
@@ -115,7 +109,8 @@ ArchiveData {
                 Status: 'F',
                 Title: `Søknad ny lærebedrift ${xmlData.bedriftsnavn}`,
                 VersionFormat: 'A'
-              }
+              },
+              ...p360Attachments
             ],
             Paragraph: 'Offl. § 7d',
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring

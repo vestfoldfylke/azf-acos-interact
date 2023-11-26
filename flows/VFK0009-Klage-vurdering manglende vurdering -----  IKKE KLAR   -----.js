@@ -1,9 +1,10 @@
 const description = 'Sender til elevmappe'
-// const { nodeEnv } = require('../config')
+const { nodeEnv } = require('../config')
+const title = 'Klage - vurdering - manglende vurdering'
 const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
-    enabled: true,
+    enabled: false,
     doNotRemoveBlobs: true
   },
   parseXml: {
@@ -42,14 +43,11 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.SkoleOrgNr)
-        if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.SkoleOrgNr}`)
-        return {
+        const documentData = {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: school.tilgangsgruppe,
             Category: 'Dokument inn',
             Contacts: [
               {
@@ -65,19 +63,35 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Søknad om studiedag før eksamen',
+                Title: title,
                 VersionFormat: 'A'
               }
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseNumber: xmlData.SkoleOrgNr,
-            // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Søknad om studiedag før eksamen',
+            Title: title,
             // UnofficialTitle: '',
             Archive: 'Elevdokument',
             CaseNumber: elevmappe.CaseNumber
           }
+        }
+
+        if (xmlData.Egendefinert1 === 'Privatist') {
+          documentData.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200015' : '200018' // Seksjon Sektorstøtte, inntak og eksamen
+          documentData.AccessGroup = 'Eksamen'
+        } else if (xmlData.Egendefinert1 === 'Elev') {
+          const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.SkoleOrgNr)
+          if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.SkoleOrgNr}`)
+          documentData.ResponsibleEnterpriseNumber = xmlData.SkoleOrgNr
+          documentData.AccessGroup = school.tilgangsgruppe
+        } else if (xmlData.Egendefinert1 === 'Lærling/lærekandidat/praksiskandidat') {
+          documentData.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200016' : '200019' // Seksjon Fag og yrkesopplæring // denne er ikke verifisert
+          documentData.AccessGroup = 'Eksamen'
+        } else if (xmlData.Egendefinert1 === 'Kompetansebyggeren') {
+          documentData.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200016' : '200019' // Seksjon Fag og yrkesopplæring // denne er ikke verifisert
+          documentData.AccessGroup = 'Eksamen'
+        } else {
+          throw new Error('Fikk ukjent verdi inn i Egendefinert1 fra skjemaets xml-fil. Trenger "Privatist", "Elev", "Lærling/lærekandidat/praksiskandidat" eller "Voksen (Kompetansebyggeren)"')
         }
       }
     }
@@ -137,9 +151,9 @@ module.exports = {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
           company: 'Opplæring',
-          department: 'Eksamen',
+          department: 'FAGOPPLÆRING',
           description,
-          type: 'Søknad om studiedag før eksamen', // Required. A short searchable type-name that distinguishes the statistic element
+          type: title, // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
