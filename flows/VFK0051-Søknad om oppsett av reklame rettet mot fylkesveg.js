@@ -1,4 +1,4 @@
-const description = 'Søknad om å bli godkjent lærebedrift, opplæringskontor eller medlem i opplæringskontor.- Skal opprettes en ny sak pr skjema'
+const description = 'Søknad om oppsett av reklame rettet mot fylkesveg Skal opprettes en ny sak pr skjema'
 const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -12,24 +12,43 @@ module.exports = {
 
   /* XML from Acos:
 ArchiveData {
-    string orgNr
-    string bedriftsnavn
-    string adresse
-    string postnr
-    string sted
-    string epost
-    string telefon
+    string Fnr
+    string OrgNr
+    string OmReklamen
+    string Kommune
+    string Veg
+    string Egendefinert1 // inneholder Privatperson eller Organisasjon
+    string Egendefinert2
+    string Egendefinert3
+}
+
 }
 
   */
+  syncPrivatePersonInnsender: {
+    enabled: true,
+    options: {
+      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.Egendefinert1 === 'Privatperson'
+      },
+      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+        // Mapping av verdier fra XML-avleveringsfil fra Acos.
+        return {
+          ssn: flowStatus.parseXml.result.ArchiveData.Fnr
+        }
+      }
+    }
+  },
   syncEnterprise: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette organisasjon basert på orgnummer
+      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.Egendefinert1 === 'Organisasjon'
+      },
+      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
-        console.log(flowStatus.parseXml.result.ArchiveData.orgNr.replaceAll(' ', ''))
         return {
-          orgnr: flowStatus.parseXml.result.ArchiveData.orgNr.replaceAll(' ', '')
+          ssn: flowStatus.parseXml.result.ArchiveData.OrgNr
         }
       }
     }
@@ -39,32 +58,26 @@ ArchiveData {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
+        if (xmlData.Egendefinert1 !== 'Privatperson' || xmlData.Egendefinert1 !== 'Organisasjon') throw new Error('Egendefinert1 må inneholde enten Privatperson eller Organisasjon')
         return {
           service: 'CaseService',
           method: 'CreateCase',
           parameter: {
             CaseType: 'Sak',
-            Title: `Lærebedrift - ${xmlData.bedriftsnavn}`,
+            Project: nodeEnv === 'production' ? '23-11' : '23-15', // Må lages nytt prosjekt for Prod i 2024,
+            Title: `${xmlData.Veg} - ${xmlData.Kommune} - Søknad om reklame`,
             Status: 'B',
             AccessCode: 'U',
             JournalUnit: 'Sentralarkiv',
 
             ArchiveCodes: [
               {
-                ArchiveCode: 'A53',
+                ArchiveCode: 'Q84',
                 ArchiveType: 'FAGKLASSE PRINSIPP',
                 Sort: 1
               }
             ],
-
-            Contacts: [
-              {
-                Role: 'Sakspart',
-                ReferenceNumber: xmlData.orgNr.replaceAll(' ', ''),
-                IsUnofficial: false
-              }
-            ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019'
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200093' : '200151' // Team veiforvaltning
           }
         }
       }
@@ -77,26 +90,17 @@ ArchiveData {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const caseNumber = flowStatus.handleCase.result.CaseNumber
-        const p360Attachments = attachments.map(att => {
-          return {
-            Base64Data: att.base64,
-            Format: att.format,
-            Status: 'F',
-            Title: att.title,
-            VersionFormat: att.versionFormat
-          }
-        })
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: '7',
-            AccessGroup: 'Fagopplæring',
+            AccessCode: 'U',
+            AccessGroup: 'Alle',
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: xmlData.orgNr.replaceAll(' ', ''),
                 Role: 'Avsender',
+                ReferenceNumber: xmlData.Egendefinert1 === 'Privatperson' ? xmlData.Fnr : xmlData.OrgNr, // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
                 IsUnofficial: false
               }
             ],
@@ -107,15 +111,13 @@ ArchiveData {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: `Søknad ny lærebedrift ${xmlData.bedriftsnavn}`,
+                Title: `${xmlData.Veg} - ${xmlData.Kommune} - Søknad om reklame`,
                 VersionFormat: 'A'
-              },
-              ...p360Attachments
+              }
             ],
-            Paragraph: 'Offl. § 7d',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200093' : '200151', // Team veiforvaltning
             Status: 'J',
-            Title: `Søknad ny lærebedrift ${xmlData.bedriftsnavn}`,
+            Title: `${xmlData.Veg} - ${xmlData.Kommune} - Søknad om reklame`,
             Archive: 'Saksdokument',
             CaseNumber: caseNumber
           }
@@ -139,10 +141,10 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Fag- og yrkesopplæring',
+          company: 'Samferdsel',
+          department: 'Team Veiforvaltning',
           description, // Required. A description of what the statistic element represents
-          type: 'Søknad ny lærebedrfit - bedriftsnavn', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Søknad om reklame', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber, // Optional. anything you like
           skole: xmlData.SkoleNavn
