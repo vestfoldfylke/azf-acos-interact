@@ -19,7 +19,7 @@ module.exports = {
     url: process.env.STATISTICS_URL || 'url to statistics endpoint',
     apiKey: process.env.STATISTICS_API_KEY || 'key to statistics endpoint'
   },
-  autoConvertFileFormats: ((process.env.AUTO_CONVERT_FILE_FORMATS && process.env.AUTO_CONVERT_FILE_FORMATS.split(',')) || ['JPG', 'JPEG', 'XLSX', 'XLS', 'RTF', 'MSG', 'PPT', 'PPTX', 'DOCX', 'DOC', 'PNG']).map(ext => ext.toLowerCase()),
+  archiveFileFormats: ((process.env.ARCHIVE_FILE_FORMATS && process.env.ARCHIVE_FILE_FORMATS.split(',')) || ['JPG', 'JPEG', 'XLSX', 'XLS', 'RTF', 'MSG', 'PPT', 'PPTX', 'DOCX', 'DOC', 'PNG']).map(ext => ext.toLowerCase()),
   appReg: {
     clientId: process.env.APP_REG_CLIENT_ID || 'ei klient id',
     clientSecret: process.env.APP_REG_CLIENT_SECRET || 'megahemmelig',
