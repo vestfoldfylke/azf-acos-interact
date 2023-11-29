@@ -48,7 +48,7 @@ ArchiveData {
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          ssn: flowStatus.parseXml.result.ArchiveData.OrgNr
+          orgnr: flowStatus.parseXml.result.ArchiveData.OrgNr.replaceAll(' ', '')
         }
       }
     }
@@ -58,7 +58,7 @@ ArchiveData {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (xmlData.Egendefinert1 !== 'Privatperson' || xmlData.Egendefinert1 !== 'Organisasjon') throw new Error('Egendefinert1 må inneholde enten Privatperson eller Organisasjon')
+        if (xmlData.Egendefinert1 !== 'Privatperson' && xmlData.Egendefinert1 !== 'Organisasjon') throw new Error('Egendefinert1 må inneholde enten Privatperson eller Organisasjon')
         return {
           service: 'CaseService',
           method: 'CreateCase',
@@ -90,6 +90,15 @@ ArchiveData {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const caseNumber = flowStatus.handleCase.result.CaseNumber
+        const p360Attachments = attachments.map(att => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: 'F',
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
@@ -100,7 +109,7 @@ ArchiveData {
             Contacts: [
               {
                 Role: 'Avsender',
-                ReferenceNumber: xmlData.Egendefinert1 === 'Privatperson' ? xmlData.Fnr : xmlData.OrgNr, // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
+                ReferenceNumber: xmlData.Egendefinert1 === 'Privatperson' ? xmlData.Fnr : xmlData.OrgNr.replaceAll(' ', ''), // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
                 IsUnofficial: false
               }
             ],
@@ -113,7 +122,8 @@ ArchiveData {
                 Status: 'F',
                 Title: `${xmlData.Veg} - ${xmlData.Kommune} - Søknad om reklame`,
                 VersionFormat: 'A'
-              }
+              },
+              ...p360Attachments
             ],
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200093' : '200151', // Team veiforvaltning
             Status: 'J',
@@ -147,7 +157,8 @@ ArchiveData {
           type: 'Søknad om reklame', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber, // Optional. anything you like
-          skole: xmlData.SkoleNavn
+          kommune: xmlData.Kommune,
+          veg: xmlData.Veg
         }
       }
     }
