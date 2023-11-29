@@ -42,6 +42,15 @@ string Epost
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const caseNumber = nodeEnv === 'production' ? '23/38867' : '23/00024'
+        const p360Attachments = attachments.map(att => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: 'F',
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
         return {
 
           service: 'DocumentService',
@@ -63,7 +72,8 @@ string Epost
                 Status: 'F',
                 Title: 'Jakt på kystsel',
                 VersionFormat: 'A'
-              }
+              },
+              ...p360Attachments
             ],
             Status: 'J',
             DocumentDate: new Date().toISOString(),

@@ -41,6 +41,15 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
+        const p360Attachments = attachments.map(att => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: 'F',
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
@@ -64,7 +73,8 @@ module.exports = {
                 Status: 'F',
                 Title: 'Søknad om lærlingbevis',
                 VersionFormat: 'A'
-              }
+              },
+              ...p360Attachments
             ],
             Paragraph: 'Offl. § 7d',
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring

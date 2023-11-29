@@ -65,6 +65,15 @@ module.exports = {
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
         const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.SkoleOrgNr)
         if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.SkoleOrgNr}`)
+        const p360Attachments = attachments.map(att => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: 'F',
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
@@ -88,7 +97,8 @@ module.exports = {
                 Status: 'F',
                 Title: 'Takker nei til spesialundervisning',
                 VersionFormat: 'A'
-              }
+              },
+              ...p360Attachments
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
             ResponsibleEnterpriseNumber: xmlData.SkoleOrgNr,

@@ -106,6 +106,15 @@ string InnsenderFnr
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const caseNumber = flowStatus.handleCase.result.CaseNumber
+        const p360Attachments = attachments.map(att => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: 'F',
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
@@ -129,7 +138,8 @@ string InnsenderFnr
                 Status: 'F',
                 Title: 'Henvendelse til mobbeombud',
                 VersionFormat: 'A'
-              }
+              },
+              ...p360Attachments
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200421' : '200065',
