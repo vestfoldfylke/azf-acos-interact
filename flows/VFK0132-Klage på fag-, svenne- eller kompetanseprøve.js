@@ -41,6 +41,15 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
+        const p360Attachments = attachments.map(att => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: 'F',
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
@@ -53,7 +62,8 @@ module.exports = {
                 ReferenceNumber: xmlData.Fnr,
                 Role: 'Avsender',
                 IsUnofficial: true
-              }
+              },
+              ...p360Attachments
             ],
             DocumentDate: new Date().toISOString(),
             Files: [
