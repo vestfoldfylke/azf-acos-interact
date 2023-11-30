@@ -60,7 +60,7 @@ module.exports = {
       },
       */
       mapper: (flowStatus, base64, attachments) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
+        // const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
         const p360Attachments = attachments.map(att => {
           return {
