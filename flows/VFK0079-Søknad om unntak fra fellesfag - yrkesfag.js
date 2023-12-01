@@ -1,7 +1,9 @@
-const description = 'Bestilling av dokumentasjon for privatister. Sender til elevmappe, oppretter rad i SharePoint liste for seksjonen'
+const description = 'Sender til elevmappe'
+const { nodeEnv } = require('../config')
+// const { getSchoolYear } = require('../lib/flow-helpers')
 module.exports = {
   config: {
-    enabled: false,
+    enabled: true,
     doNotRemoveBlobs: true
   },
   parseXml: {
@@ -14,9 +16,11 @@ module.exports = {
   syncElevmappe: {
     enabled: true,
     options: {
+      /*
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
+      */
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
@@ -30,26 +34,47 @@ module.exports = {
   archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
+      /*
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
+      */
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
         return {
-          system: 'acos',
-          template: 'elevdocument-default',
+          service: 'DocumentService',
+          method: 'CreateDocument',
           parameter: {
-            organizationNumber: xmlData.AnsVirksomhet,
-            documentDate: new Date().toISOString(),
-            caseNumber: elevmappe.CaseNumber,
-            studentName: `${xmlData.Fornavn} ${xmlData.Etternavn}`,
-            responsibleEmail: '',
-            accessGroup: xmlData.Tilgangsgruppe,
-            studentSsn: xmlData.Fnr,
-            base64,
-            documentTitle: 'Bestilling av dokumentasjon for privatister',
-            attachments
+            AccessCode: '13',
+            AccessGroup: 'Fagopplæring',
+            Category: 'Dokument inn',
+            Contacts: [
+              {
+                ReferenceNumber: xmlData.Fnr,
+                Role: 'Avsender',
+                IsUnofficial: false
+              }
+            ],
+            DocumentDate: new Date().toISOString(),
+            Files: [
+              {
+                Base64Data: base64,
+                Category: '1',
+                Format: 'pdf',
+                Status: 'F',
+                Title: 'Søknad om unntak for fellesfag - yrkesfag',
+                VersionFormat: 'A'
+              }
+            ],
+            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            // ResponsiblePersonEmail: '',
+            Status: 'J',
+            Title: 'Søknad om unntak for fellesfag - yrkesfag',
+            // UnofficialTitle: '',
+            Archive: 'Sensitivt elevdokument',
+            CaseNumber: elevmappe.CaseNumber
           }
         }
       }
@@ -64,7 +89,7 @@ module.exports = {
   closeCase: {
     enabled: false
   },
-
+  /*
   sharepointList: {
     enabled: true,
     options: {
@@ -100,25 +125,22 @@ module.exports = {
       }
     }
   },
+  */
 
   statistics: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
+        // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'OF',
-          department: 'EKSAMEN',
+          company: 'Opplæring',
+          department: 'Fag- og yrkesopplæring',
           description,
-          type: 'Bestilling av privatistdokumentasjon', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Søknad om unntak for fellesfag - yrkesfag', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false', // Optional. anything you like
-          Typedokumentasjon: xmlData.TypeDok,
-          Typeautorasisjon: xmlData.TypeAut,
-          Eksamenssted: xmlData.Eksamenssted,
-          Fag: xmlData.Fag
+          // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
+          documentNumber: flowStatus.archive?.result?.DocumentNumber // Optional. anything you like
         }
       }
     }
