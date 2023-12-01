@@ -183,7 +183,7 @@ module.exports = {
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             ResponsibleEnterpriseNumber: school.orgNr,
             AccessCode: '13',
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
+            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1'
             // AccessGroup: school['9a4Tilgangsgruppe'] // Trenger ikke denne, står "Automatisk i excel?"
           }
         }
