@@ -177,14 +177,14 @@ module.exports = {
             ],
             Status: 'J',
             DocumentDate: new Date().toISOString(),
-            Title: '§9a-4 sak',
-            UnofficialTitle: 'Varslingsskjema oppll. § 9A-4',
-            Archive: 'Personsensitivt dokument',
+            Title: 'Varsling',
+            UnofficialTitle: 'Varslingsskjema § 9A-4',
+            Archive: 'Personsensitivt elevdokument',
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             ResponsibleEnterpriseNumber: school.orgNr,
             AccessCode: '13',
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            AccessGroup: school['9a4Tilgangsgruppe']
+            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1'
+            // AccessGroup: school['9a4Tilgangsgruppe'] // Trenger ikke denne, står "Automatisk i excel?"
           }
         }
       }
