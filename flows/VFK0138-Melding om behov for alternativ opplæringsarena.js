@@ -1,5 +1,6 @@
 const description = 'Sender til elevmappe'
 const { nodeEnv } = require('../config')
+// const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
     enabled: true,
@@ -10,6 +11,27 @@ module.exports = {
     options: {
     }
   },
+  /* Felter fra Acos:
+    ArchiveData {
+      string Fnr
+      string Fornavn
+      string Etternavn
+      string Adresse
+      string Postnr
+      string Poststed
+      string Mobilnr
+      string Epost
+      string AnsVirksomhet
+      string AnsEpost
+      string Tilgangsgruppe
+      string Tittel
+      string FiktivtFnr
+      string SkoleOrgNr
+      string Egendefinert1
+      string Egendefinert2
+      string Egendefinert3
+}
+  */
 
   // Synkroniser elevmappe
   syncElevmappe: {
@@ -55,7 +77,7 @@ module.exports = {
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: 'Fagopplæring',
+            AccessGroup: 'Elev inntak',
             Category: 'Dokument inn',
             Contacts: [
               {
@@ -71,18 +93,18 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Klage på fag-, svenne- eller kompetanseprøve',
+                Title: 'Melding om behov for alternativ opplæringsarena',
                 VersionFormat: 'A'
               },
               ...p360Attachments
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200015' : '200018', // Seksjon Sektorstøtte, inntak og eksamen,
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Klage på fag-, svenne- eller kompetanseprøve',
-            // UnofficialTitle: '',
-            Archive: 'Elevdokument',
+            Title: 'Melding om behov for alternativ opplæringsarena',
+            UnofficialTitle: 'Melding om behov for alternativ opplæringsarena',
+            Archive: 'Sensitivt elevdokument',
             CaseNumber: elevmappe.CaseNumber
           }
         }
@@ -99,7 +121,7 @@ module.exports = {
     enabled: false
   },
   /*
-  sharepointList: {
+    sharepointList: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
@@ -144,9 +166,9 @@ module.exports = {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
           company: 'Opplæring',
-          department: 'FAGOPPLÆRING',
+          department: 'Seksjon sektorstøtte, inntak og eksamen',
           description,
-          type: 'Klage på fag-, svenne- eller kompetanseprøve', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Melding om behov for alternativ opplæringsarena', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like

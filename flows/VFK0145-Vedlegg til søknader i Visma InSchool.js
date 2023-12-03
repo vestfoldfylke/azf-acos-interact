@@ -1,5 +1,6 @@
 const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+// const { nodeEnv } = require('../config')
+const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
     enabled: true,
@@ -10,6 +11,30 @@ module.exports = {
     options: {
     }
   },
+  /* Felter fra Acos:
+    ArchiveData {
+      bool TilArkiv
+      string Fnr
+      string Fornavn
+      string Etternavn
+      string Adresse
+      string PostnummerSted
+      string Postnr
+      string Poststed
+      string Mobil
+      string Epost
+      string Eksamenssted
+      string TypeDok
+      string TypeAut
+      string OnsketMottak
+      string Status
+      string Saksbehandler
+      string Fag
+      string AarSemester
+      string AltAdresse
+      string AnsVirksomhet
+    }
+  */
 
   // Synkroniser elevmappe
   syncElevmappe: {
@@ -41,6 +66,8 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
+        const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.SkoleOrgNr)
+        if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.SkoleOrgNr}`)
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -55,7 +82,7 @@ module.exports = {
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: 'Fagopplæring',
+            AccessGroup: school.tilgangsgruppe,
             Category: 'Dokument inn',
             Contacts: [
               {
@@ -71,18 +98,18 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Klage på fag-, svenne- eller kompetanseprøve',
+                Title: 'Vedlegg til søknader',
                 VersionFormat: 'A'
               },
               ...p360Attachments
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseNumber: school.orgNr,
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Klage på fag-, svenne- eller kompetanseprøve',
-            // UnofficialTitle: '',
-            Archive: 'Elevdokument',
+            Title: 'Vedlegg til søknader',
+            UnofficialTitle: `Vedlegg til søknader i Visma in School - ${xmlData.Tittel}`,
+            Archive: 'Sensitivt elevdokument',
             CaseNumber: elevmappe.CaseNumber
           }
         }
@@ -99,7 +126,7 @@ module.exports = {
     enabled: false
   },
   /*
-  sharepointList: {
+    sharepointList: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
@@ -144,11 +171,11 @@ module.exports = {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
           company: 'Opplæring',
-          department: 'FAGOPPLÆRING',
+          department: '',
           description,
-          type: 'Klage på fag-, svenne- eller kompetanseprøve', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Vedlegg til søknader', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
+          // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
         }
       }

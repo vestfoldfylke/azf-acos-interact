@@ -56,11 +56,11 @@ module.exports = {
           parameter: {
             AccessCode: '13',
             AccessGroup: 'Fagopplæring',
-            Category: 'Dokument inn',
+            Category: 'Dokument ut',
             Contacts: [
               {
                 ReferenceNumber: xmlData.Fnr,
-                Role: 'Avsender',
+                Role: 'Mottaker',
                 IsUnofficial: true
               }
             ],
@@ -71,7 +71,7 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Klage på fag-, svenne- eller kompetanseprøve',
+                Title: 'Referat fra veiledning i bedrift',
                 VersionFormat: 'A'
               },
               ...p360Attachments
@@ -80,7 +80,7 @@ module.exports = {
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Klage på fag-, svenne- eller kompetanseprøve',
+            Title: 'Referat fra veiledning i bedrift',
             // UnofficialTitle: '',
             Archive: 'Elevdokument',
             CaseNumber: elevmappe.CaseNumber
@@ -146,9 +146,9 @@ module.exports = {
           company: 'Opplæring',
           department: 'FAGOPPLÆRING',
           description,
-          type: 'Klage på fag-, svenne- eller kompetanseprøve', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Referat fra veiledning i bedrift', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
+          // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
         }
       }

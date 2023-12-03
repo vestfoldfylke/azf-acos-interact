@@ -64,7 +64,7 @@ ArchiveData {
                 IsUnofficial: false
               }
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019'
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019' // Seksjon Fag- og yrkesopplæring
           }
         }
       }
