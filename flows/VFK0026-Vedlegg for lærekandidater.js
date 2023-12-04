@@ -148,8 +148,8 @@ module.exports = {
           description,
           type: 'Vedlegg for lærekandidater', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
+          documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like
         }
       }
     }
