@@ -71,7 +71,7 @@ module.exports = {
               {
                 ReferenceNumber: xmlData.Egendefinert2.replaceAll(' ', ''),
                 Role: 'Avsender',
-                IsUnofficial: true
+                IsUnofficial: false
               }
             ],
             DocumentDate: new Date().toISOString(),

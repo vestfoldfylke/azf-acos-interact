@@ -82,7 +82,7 @@ module.exports = {
             Status: 'J',
             Title: 'Søknad om utenlandsopphold gjennom Erasmus+ for lærlinger',
             // UnofficialTitle: '',
-            Archive: 'Sensitivt elevdokument',
+            Archive: 'Elevdokument',
             CaseNumber: elevmappe.CaseNumber
           }
         }

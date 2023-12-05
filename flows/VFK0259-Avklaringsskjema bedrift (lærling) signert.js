@@ -75,7 +75,7 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Avklaringsskjema - Fagopplæring',
+                Title: 'Avklaringsskjema - Fagopplæring - Signert',
                 VersionFormat: 'A'
               },
               ...p360Attachments
@@ -84,7 +84,7 @@ module.exports = {
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Avklaringsskjema - Fagopplæring',
+            Title: 'Avklaringsskjema - Fagopplæring - Signert',
             // UnofficialTitle: '',
             Archive: 'Sensitivt elevdokument',
             CaseNumber: elevmappe.CaseNumber
@@ -150,10 +150,10 @@ module.exports = {
           company: 'Opplæring',
           department: 'FAGOPPLÆRING',
           description,
-          type: 'Avklaringsskjema - Fagopplæring - til signering', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Avklaringsskjema - Fagopplæring - signert', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like
         }
       }
     }

@@ -1,5 +1,6 @@
 const description = 'Sender til elevmappe'
 const { nodeEnv } = require('../config')
+// const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
     enabled: true,
@@ -10,6 +11,26 @@ module.exports = {
     options: {
     }
   },
+  /* Felter fra Acos:
+  ArchiveData {
+    string Fnr
+    string Fornavn
+    string Etternavn
+    string Adresse
+    string Postnr
+    string Poststed
+    string Mobilnr
+    string Epost
+    string AnsVirksomhet
+    string Tilgangsgruppe
+    string Tittel
+    string ForesattFornavn
+    string ForesattEtternavn
+    string ForesattFdato
+    string ElevFdato
+    string Samtykke
+  }
+  */
 
   // Synkroniser elevmappe
   syncElevmappe: {
@@ -28,17 +49,7 @@ module.exports = {
       }
     }
   },
-  syncEnterprise: {
-    enabled: true,
-    options: {
-      mapper: (flowStatus) => { // for å opprette organisasjon basert på orgnummer
-        // Mapping av verdier fra XML-avleveringsfil fra Acos.
-        return {
-          orgnr: flowStatus.parseXml.result.ArchiveData.Egendefinert2.replaceAll(' ', '')
-        }
-      }
-    }
-  },
+
   // Arkiverer dokumentet i elevmappa
   archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
@@ -60,18 +71,22 @@ module.exports = {
             VersionFormat: att.versionFormat
           }
         })
+        // const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.SkoleOrgNr)
+        // if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.SkoleOrgNr}`)
+        const dateList = (new Date().toISOString()).split('-')
+        const year = `${dateList[0]}`
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: 'Fagopplæring',
+            AccessGroup: 'Elev Horten',
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: xmlData.Egendefinert2.replaceAll(' ', ''),
+                ReferenceNumber: xmlData.Fnr,
                 Role: 'Avsender',
-                IsUnofficial: false
+                IsUnofficial: true
               }
             ],
             DocumentDate: new Date().toISOString(),
@@ -81,18 +96,18 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift',
+                Title: 'Samtykke - Nettskolen',
                 VersionFormat: 'A'
               },
               ...p360Attachments
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200341' : '200208', // Horten vgs nettskolen
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift',
-            // UnofficialTitle: '',
-            Archive: 'Sensitivt elevdokument',
+            Title: `Søknad til matematikkurs for Nettskolen ${year}`,
+            UnofficialTitle: `Søknad til matematikkurs for Nettskolen ${year} - ${xmlData.Fornavn} ${xmlData.Etternavn}`,
+            Archive: 'Elevdokument',
             CaseNumber: elevmappe.CaseNumber
           }
         }
@@ -109,7 +124,7 @@ module.exports = {
     enabled: false
   },
   /*
-  sharepointList: {
+    sharepointList: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
@@ -154,9 +169,9 @@ module.exports = {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
           company: 'Opplæring',
-          department: 'Fagopplæring',
+          department: 'Nettskolen',
           description,
-          type: 'Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Nettskolen - matematikkurs før nasjonal deleksamen for GLU 1 – 7 og GLU 5 – 10', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like

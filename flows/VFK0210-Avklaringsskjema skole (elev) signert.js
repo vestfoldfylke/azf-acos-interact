@@ -79,7 +79,7 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Avklaringsskjema - Skole',
+                Title: 'Avklaringsskjema - Skole - Signert',
                 VersionFormat: 'A'
               },
               ...p360Attachments
@@ -88,7 +88,7 @@ module.exports = {
             ResponsibleEnterpriseNumber: school.orgNr,
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Avklaringsskjema - Skole',
+            Title: 'Avklaringsskjema - Skole - Signert',
             // UnofficialTitle: '',
             Archive: 'Sensitivt elevdokument',
             CaseNumber: elevmappe.CaseNumber
@@ -154,10 +154,10 @@ module.exports = {
           company: 'Opplæring',
           department: '',
           description,
-          type: 'Avklaringsskjema - Skole - til signering', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Avklaringsskjema - Skole - signert', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
+          documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like
         }
       }
     }
