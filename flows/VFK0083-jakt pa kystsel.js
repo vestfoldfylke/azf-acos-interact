@@ -3,7 +3,7 @@ const { nodeEnv } = require('../config')
 
 module.exports = {
   config: {
-    enabled: true,
+    enabled: false,
     doNotRemoveBlobs: false
   },
   parseXml: {
@@ -41,7 +41,7 @@ string Epost
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        const caseNumber = nodeEnv === 'production' ? '23/38867' : '23/00024'
+        const caseNumber = nodeEnv === 'production' ? 'må fylles inn!' : '23/00115'
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -70,18 +70,18 @@ string Epost
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Jakt på kystsel',
+                Title: 'Jakt på kystsel 2024',
                 VersionFormat: 'A'
               },
               ...p360Attachments
             ],
             Status: 'J',
             DocumentDate: new Date().toISOString(),
-            Title: 'Jakt på kystsel',
-            UnofficialTitle: 'Jakt på kystsel',
+            Title: 'Jakt på kystsel 2024',
+            // UnofficialTitle: 'Jakt på kystsel 2024',
             Archive: 'Saksdokument',
             CaseNumber: caseNumber,
-            ResponsibleEnterpriseNumber: nodeEnv === 'production' ? '43000' : '43000', // Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
+            ResponsibleEnterpriseNumber: nodeEnv === 'production' ? '200024' : '200030', // Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
             AccessCode: 'U',
             Paragraph: '',
             AccessGroup: 'Alle'
@@ -106,8 +106,8 @@ string Epost
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'KRIF',
-          department: 'Seksjon for kultur, idrett og friluftsliv',
+          company: 'Samfunnsutvikling',
+          department: 'Klima og miljø',
           description, // Required. A description of what the statistic element represents
           type: 'Jakt på kystsel', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:

@@ -84,7 +84,7 @@ ArchiveData {
     }
   },
   // Arkiverer dokumentet i 360
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
@@ -110,7 +110,7 @@ ArchiveData {
               {
                 Role: 'Avsender',
                 ReferenceNumber: xmlData.Egendefinert1 === 'Privatperson' ? xmlData.Fnr : xmlData.OrgNr.replaceAll(' ', ''), // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
-                IsUnofficial: false
+                IsUnofficial: true
               }
             ],
             DocumentDate: new Date().toISOString(),
