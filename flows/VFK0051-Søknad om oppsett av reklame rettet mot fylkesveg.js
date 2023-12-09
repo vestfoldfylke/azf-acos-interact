@@ -103,14 +103,15 @@ ArchiveData {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: 'U',
-            AccessGroup: 'Alle',
+            AccessCode: '7',
+            Paragraph: 'Offl. § 7d',
+            AccessGroup: 'Team Veiforvaltning',
             Category: 'Dokument inn',
             Contacts: [
               {
                 Role: 'Avsender',
                 ReferenceNumber: xmlData.Egendefinert1 === 'Privatperson' ? xmlData.Fnr : xmlData.OrgNr.replaceAll(' ', ''), // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
-                IsUnofficial: true
+                IsUnofficial: false
               }
             ],
             DocumentDate: new Date().toISOString(),

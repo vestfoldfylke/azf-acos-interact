@@ -1,5 +1,4 @@
 // Eksempel på lokal avlevering av filer
-const description = 'Felt sel'
 module.exports = {
   config: {
     enabled: true,
@@ -21,7 +20,7 @@ module.exports = {
         return {
           company: 'Samfunnsutvikling',
           department: 'Klima og miljø',
-          description, // Required. A description of what the statistic element represents
+          description: 'Felt sel', // Required. A description of what the statistic element represents
           type: 'Felt sel' // Required. A short searchable type-name that distinguishes the statistic element
         }
       }

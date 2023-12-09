@@ -1,5 +1,5 @@
-const description = 'Jakt på kystsel'
-const { nodeEnv } = require('../config')
+const description = 'Søknad om utsetting av ferskvannsfisk'
+// const { nodeEnv } = require('../config')
 
 module.exports = {
   config: {
@@ -34,14 +34,49 @@ string Epost
       }
     }
   },
-
+  handleCase: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        return {
+          service: 'CaseService',
+          method: 'CreateCase',
+          parameter: {
+            CaseType: 'Sak',
+            Project: '23-16',
+            Title: 'En sakstittel',
+            UnofficialTitle: `Søknad om utsetting av fisk i område - ${flowStatus.parseXml.result.ArchiveData.Kommune}`,
+            Status: 'B',
+            JournalUnit: 'Sentralarkiv',
+            SubArchive: 'Sakarkiv',
+            ArchiveCodes: [
+              {
+                ArchiveCode: '---',
+                ArchiveType: 'FELLESKLASSE PRINSIPP',
+                Sort: 1
+              },
+              {
+                ArchiveCode: 'K60',
+                ArchiveType: 'FAGKLASSE PRINSIPP',
+                Sort: 2
+              }
+            ],
+            // ResponsibleEnterpriseNumber: '45678912',
+            ResponsiblePersonEmail: 'lasse.asmyhr@vestfoldfylke.no',
+            AccessGroup: 'Alle'
+          }
+        }
+      }
+    }
+  },
   // Arkiverer dokumentet i 360
   archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        const caseNumber = nodeEnv === 'production' ? 'må fylles inn!' : '23/00115'
+        const caseNumber = flowStatus.handleCase.result.CaseNumber
+        // const caseNumber = nodeEnv === 'production' ? 'må fylles inn!' : '23/00115'
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -70,15 +105,15 @@ string Epost
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Jakt på kystsel 2024',
+                Title: 'Søknad om utsetting av ferskvannsfisk',
                 VersionFormat: 'A'
               },
               ...p360Attachments
             ],
             Status: 'J',
             DocumentDate: new Date().toISOString(),
-            Title: 'Jakt på kystsel 2024',
-            // UnofficialTitle: 'Jakt på kystsel 2024',
+            Title: 'Søknad om utsetting av ferskvannsfisk',
+            // UnofficialTitle: 'Søknad om utsetting av ferskvannsfisk',
             Archive: 'Saksdokument',
             CaseNumber: caseNumber,
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
@@ -94,7 +129,7 @@ string Epost
   },
 
   signOff: {
-    enabled: true
+    enabled: false
   },
 
   closeCase: {
@@ -110,9 +145,10 @@ string Epost
           company: 'Samfunnsutvikling',
           department: 'Klima og miljø',
           description, // Required. A description of what the statistic element represents
-          type: 'Jakt på kystsel', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Utsetting av ferskvannsfisk', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
+          documentNumber: flowStatus.archive.result.DocumentNumber, // Optional. anything you like
+          kommune: flowStatus.parseXml.result.ArchiveData.Kommune
         }
       }
     }
