@@ -132,6 +132,49 @@ module.exports = {
       }
     }
   },
+  // Fyller en eksisterende SP-liste med flere rader basert på data fra Acos-skjema. Hvert element i lista returnert fra mapper-funksjonen blir en rad/element i den samme SP-lista, dvs at ett innsendt skjema blir flere rader i SP-listen.
+  sharepointList4: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        const xmlData = flowStatus.parseXml.result.ArchiveData
+        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
+        return [
+          // Først lager vi en rad i lista
+          {
+            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
+            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
+            uploadFormPdf: true,
+            uploadFormAttachments: true,
+            fields: {
+              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Fornavn: xmlData.Fornavn,
+              Etternavn: xmlData.Etternavn,
+              Adresse: xmlData.Adresse,
+              Postnummerogsted: `${xmlData.Postnr} ${xmlData.Poststed}`,
+              Mobil: xmlData.Mobil
+            }
+          },
+          // Og så en rad til i den samme lista
+          {
+            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
+            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
+            uploadFormPdf: true,
+            uploadFormAttachments: true,
+            fields: {
+              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              EnKolonneSomIkkeErPåElementetViLaInnOVer: 'Kanskje dette elementet skulle ha annen data enn den over f.eks', // De to radene vi legger inn trenger altså ikke ha de samme kolonnenen, bare å slå seg løs :D
+              Fornavn: xmlData.Fornavn,
+              Etternavn: xmlData.Etternavn,
+              Adresse: xmlData.Adresse,
+              Postnummerogsted: `${xmlData.Postnr} ${xmlData.Poststed}`,
+              Mobil: xmlData.Mobil
+            }
+          }
+        ]
+      }
+    }
+  },
   statistics: {
     enabled: false,
     options: {
