@@ -98,43 +98,54 @@ module.exports = {
   closeCase: {
     enabled: false
   },
-  /*
+
   sharepointList: {
-    enabled: true,
+    enabled: false,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
+        // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            siteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            path: 'sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
-            listId: 'D1085908-9111-4b6d-84d3-fc8ecd29d398',
+            testListUrl: '',
+            prodListUrl: '',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
-              Fornavn: xmlData.Fornavn,
-              Etternavn: xmlData.Etternavn,
+              Title: xmlData.Fnr,
+              Navn: xmlData.Navn,
               Adresse: xmlData.Adresse,
-              Postnummerogsted: `${xmlData.Postnr} ${xmlData.Poststed}`,
-              Mobil: xmlData.Mobil,
-              E_x002d_postadresse: xmlData.Epost,
-              Typedokumentasjon: xmlData.TypeDok,
-              Typeautorasisjon: xmlData.TypeAut,
-              Eksamenssted: xmlData.Eksamenssted,
-              Fag: xmlData.Fag,
-              _x00d8_nsketmottak: xmlData.OnsketMottak,
-              Eksamensperiode: xmlData.AarSemester,
-              Alternativadresse: xmlData.AltAdresse
-
+              Postnr_x002e__x002f_sted: xmlData.PostnrSted,
+              Mobilnummer: xmlData.Mobilnr,
+              E_x002d_post: xmlData.Epost,
+              L_x00e6_refag: xmlData.Laerefag,
+              L_x00e6_rekontraktfra: xmlData.LkontraktFra,
+              L_x00e6_rekontrakttil: xmlData.LkontraktTil,
+              L_x00e6_rested_x002f_arbeidsplas: xmlData.Laerested,
+              Navnp_x00e5_veileder: xmlData.LaerestedNavnVeileder,
+              Telefonveileder: xmlData.LaerestedTlfVeileder,
+              Sterkesider: xmlData.SterkeSider,
+              Hvaerdugodp_x00e5__x003f_: xmlData.GodPaa,
+              Engelskkarakter: xmlData.Engelskkarakter,
+              Fritidsinteresser: xmlData.Fritid,
+              Hvorfor: xmlData.Hvorfor,
+              Fagligutbytte: xmlData.FagligUtbytte,
+              Utfordringer: xmlData.Utfordringer,
+              Utenlandserfaring: xmlData.Utenlandserfaring,
+              Godesider: xmlData.GodPaa,
+              Land: xmlData.Land,
+              _x0031__x002e_prioritet: xmlData.Pri1,
+              _x0032__x002e_prioritet: xmlData.Pri2,
+              Lengdep_x00e5_opphold: xmlData.Lengde,
+              Allergier: xmlData.Allergier,
+              Sykdom: xmlData.Sykdom,
+              Oppl_x00e6_ringskontor: xmlData.OpplKontor
             }
           }
         ]
       }
     }
   },
-  */
 
   statistics: {
     enabled: true,

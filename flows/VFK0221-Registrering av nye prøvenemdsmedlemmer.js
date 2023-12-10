@@ -1,6 +1,5 @@
-const description = 'Sender til elevmappe'
+const description = 'Sender til samlesak'
 const { nodeEnv } = require('../config')
-// const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
     enabled: true,
@@ -11,36 +10,10 @@ module.exports = {
     options: {
     }
   },
-  /* Felter fra Acos:
-  ArchiveData {
-    string Fnr
-    string Fornavn
-    string Etternavn
-    string Adresse
-    string Postnr
-    string Poststed
-    string Mobilnr
-    string Epost
-    string AnsVirksomhet
-    string Tilgangsgruppe
-    string Tittel
-    string ForesattFornavn
-    string ForesattEtternavn
-    string ForesattFdato
-    string ElevFdato
-    string Samtykke
-  }
-  */
 
-  // Synkroniser elevmappe
-  syncElevmappe: {
+  syncPrivatePerson: { // Jobname is valid as long as it starts with "syncPrivatePerson"
     enabled: true,
     options: {
-      /*
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
-      },
-      */
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
@@ -61,7 +34,8 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        const elevmappe = flowStatus.syncElevmappe.result.elevmappe
+        const dateList = (new Date().toISOString()).split('-')
+        const year = `${dateList[0]}`
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -71,16 +45,12 @@ module.exports = {
             VersionFormat: att.versionFormat
           }
         })
-        // const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.SkoleOrgNr)
-        // if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.SkoleOrgNr}`)
-        const dateList = (new Date().toISOString()).split('-')
-        const year = `${dateList[0]}`
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Elev Horten',
+            AccessCode: '7',
+            AccessGroup: 'Fagopplæring',
             Category: 'Dokument inn',
             Contacts: [
               {
@@ -96,19 +66,19 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Samtykke - Nettskolen',
+                Title: 'Registrering av nye prøvenemndsmedlemmer',
                 VersionFormat: 'A'
               },
               ...p360Attachments
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200341' : '200208', // Horten vgs nettskolen
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: `Søknad til matematikkurs for Nettskolen ${year}`,
-            UnofficialTitle: `Søknad til matematikkurs for Nettskolen ${year} - ${xmlData.Fornavn} ${xmlData.Etternavn}`,
+            Title: `Registrering av nye prøvenemndsmedlemmer - ${year} - ${flowStatus.syncPrivatePerson.result.privatePerson.firstName} ${flowStatus.syncPrivatePerson.result.privatePerson.lastName}`,
+            UnofficialTitle: 'Registrering av nye prøvenemndsmedlemmer',
             Archive: 'Elevdokument',
-            CaseNumber: elevmappe.CaseNumber
+            CaseNumber: nodeEnv === 'production' ? 'saksnummer' : 'saksnummerTest'
           }
         }
       }
@@ -123,36 +93,43 @@ module.exports = {
   closeCase: {
     enabled: false
   },
-
+  /*
   sharepointList: {
-    enabled: false,
+    enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
+        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
         return [
           {
-            testListUrl: '',
-            prodListUrl: '',
+            siteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
+            path: 'sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
+            listId: 'D1085908-9111-4b6d-84d3-fc8ecd29d398',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Fornavns_x00f8_ker: xmlData.Fornavn,
-              Title: xmlData.Etternavn,
+              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Fornavn: xmlData.Fornavn,
+              Etternavn: xmlData.Etternavn,
               Adresse: xmlData.Adresse,
-              Postnummerogsted: xmlData.PostnrSted,
-              Mobilnummer: xmlData.Mobilnr,
+              Postnummerogsted: `${xmlData.Postnr} ${xmlData.Poststed}`,
+              Mobil: xmlData.Mobil,
               E_x002d_postadresse: xmlData.Epost,
-              Bostedsfylke: xmlData.Studiested,
-              Fagvalg: xmlData.Fagvalg,
-              Kurstidspunkt: xmlData.Tidspunkt,
-              Samtykke_x0020_gitt: xmlData.Samtykke
+              Typedokumentasjon: xmlData.TypeDok,
+              Typeautorasisjon: xmlData.TypeAut,
+              Eksamenssted: xmlData.Eksamenssted,
+              Fag: xmlData.Fag,
+              _x00d8_nsketmottak: xmlData.OnsketMottak,
+              Eksamensperiode: xmlData.AarSemester,
+              Alternativadresse: xmlData.AltAdresse
+
             }
           }
         ]
       }
     }
   },
+  */
 
   statistics: {
     enabled: true,
@@ -162,12 +139,12 @@ module.exports = {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
           company: 'Opplæring',
-          department: 'Nettskolen',
+          department: 'FAGOPPLÆRING',
           description,
-          type: 'Nettskolen - matematikkurs før nasjonal deleksamen for GLU 1 – 7 og GLU 5 – 10', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Klage på fag-, svenne- eller kompetanseprøve', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like
+          tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
         }
       }
     }
