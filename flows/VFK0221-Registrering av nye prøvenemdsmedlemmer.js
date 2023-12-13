@@ -23,7 +23,7 @@ module.exports = {
     }
   },
 
-  // Arkiverer dokumentet i elevmappa
+  // Arkiverer dokumentet i samlesak
   archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
@@ -71,14 +71,14 @@ module.exports = {
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
+            Paragraph: 'Offl. § 7d',
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: `Registrering av nye prøvenemndsmedlemmer - ${year} - ${flowStatus.syncPrivatePerson.result.privatePerson.firstName} ${flowStatus.syncPrivatePerson.result.privatePerson.lastName}`,
-            UnofficialTitle: 'Registrering av nye prøvenemndsmedlemmer',
-            Archive: 'Elevdokument',
-            CaseNumber: nodeEnv === 'production' ? 'saksnummer' : 'saksnummerTest'
+            Title: 'Registrering av nye prøvenemndsmedlemmer',
+            UnofficialTitle: `Registrering av nye prøvenemndsmedlemmer - ${year} - ${flowStatus.syncPrivatePerson.result.privatePerson.firstName} ${flowStatus.syncPrivatePerson.result.privatePerson.lastName}`,
+            Archive: 'Saksdokument',
+            CaseNumber: nodeEnv === 'production' ? 'saksnummer' : '23/00131'
           }
         }
       }
@@ -141,7 +141,7 @@ module.exports = {
           company: 'Opplæring',
           department: 'FAGOPPLÆRING',
           description,
-          type: 'Klage på fag-, svenne- eller kompetanseprøve', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Registrering av nye prøverådsmedlemmer', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like

@@ -44,8 +44,8 @@ string Epost
           parameter: {
             CaseType: 'Sak',
             Project: '23-16',
-            Title: 'En sakstittel',
-            UnofficialTitle: `Søknad om utsetting av fisk i område - ${flowStatus.parseXml.result.ArchiveData.Kommune}`,
+            Title: `Søknad om utsetting av fisk i ${flowStatus.parseXml.result.ArchiveData.Egendefinert1} - ${flowStatus.parseXml.result.ArchiveData.Kommune} kommune`,
+            // UnofficialTitle: ,
             Status: 'B',
             JournalUnit: 'Sentralarkiv',
             SubArchive: 'Sakarkiv',
