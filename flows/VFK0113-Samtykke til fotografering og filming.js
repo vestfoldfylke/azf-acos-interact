@@ -4,7 +4,7 @@ const description = 'Sender til Sharepoint. Samme liste som VFK0112'
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true,

@@ -5,7 +5,7 @@ const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true,

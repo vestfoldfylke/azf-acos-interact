@@ -2,7 +2,7 @@ const description = 'Registrering av praksis for lærerstudenter'
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true,

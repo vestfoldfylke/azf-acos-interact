@@ -4,7 +4,7 @@ const description = 'Søknad om utsetting av ferskvannsfisk'
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true

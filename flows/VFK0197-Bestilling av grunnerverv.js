@@ -2,7 +2,7 @@ const description = 'SMM - Bestilling av grunnerverv'
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true,

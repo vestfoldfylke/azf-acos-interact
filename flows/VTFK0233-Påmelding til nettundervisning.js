@@ -3,7 +3,7 @@ const description = 'Arkivering av testdokument og opprettelse av et listeelemen
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true,
