@@ -74,7 +74,7 @@ module.exports = {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: xmlData.Fnr,
+                ReferenceNumber: flowStatus.syncElevmappe.result.privatePerson.ssn,
                 Role: 'Avsender',
                 IsUnofficial: true
               }
