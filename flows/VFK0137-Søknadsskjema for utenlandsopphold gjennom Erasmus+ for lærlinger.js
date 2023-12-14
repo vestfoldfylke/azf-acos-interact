@@ -108,7 +108,7 @@ module.exports = {
         return [
           {
             testListUrl: '',
-            prodListUrl: '',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Internasjonalisering/Lists/ErasmusSoknad',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {

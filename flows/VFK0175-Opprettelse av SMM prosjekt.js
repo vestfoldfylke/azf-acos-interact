@@ -21,7 +21,7 @@ module.exports = {
         return [
           {
             testListUrl: '',
-            prodListUrl: '',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Prosjektportefljeinvesteringfylkesvei/Lists/Innmeldte%20prosjekt',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {

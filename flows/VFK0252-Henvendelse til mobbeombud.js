@@ -145,7 +145,7 @@ string InnsenderFnr
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200421' : '200065',
             Status: 'J',
             Title: 'Henvendelse til mobbeombud',
-            Archive: 'Personsensitivt dokument',
+            Archive: 'Sensitivt ombudsdokument',
             CaseNumber: caseNumber
           }
         }

@@ -2,6 +2,7 @@ const description = 'Arkivering av varsling ved brud på oppll. § 9 A-4. Skal o
 // const { nodeEnv } = require('../config')
 // const { getSchoolYear } = require('../lib/flow-helpers')
 const { schoolInfo } = require('../lib/data-sources/vfk-schools')
+const { nodeEnv } = require('../config')
 module.exports = {
   config: {
     enabled: true,
@@ -178,7 +179,7 @@ module.exports = {
             DocumentDate: new Date().toISOString(),
             Title: 'Varsling',
             UnofficialTitle: 'Varslingsskjema § 9A-4',
-            Archive: '9A4-dokument',
+            Archive: nodeEnv === 'production' ? '9A4 Dokument' : '9A4-dokument', //
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             ResponsibleEnterpriseNumber: school.orgNr,
             AccessCode: '13',

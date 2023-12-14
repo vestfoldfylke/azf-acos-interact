@@ -21,30 +21,18 @@ module.exports = {
         return [
           {
             testListUrl: '',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Droneteam/Lists/Flylogg%20for%20drone',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Navn: xmlData.Navn,
-              Mobilnummer: xmlData.Mobilnummer,
-              E_x002d_postadresse: xmlData.Epost,
-              Rolle: xmlData.Rolle,
-              Dato: xmlData.Dato,
-              Tidfra_x002f_til: xmlData.Tid,
-              Totalflytid: xmlData.Flytid,
-              Sted: xmlData.Sted,
-              Koordinater: xmlData.Koordinater,
-              Form_x00e5_l: xmlData.Formal,
-              Dronenummer: xmlData.Dronenummer,
-              Serienummer: xmlData.Serienummer,
-              TyeRPAS: xmlData.TypeRPAS,
-              Ansvarlig: xmlData.Ansvarlig,
-              Seksjon: xmlData.Seksjon,
-              Temperatur: xmlData.Temperatur,
-              Vind: xmlData.Vind,
-              Skyforhold: xmlData.Skyforhold,
-              Merknader: xmlData.Merknader,
-              Produsent: xmlData.Produsent
+              Kontaktinformasjon: xmlData.Navn,
+              Status: xmlData.Status,
+              Title: xmlData.Tittel,
+              Alder_x0020_fra: xmlData.MaalgruppeFra,
+              Alder_x0020_til: xmlData.MaalgruppeTil,
+              Ut_x00f8_vere_x0020_og_x0020_ins: xmlData.UtoverInstrument,
+              Kort_x0020_beskrivelse: xmlData.Beskrivelse,
+              Lenker_x0020_med_x0020_passord: xmlData.Video
             }
           }
         ]
