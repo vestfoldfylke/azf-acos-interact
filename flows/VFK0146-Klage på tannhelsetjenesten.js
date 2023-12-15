@@ -46,6 +46,19 @@ module.exports = {
                 ArchiveCode: 'G40',
                 ArchiveType: 'FAGKLASSE PRINSIPP',
                 Sort: 1
+              },
+              {
+                ArchiveCode: xmlData.Fnr, // xmlData.ElevFnr,
+                ArchiveType: 'FNR',
+                IsManualText: true,
+                Sort: 2
+              }
+            ],
+            Contacts: [
+              {
+                Role: 'Sakspart',
+                ReferenceNumber: xmlData.Fnr,
+                IsUnofficial: true
               }
             ],
             ResponsibleEnterpriseNumber: clinic.orgNr
