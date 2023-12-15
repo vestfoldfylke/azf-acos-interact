@@ -121,7 +121,7 @@ ArchiveData {
   },
 
   sharepointList: {
-    enabled: false,
+    enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData

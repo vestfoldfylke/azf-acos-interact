@@ -13,7 +13,7 @@ module.exports = {
   },
 
   sharepointList: {
-    enabled: false,
+    enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
@@ -21,7 +21,7 @@ module.exports = {
         return [
           {
             testListUrl: '',
-            prodListUrl: '',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-Bilde-ogvideoarkiv-Samtykkeskjema2021/Lists/Samtykke',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
