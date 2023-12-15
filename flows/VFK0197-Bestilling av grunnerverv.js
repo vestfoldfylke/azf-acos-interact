@@ -51,7 +51,7 @@ ArchiveData {
         return [
           {
             testListUrl: '',
-            prodListUrl: 'Husk å legg inn!',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SMM-alle/Lists/Bestilling%20av%20grunnerverv',
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {

@@ -47,10 +47,10 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'SMM',
-          department: 'Dronegjengen',
+          company: 'SAMU',
+          department: 'MFM',
           description,
-          type: 'Flylogg for drone' // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'innmelding av produksjon' // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           // documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
