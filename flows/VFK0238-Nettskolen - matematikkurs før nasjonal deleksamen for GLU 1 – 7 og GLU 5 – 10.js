@@ -80,7 +80,7 @@ module.exports = {
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: 'Elev Horten',
+            AccessGroup: 'Elev Horten vgs',
             Category: 'Dokument inn',
             Contacts: [
               {
