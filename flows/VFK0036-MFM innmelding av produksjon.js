@@ -16,7 +16,7 @@ module.exports = {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
+        const xmlData = flowStatus.parseXml.result.Produksjon
         // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
