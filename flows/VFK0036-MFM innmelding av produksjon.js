@@ -20,19 +20,19 @@ module.exports = {
         // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            testListUrl: '',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/KRIF-MarkedforMusikk-MFMprogramrd/Lists/AlleProgramforslagMFMVestfoldfra2024/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/KRIF-MarkedforMusikk-MFMprogramrd/Lists/AlleProgramforslagMFMVestfoldfra2024/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Kontaktinformasjon: xmlData.Navn,
-              Status: xmlData.Status,
+              field_18: xmlData.Navn,
+              field_15: xmlData.Status,
               Title: xmlData.Tittel,
-              Alder_x0020_fra: xmlData.MaalgruppeFra,
-              Alder_x0020_til: xmlData.MaalgruppeTil,
-              Ut_x00f8_vere_x0020_og_x0020_ins: xmlData.UtoverInstrument,
-              Kort_x0020_beskrivelse: xmlData.Beskrivelse,
-              Lenker_x0020_med_x0020_passord: xmlData.Video
+              field_2: xmlData.MaalgruppeFra,
+              field_3: xmlData.MaalgruppeTil,
+              field_4: xmlData.UtoverInstrument,
+              field_16: xmlData.Beskrivelse,
+              field_1: xmlData.Video
             }
           }
         ]
