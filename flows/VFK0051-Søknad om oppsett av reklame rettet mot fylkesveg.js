@@ -64,7 +64,7 @@ ArchiveData {
           method: 'CreateCase',
           parameter: {
             CaseType: 'Sak',
-            Project: nodeEnv === 'production' ? '23-11' : '23-15', // Må lages nytt prosjekt for Prod i 2024,
+            Project: nodeEnv === 'production' ? '24-3' : '23-15',
             Title: `${xmlData.Veg} - ${xmlData.Kommune} - Søknad om reklame`,
             Status: 'B',
             AccessCode: 'U',

@@ -89,7 +89,7 @@ module.exports = {
             Title: 'Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)',
             // UnofficialTitle: '',
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '!! FYLL INN i 2024 !!' : '23/00127'
+            CaseNumber: nodeEnv === 'production' ? '24/00018' : '23/00127'
           }
         }
       }

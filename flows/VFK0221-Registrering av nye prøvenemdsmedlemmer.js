@@ -78,7 +78,7 @@ module.exports = {
             Title: 'Registrering av nye prøvenemndsmedlemmer',
             UnofficialTitle: `Registrering av nye prøvenemndsmedlemmer - ${year} - ${flowStatus.syncPrivatePerson.result.privatePerson.firstName} ${flowStatus.syncPrivatePerson.result.privatePerson.lastName}`,
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? 'saksnummer' : '23/00131'
+            CaseNumber: nodeEnv === 'production' ? '24/00017' : '23/00131'
           }
         }
       }

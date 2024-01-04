@@ -43,7 +43,7 @@ string Epost
           method: 'CreateCase',
           parameter: {
             CaseType: 'Sak',
-            Project: '23-16',
+            Project: '24-2',
             Title: `Søknad om utsetting av fisk i ${flowStatus.parseXml.result.ArchiveData.Egendefinert1} - ${flowStatus.parseXml.result.ArchiveData.Kommune} kommune`,
             // UnofficialTitle: ,
             Status: 'B',
