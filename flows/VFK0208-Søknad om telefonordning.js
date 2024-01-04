@@ -46,7 +46,7 @@ ArchiveData {
             CaseType: 'Personal',
             // Project: '20-15',
             Title: 'Avtale om telefonordning',
-            UnofficialTitle: `Avtale om telefonordning - ${flowStatus.parseXml.archiveData.Fornavn} ${flowStatus.parseXml.archiveData.Etternavn}`,
+            UnofficialTitle: `Avtale om telefonordning - ${flowStatus.parseXml.ArchiveData.Fornavn} ${flowStatus.parseXml.ArchiveData.Etternavn}`,
             Status: 'B',
             AccessCode: '7',
             Paragraph: 'Offl. § 7d',
