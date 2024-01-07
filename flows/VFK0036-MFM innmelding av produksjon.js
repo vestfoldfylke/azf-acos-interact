@@ -32,7 +32,7 @@ module.exports = {
               Alder_x0020_til: xmlData.MaalgruppeTil,
               Ut_x00f8_vere_x0020_og_x0020_ins: xmlData.UtoverInstrument,
               Kort_x0020_beskrivelse: xmlData.Beskrivelse,
-              fielLenker_x0020_med_x0020_passord: xmlData.Video
+              Lenker_x0020_med_x0020_passord: xmlData.Video
             }
           }
         ]
