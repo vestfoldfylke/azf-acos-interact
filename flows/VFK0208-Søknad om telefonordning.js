@@ -2,7 +2,7 @@ const description = 'Søknad om telefonavtale'
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: false
+    doNotRemoveBlobs: true
   },
   parseXml: {
     enabled: true,
@@ -35,9 +35,27 @@ ArchiveData {
 }
 
 */
+  syncEmployee: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => { // for å opprette person med fiktivt fødselsnummer
+        // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier for å opprette privatperson med fiktivt fødselsnummer
+        return {
+          ssn: flowStatus.parseXml.result.ArchiveData.Fnr,
+          forceUpdate: false // optional - forces update of privatePerson instead of quick return if it exists
+        }
+      }
+    }
+  },
   handleCase: {
     enabled: true,
     options: {
+      getCaseParameter: (flowStatus) => {
+        return {
+          Title: 'Avtale om telefonordning', // check for exisiting case with this title
+          ArchiveCode: flowStatus.parseXml.result.ArchiveData.Fnr
+        }
+      },
       mapper: (flowStatus) => {
         return {
           service: 'CaseService',
@@ -47,7 +65,7 @@ ArchiveData {
             // Project: '20-15',
             Title: 'Avtale om telefonordning',
             UnofficialTitle: `Avtale om telefonordning - ${flowStatus.parseXml.result.ArchiveData.Fornavn} ${flowStatus.parseXml.result.ArchiveData.Etternavn}`,
-            Status: 'B',
+            Status: 'A',
             AccessCode: '7',
             Paragraph: 'Offl. § 7d',
             JournalUnit: 'Sentralarkiv',
@@ -56,12 +74,25 @@ ArchiveData {
               {
                 ArchiveCode: '542',
                 ArchiveType: 'FELLESKLASSE PRINSIPP',
-                Sort: 1
+                Sort: 2
+              },
+              {
+                ArchiveCode: flowStatus.parseXml.result.ArchiveData.Fnr,
+                ArchiveType: 'FNR',
+                Sort: 1,
+                IsManualText: true
               }
             ],
-            ResponsibleEnterpriseNumber: '45678912'
-            // ResponsiblePersonEmail: 'fornavn.etternavn@domene.no',
-            // AccessGroup: 'tilgangsgruppe' // Automatisk
+            Contacts: [
+              {
+                Role: 'Sakspart',
+                ReferenceNumber: flowStatus.parseXml.result.ArchiveData.Fnr,
+                IsUnofficial: true
+              }
+            ],
+            ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno,
+            ResponsiblePersonEmail: flowStatus.syncEmployee.result.archiveManager.email,
+            AccessGroup: '' // Automatisk
           }
         }
       }
@@ -91,9 +122,21 @@ ArchiveData {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: xmlData.orgNr.replaceAll(' ', ''),
+                ReferenceNumber: xmlData.Fnr,
                 Role: 'Avsender',
                 IsUnofficial: true
+              }
+              /*,
+              {
+                ReferenceNumber: `recno: ${flowStatus.syncEmployee.result.archiveManager.recno}`,
+                Role: 'Mottaker'
+              }
+              */
+            ],
+            UnregisteredContacts: [
+              {
+                ContactName: xmlData.GodkjentAv,
+                Role: 'Saksbehandler'
               }
             ],
             DocumentDate: new Date().toISOString(),
@@ -109,15 +152,22 @@ ArchiveData {
               ...p360Attachments
             ],
             Paragraph: 'Offl. § 7d',
-            ResponsiblePersonEmail: xmlData.LederEpost, // leder
+            ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno,
+            ResponsiblePersonEmail: flowStatus.syncEmployee.result.archiveManager.email,
             Status: 'J',
             Title: 'Avtale om telefonordning',
-            Archive: 'Saksdokument',
+            Archive: 'Personaldokument',
             CaseNumber: caseNumber
           }
         }
       }
     }
+  },
+  signOff: {
+    enabled: true
+  },
+  closeCase: { // handleCase må kjøres for å kunne kjøre closeCase
+    enabled: true
   },
 
   sharepointList: {
@@ -150,15 +200,15 @@ ArchiveData {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
           company: 'HR',
           department: '',
           description,
-          type: 'Søknad om telefonordning', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Søknad om telefonordning',
+          // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          Fag: xmlData.Seksjon
+          responsibleEnterprise: flowStatus.syncEmployee.result.responsibleEnterprise.shortName
         }
       }
     }
