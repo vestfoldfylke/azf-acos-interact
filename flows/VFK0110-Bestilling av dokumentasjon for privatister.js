@@ -123,15 +123,15 @@ module.exports = {
   },
 
   sharepointList: {
-    enabled: false,
+    enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            testListUrl: '',
-            prodListUrl: '',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-UT-Fylkesadministrasjonutdanning-Eksamen-mottakdigitaleskjemaer/Lists/Privatistdokumentasjon/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-UT-Fylkesadministrasjonutdanning-Eksamen-mottakdigitaleskjemaer/Lists/Privatistdokumentasjon/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -154,9 +154,6 @@ module.exports = {
         ]
       }
     }
-  },
-  groundControl: {
-    enabled: true // Files will be copied to GROUND_CONTROL_STORAGE_ACCOUNT_CONTAINER_NAME, and will be downloaded on local server (./ground-control/index.js)
   },
   statistics: {
     enabled: true,
