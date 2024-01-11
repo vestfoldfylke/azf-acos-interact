@@ -110,7 +110,40 @@ ArchiveData {
   closeCase: {
     enabled: false
   },
-
+  sharepointList: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        const xmlData = flowStatus.parseXml.result.ArchiveData
+        // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
+        return [
+          {
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/KRIF-IdrettogfriluftslivVTFK-Sknader-idrettsarrangementogregionaleanlegg/Lists/Sknader/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/KRIF-IdrettogfriluftslivVTFK-Sknader-idrettsarrangementogregionaleanlegg/Lists/Sknader/AllItems.aspx',
+            uploadFormPdf: true,
+            uploadFormAttachments: true,
+            fields: {
+              Title: xmlData.Orgnavn,
+              Arrangements_x002d_anleggsnavn: xmlData.ArrAnlNavn,
+              Gjennomf_x00f8_ringstidspunkt: xmlData.GjTidspunkt,
+              Arrangements_x002d__x002f_anlegs: xmlData.Sted,
+              Kommune: xmlData.Kommune,
+              Tildeltarranegement: xmlData.TildeltArr,
+              Beskrivelse: xmlData.Besk,
+              Tilskudd: xmlData.HvaTilskuddTil,
+              Sumutgifter: xmlData.SumUtg,
+              S_x00f8_knadssum: xmlData.Soknadssum,
+              E_x002d_post: xmlData.Epost,
+              Organisasjonsnummer: xmlData.Orgnr,
+              Kontonummerforutetaling: xmlData.Kontonr,
+              Tilskuddsordning: xmlData.Type,
+              _x00c5_rstall: xmlData.Aar
+            }
+          }
+        ]
+      }
+    }
+  },
   statistics: {
     enabled: true,
     options: {
