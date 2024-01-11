@@ -164,7 +164,7 @@ ArchiveData {
           company: 'Samfunnsutvikling',
           department: 'Kulturarv',
           description, // Required. A description of what the statistic element represents
-          type: 'Utsetting av ferskvannsfisk', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Tilskudd til verneverdige kulturminner', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }
