@@ -54,7 +54,7 @@ module.exports = {
   },
 
   // Arkiverer dokumentet i elevmappa
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
     enabled: true,
     options: {
       /*
