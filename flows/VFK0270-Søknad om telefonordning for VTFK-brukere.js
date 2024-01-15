@@ -134,12 +134,6 @@ ArchiveData {
               }
               */
             ],
-            UnregisteredContacts: [
-              {
-                ContactName: xmlData.GodkjentAv,
-                Role: 'Saksbehandler'
-              }
-            ],
             DocumentDate: new Date().toISOString(),
             Files: [
               {
