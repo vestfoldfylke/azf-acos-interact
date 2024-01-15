@@ -1,10 +1,10 @@
-const description = 'Søknad om tilskudd til verneverdige kulturminner'
+const description = 'Søknad om utviklingsmidler til formidling av kulturarv'
 const { nodeEnv } = require('../config')
 
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true
