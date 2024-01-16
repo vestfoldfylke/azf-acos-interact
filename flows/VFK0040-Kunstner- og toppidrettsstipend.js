@@ -86,7 +86,6 @@ ArchiveData {
             Status: 'J',
             DocumentDate: new Date().toISOString(),
             Title: archiveTitle,
-            // UnofficialTitle: 'Søknad om utsetting av ferskvannsfisk',
             Archive: 'Saksdokument',
             CaseNumber: caseNumber,
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200022' : '200032', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
@@ -108,7 +107,32 @@ ArchiveData {
   closeCase: {
     enabled: false
   },
-
+  sharepointList: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        const xmlData = flowStatus.parseXml.result.ArchiveData
+        return [
+          {
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-Ekstern-Toppidrettsstipend/Lists/SoknadKunstnerToppidrettsstipend/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-Ekstern-Toppidrettsstipend/Lists/SoknadKunstnerToppidrettsstipend/AllItems.aspx',
+            uploadFormPdf: true,
+            uploadFormAttachments: true,
+            fields: {
+              Title: xmlData.ForNavn,
+              Kategori: xmlData.Kategori,
+              Idrettsgren_x002f_Kunstuttrykk: xmlData.Idrettsgren,
+              F_x00f8_dselsdato: xmlData.Fnr,
+              Hva: xmlData.Hva,
+              S_x00f8_knadssum: xmlData.Soknadssum,
+              M_x00e5_lsetting: xmlData.Maalsetting,
+              Fjor_x00e5_ret: xmlData.Fjoraaret
+            }
+          }
+        ]
+      }
+    }
+  },
   statistics: {
     enabled: true,
     options: {
@@ -118,7 +142,7 @@ ArchiveData {
           company: 'Samfunnsutvikling',
           department: 'Kulturarv',
           description, // Required. A description of what the statistic element represents
-          type: 'Søknad om utviklingsmidler til formidling av kulturarv', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Kunstner- og toppidrettsstipend', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }
