@@ -122,7 +122,7 @@ ArchiveData {
               Title: xmlData.ForNavn,
               Kategori: xmlData.Kategori,
               Idrettsgren_x002f_Kunstuttrykk: xmlData.Idrettsgren,
-              F_x00f8_dselsdato: xmlData.Fnr,
+              F_x00f8_dselsdato: xmlData.Fdato,
               Hva: xmlData.Hva,
               S_x00f8_knadssum: xmlData.Soknadssum,
               M_x00e5_lsetting: xmlData.Maalsetting,
