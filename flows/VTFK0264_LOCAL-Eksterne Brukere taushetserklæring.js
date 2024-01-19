@@ -73,8 +73,8 @@ string Fnr
             CaseNumber: nodeEnv === 'production' ? '23/35207' : '23/00074',
             ResponsibleEnterpriseNumber: '15330',
             documentDate: new Date().toISOString(),
-            AccessCode: '7',
-            Paragraph: 'Offl. § 7d',
+            AccessCode: '26',
+            Paragraph: 'Offl. § 26 femte ledd',
             AccessGroup: 'IT konserndrift og brukerstøtte'
           }
         }

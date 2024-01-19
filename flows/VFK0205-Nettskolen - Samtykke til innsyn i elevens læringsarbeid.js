@@ -90,7 +90,7 @@ module.exports = {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: '7',
+            AccessCode: '26',
             AccessGroup: 'Elev Horten',
             Category: 'Dokument inn',
             Contacts: [
@@ -112,7 +112,7 @@ module.exports = {
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 7d',
+            Paragraph: 'Offl. § 26 femte ledd',
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200341' : '200208', // Horten vgs nettskolen
             // ResponsiblePersonEmail: '',
             Status: 'J',

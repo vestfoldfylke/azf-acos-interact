@@ -66,8 +66,8 @@ ArchiveData {
             Title: 'Avtale om telefonordning',
             UnofficialTitle: `Avtale om telefonordning - ${flowStatus.parseXml.result.ArchiveData.Fornavn} ${flowStatus.parseXml.result.ArchiveData.Etternavn}`,
             Status: 'A',
-            AccessCode: '7',
-            Paragraph: 'Offl. § 7d',
+            AccessCode: '26',
+            Paragraph: 'Offl. § 26 femte ledd',
             JournalUnit: 'Sentralarkiv',
             SubArchive: 'Personal',
             ArchiveCodes: [
@@ -117,7 +117,7 @@ ArchiveData {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: '7',
+            AccessCode: '26',
             // AccessGroup: '', Automatisk tilgangsgruppe
             Category: 'Dokument inn',
             Contacts: [
@@ -151,7 +151,7 @@ ArchiveData {
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 7d',
+            Paragraph: 'Offl. § 26 femte ledd',
             ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno,
             ResponsiblePersonEmail: flowStatus.syncEmployee.result.archiveManager.email,
             Status: 'J',

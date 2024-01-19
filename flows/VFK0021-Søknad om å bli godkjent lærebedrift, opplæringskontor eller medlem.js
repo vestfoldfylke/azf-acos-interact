@@ -90,7 +90,7 @@ ArchiveData {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: '7',
+            AccessCode: '26',
             AccessGroup: 'Fagopplæring',
             Category: 'Dokument inn',
             Contacts: [
@@ -112,7 +112,7 @@ ArchiveData {
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 7d',
+            Paragraph: 'Offl. § 26 femte ledd',
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
             Status: 'J',
             Title: `Søknad ny lærebedrift ${xmlData.bedriftsnavn}`,

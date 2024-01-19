@@ -103,8 +103,8 @@ ArchiveData {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: '7',
-            Paragraph: 'Offl. § 7d',
+            AccessCode: '26',
+            Paragraph: 'Offl. § 26 femte ledd',
             AccessGroup: 'Team Veiforvaltning',
             Category: 'Dokument inn',
             Contacts: [

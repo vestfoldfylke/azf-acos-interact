@@ -69,7 +69,7 @@ ArchiveData {
               {
                 ReferenceNumber: xmlData.Fnr,
                 Role: 'Avsender',
-                IsUnofficial: false
+                IsUnofficial: true
               }
             ],
             Files: [
@@ -92,7 +92,7 @@ ArchiveData {
             // ResponsiblePersonEmail: '',
             AccessCode: '5',
             Paragraph: 'Offl. § 5',
-            AccessGroup: 'Seksjon Kulturarv'
+            AccessGroup: 'Seksjon Kultur'
           }
         }
       }
