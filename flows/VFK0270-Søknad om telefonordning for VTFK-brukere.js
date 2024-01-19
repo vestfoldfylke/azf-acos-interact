@@ -40,6 +40,9 @@ ArchiveData {
     options: {
       mapper: (flowStatus) => { // for å opprette person med fiktivt fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier for å opprette privatperson med fiktivt fødselsnummer
+        if (!flowStatus.parseXml.result.ArchiveData.Ansattnr) {
+          throw new Error('Ansattnummer is missing from XML-file. Check Acos!')
+        }
         return {
           // ssn: flowStatus.parseXml.result.ArchiveData.Fnr,
           ansattnummer: flowStatus.parseXml.result.ArchiveData.Ansattnr,
@@ -52,9 +55,12 @@ ArchiveData {
     enabled: true,
     options: {
       getCaseParameter: (flowStatus) => {
+        if (!flowStatus.syncEmployee.result.privatePerson.ssn) {
+          throw new Error('SSN is missing from syncEmployee.result')
+        }
         return {
           Title: 'Avtale om telefonordning', // check for exisiting case with this title
-          ArchiveCode: flowStatus.parseXml.result.ArchiveData.Fnr
+          ArchiveCode: flowStatus.syncEmployee.result.privatePerson.ssn
         }
       },
       mapper: (flowStatus) => {
@@ -78,7 +84,7 @@ ArchiveData {
                 Sort: 2
               },
               {
-                ArchiveCode: flowStatus.parseXml.result.ArchiveData.Fnr,
+                ArchiveCode: flowStatus.syncEmployee.result.privatePerson.ssn,
                 ArchiveType: 'FNR',
                 Sort: 1,
                 IsManualText: true
@@ -87,7 +93,7 @@ ArchiveData {
             Contacts: [
               {
                 Role: 'Sakspart',
-                ReferenceNumber: flowStatus.parseXml.result.ArchiveData.Fnr,
+                ReferenceNumber: flowStatus.syncEmployee.result.privatePerson.ssn,
                 IsUnofficial: true
               }
             ],
@@ -103,7 +109,6 @@ ArchiveData {
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
         const caseNumber = flowStatus.handleCase.result.CaseNumber
         const p360Attachments = attachments.map(att => {
           return {
@@ -123,7 +128,7 @@ ArchiveData {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: xmlData.Fnr,
+                ReferenceNumber: flowStatus.syncEmployee.result.privatePerson.ssn,
                 Role: 'Avsender',
                 IsUnofficial: true
               }
