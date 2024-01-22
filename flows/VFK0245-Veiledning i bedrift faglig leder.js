@@ -71,7 +71,7 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: `Veiledning i bedrift - ${xmlData.Egendefinert1}`,
+                Title: `Veiledning i bedrift - ${xmlData.Egendefinert3}`,
                 VersionFormat: 'A'
               },
               ...p360Attachments
