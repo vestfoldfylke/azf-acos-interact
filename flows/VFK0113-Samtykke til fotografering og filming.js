@@ -27,7 +27,7 @@ module.exports = {
             fields: {
               AnsattVTFK: xmlData.AnsattVTFK,
               Brukernavn_x0028_ansatt_x0029_: xmlData.Brukernavn,
-              Etternavn: xmlData.Etternavn,
+              Etternavn: `${xmlData.Navn} ${xmlData.Etternavn}`,
               Datoforsamtykke: xmlData.DatoSamtykke,
               E_x002d_postadresse: xmlData.Epost,
               Mobilnummer: xmlData.Mobil,
