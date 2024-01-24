@@ -56,7 +56,7 @@ ArchiveData {
           method: 'CreateCase',
           parameter: {
             CaseType: 'Sak',
-            Project: nodeEnv === 'production' ? '24-57' : '24-2',
+            Project: nodeEnv === 'production' ? '24-72' : '24-2',
             Title: `Søknad om utviklingsmidler til formidling av kulturarv - ${flowStatus.parseXml.result.ArchiveData.OmProsjektet}`,
             // UnofficialTitle: ,
             Status: 'B',
