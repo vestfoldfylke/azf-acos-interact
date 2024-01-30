@@ -34,18 +34,29 @@ ArchiveData {
 }
 
 */
-
+  sharepointGetListItem: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        return {
+          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
+          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx',
+          searchFilter: "fields/Fornavn eq 'Nils Krane' and fields/Etternavn eq 'Thvedt'"
+        }
+      }
+    }
+  },
   sharepointList: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        return [
-          {
+        return flowStatus.sharepointGetListItem.result.map(id => { // det opprettes en jobb pr element i id-lista
+          return {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
             prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx',
-            testElementId: 9,
-            prodElementId: 9,
+            testItemId: id,
+            prodItemId: id,
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -54,11 +65,11 @@ ArchiveData {
               Etternavn: xmlData.Etternavn,
               Enhetsnavn: xmlData.Seksjon,
               Kommentar: xmlData.Kommentar,
-              Ansattnummer: '666',
+              Ansattnummer: `${id}-666`,
               F_x00f8_dselsdato: xmlData.Fdato
             }
           }
-        ]
+        })
       }
     }
   },
