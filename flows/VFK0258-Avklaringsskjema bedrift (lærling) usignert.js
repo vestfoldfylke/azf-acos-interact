@@ -107,7 +107,6 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
