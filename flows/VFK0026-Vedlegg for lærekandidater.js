@@ -31,7 +31,7 @@ module.exports = {
 
   // Arkiverer dokumentet i elevmappa
   archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
-    enabled: false,
+    enabled: true,
     options: {
       /*
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
