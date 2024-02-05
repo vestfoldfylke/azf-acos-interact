@@ -102,43 +102,43 @@ module.exports = {
   closeCase: {
     enabled: false
   },
-  /*
+  sharepointGetListItem: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        const xmlData = flowStatus.parseXml.result.ArchiveData
+        return {
+          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+          searchFilter: `fields/guid eq '${xmlData.Egendefinert1}'` // guid blir sendt med fra første skjema og lagret i lista. Denne raden søker vi etter her
+        }
+      }
+    }
+  },
   sharepointList: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
+        if (flowStatus.sharepointGetListItem.result.length !== 1) throw new Error('Fant ikke unik match i lista når vi kjørte sharepointGetListItem, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila')
+        const id = flowStatus.sharepointGetListItem.result[0]
         return [
           {
-            siteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            path: 'sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
-            listId: 'D1085908-9111-4b6d-84d3-fc8ecd29d398',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+            testItemId: id,
+            prodItemId: id,
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
-              Fornavn: xmlData.Fornavn,
-              Etternavn: xmlData.Etternavn,
-              Adresse: xmlData.Adresse,
-              Postnummerogsted: `${xmlData.Postnr} ${xmlData.Poststed}`,
-              Mobil: xmlData.Mobil,
-              E_x002d_postadresse: xmlData.Epost,
-              Typedokumentasjon: xmlData.TypeDok,
-              Typeautorasisjon: xmlData.TypeAut,
-              Eksamenssted: xmlData.Eksamenssted,
-              Fag: xmlData.Fag,
-              _x00d8_nsketmottak: xmlData.OnsketMottak,
-              Eksamensperiode: xmlData.AarSemester,
-              Alternativadresse: xmlData.AltAdresse
-
+              Signert: true,
+              Dato_x0020_signert: xmlData.Egendefinert3
             }
           }
         ]
       }
     }
   },
-  */
 
   statistics: {
     enabled: true,
