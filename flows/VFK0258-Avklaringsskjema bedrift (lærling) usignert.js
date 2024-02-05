@@ -112,8 +112,8 @@ module.exports = {
           {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
             prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
-            uploadFormPdf: true,
-            uploadFormAttachments: true,
+            uploadFormPdf: false,
+            uploadFormAttachments: false,
             fields: {
               Title: flowStatus.refId || 'Mangler refId', // husk å bruke internal name på kolonnen
               Fornavn: xmlData.Fornavn,

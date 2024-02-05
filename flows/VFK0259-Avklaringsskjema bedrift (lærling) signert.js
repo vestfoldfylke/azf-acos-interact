@@ -128,8 +128,8 @@ module.exports = {
             prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
             testItemId: id,
             prodItemId: id,
-            uploadFormPdf: true,
-            uploadFormAttachments: true,
+            uploadFormPdf: false,
+            uploadFormAttachments: false,
             fields: {
               Signert: true,
               Dato_x0020_signert: xmlData.Egendefinert3
