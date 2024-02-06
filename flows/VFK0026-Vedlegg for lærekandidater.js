@@ -104,7 +104,7 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
+        // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
         return [
           {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Vedlegg%20for%20lrekandidater/AllItems.aspx',
@@ -116,7 +116,7 @@ module.exports = {
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
               L_x00e6_refag: xmlData.Egendefinert1,
-              Dokumentnummer_x0020_i_x0020_p36: flowStatus.archive.documentNumber
+              Dokumentnummer_x0020_i_x0020_p36: flowStatus.archive.result.DocumentNumber
             }
           }
         ]
