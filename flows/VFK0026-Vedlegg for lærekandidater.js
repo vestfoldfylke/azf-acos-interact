@@ -116,7 +116,7 @@ module.exports = {
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
               L_x00e6_refag: xmlData.Egendefinert1,
-              Dokumentnummer_x0020_i_x0020_p36: flowStatus.archive.result.DocumentNumber
+              Doknr360: flowStatus.archive.result.DocumentNumber
             }
           }
         ]
