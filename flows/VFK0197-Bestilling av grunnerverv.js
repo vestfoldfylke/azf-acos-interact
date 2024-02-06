@@ -50,8 +50,8 @@ ArchiveData {
         if (!xmlData.Prosjektnummer) throw new Error('Prosjektnummer har ikke kommet med fra XML')
         return [
           {
-            testListUrl: '',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SMM-alle/Lists/Bestilling%20av%20grunnerverv',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bestilling%20av%20grunnerverv/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bestilling%20av%20grunnerverv/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
