@@ -110,7 +110,7 @@ module.exports = {
         return {
           testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
           prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
-          searchFilter: `fields/guid eq '${xmlData.Egendefinert1}'` // guid blir sendt med fra første skjema og lagret i lista. Denne raden søker vi etter her
+          searchFilter: `fields/guid0 eq '${xmlData.Egendefinert1}'` // guid blir sendt med fra første skjema og lagret i lista. Denne raden søker vi etter her
         }
       }
     }

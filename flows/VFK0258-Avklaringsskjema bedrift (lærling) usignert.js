@@ -120,7 +120,7 @@ module.exports = {
               L_x00e6_refag: xmlData.Egendefinert2,
               guid0: xmlData.Egendefinert1,
               Signert: false,
-              Dokumentnummer_x0020_i_x0020_p36: flowStatus.archive.documentNumber
+              Dokumentnummer_x0020_i_x0020_p36: flowStatus.archive.DocumentNumber
             }
           }
         ]
