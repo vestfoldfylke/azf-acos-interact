@@ -41,26 +41,26 @@
           Etternavn: 'ball',
           Egendefinert1: 'strikkefaget'
         },
-        "xmlFile": {
-          "name": "1302749_signertSkjema.xml",
-          "path": "VFK0259/1302749/1302749_signertSkjema.xml",
-          "blobType": "BlockBlob",
-          "createdOn": "2024-02-05T13:05:50.000Z",
-          "lastModified": "2024-02-05T13:05:50.000Z"
+        xmlFile: {
+          name: '1302749_signertSkjema.xml',
+          path: 'VFK0259/1302749/1302749_signertSkjema.xml',
+          blobType: 'BlockBlob',
+          createdOn: '2024-02-05T13:05:50.000Z',
+          lastModified: '2024-02-05T13:05:50.000Z'
         },
-        "websakHodeXmlFile": {
-          "name": "68511_131134_800259_1302749_WEBSAK_HODE.xml",
-          "path": "VFK0259/1302749/68511_131134_800259_1302749_WEBSAK_HODE.xml",
-          "blobType": "BlockBlob",
-          "createdOn": "2024-02-05T13:05:50.000Z",
-          "lastModified": "2024-02-05T13:05:50.000Z"
+        websakHodeXmlFile: {
+          name: '68511_131134_800259_1302749_WEBSAK_HODE.xml',
+          path: 'VFK0259/1302749/68511_131134_800259_1302749_WEBSAK_HODE.xml',
+          blobType: 'BlockBlob',
+          createdOn: '2024-02-05T13:05:50.000Z',
+          lastModified: '2024-02-05T13:05:50.000Z'
         },
-        "files": [
+        files: [
           {
-            "name": "Skjema.pdf",
-            "path": "VFK0259/1302749/68511_131134_800259_1302749_WEBSAK_HODE.pdf",
-            "type": "H",
-            "desc": "Skjema.pdf"
+            name: 'Skjema.pdf',
+            path: 'VFK0259/1302749/68511_131134_800259_1302749_WEBSAK_HODE.pdf',
+            type: 'H',
+            desc: 'Skjema.pdf'
           }
         ]
       }
