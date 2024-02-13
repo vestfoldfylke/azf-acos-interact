@@ -139,7 +139,10 @@ module.exports = {
               Lengdep_x00e5_opphold: xmlData.Lengde,
               Allergier: xmlData.Allergier,
               Sykdom: xmlData.Sykdom,
-              Oppl_x00e6_ringskontor: xmlData.OpplKontor
+              Oppl_x00e6_ringskontor: xmlData.OpplKontor,
+              Tidligereskolegang: xmlData.Skole,
+              Tidligerearbeidserfaring: xmlData.Reserve1
+
             }
           }
         ]
