@@ -74,8 +74,8 @@ ArchiveData {
                 Sort: 2
               }
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200022' : '200032',
-            // ResponsiblePersonEmail: '',
+            // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200022' : '200032',
+            ResponsiblePersonEmail: 'eira.bjorvik@vestfoldfylke.no',
             AccessGroup: 'Alle'
           }
         }
@@ -135,8 +135,8 @@ ArchiveData {
             // UnofficialTitle: 'Søknad om utsetting av ferskvannsfisk',
             Archive: 'Saksdokument',
             CaseNumber: caseNumber,
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
-            // ResponsiblePersonEmail: '',
+            // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
+            ResponsiblePersonEmail: 'eira.bjorvik@vestfoldfylke.no',
             AccessCode: '26',
             Paragraph: 'Offl. § 26 femte ledd',
             AccessGroup: 'Seksjon Kulturarv'
