@@ -70,6 +70,10 @@ module.exports = {
               {
                 ReferenceNumber: nodeEnv === 'production' ? 'recno:200125' : 'recno:200162', // Team oppfølgingstjenesten
                 Role: 'Kopi til'
+              },
+              {
+                ReferenceNumber: school.orgNr, // Skolen eleven går ved
+                Role: 'Kopi til'
               }
             ],
             DocumentDate: new Date().toISOString(),
