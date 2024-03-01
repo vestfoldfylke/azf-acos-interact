@@ -98,8 +98,8 @@ module.exports = {
           method: 'CreateCase',
           parameter: {
             CaseType: '9A4-Sak',
-            Title: 'Elevsak',
-            UnofficialTitle: `§9A4-sak - ${xmlData.krenketElevNavn}`,
+            Title: '§ 9A-4',
+            UnofficialTitle: `§ 9A-4 - ${xmlData.krenketElevNavn}`,
             Status: 'B',
             AccessCode: '13',
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
@@ -125,7 +125,7 @@ module.exports = {
                 Sort: 2
               },
               {
-                ArchiveCode: 'B39 - Elevforhold - Annet',
+                ArchiveCode: 'B36 - Vernetjeneste',
                 ArchiveType: 'FAGKLASSE PRINSIPP',
                 Sort: 3,
                 IsManualText: true
@@ -177,8 +177,8 @@ module.exports = {
             ],
             Status: 'J',
             DocumentDate: new Date().toISOString(),
-            Title: 'Varsling',
-            UnofficialTitle: 'Varslingsskjema § 9A-4',
+            Title: 'Varslingsskjema opplæringsloven 9 A-4',
+            UnofficialTitle: `Varslingsskjema opplæringsloven 9A-4 - ${xmlData.krenketElevNavn}`,
             Archive: nodeEnv === 'production' ? '9A4 Dokument' : '9A4-dokument', //
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             ResponsibleEnterpriseNumber: school.orgNr,
@@ -209,7 +209,7 @@ module.exports = {
           company: 'OF',
           department: 'Pedagogisk støtte og utvikling',
           description,
-          type: 'Varsling ved brudd på oppll. §9a-4', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Varsling ved brudd på oppll. § 9a-4', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           skole: xmlData.skjemaInnsenderSkole
         }
