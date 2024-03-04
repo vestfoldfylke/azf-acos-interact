@@ -129,7 +129,29 @@ module.exports = {
   closeCase: {
     enabled: false
   },
-
+  sharepointList: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        const xmlData = flowStatus.parseXml.result.ArchiveData
+        // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
+        return [
+          {
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Klagesaker',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Klagesaker',
+            uploadFormPdf: false,
+            uploadFormAttachments: false,
+            fields: {
+              Title: flowStatus.refId || 'Mangler refId',
+              Datoforklagen: xmlData.Egendefinert3.substring(0, 10),
+              Klinikkklagengjelderfor_x003a_: xmlData.Egendefinert1,
+              Hovedkategoriforklage: xmlData.Egendefinert2
+            }
+          }
+        ]
+      }
+    }
+  },
   statistics: {
     enabled: true,
     options: {
