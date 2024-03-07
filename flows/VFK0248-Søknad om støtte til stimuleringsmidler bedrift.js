@@ -5,6 +5,23 @@ module.exports = {
     enabled: true,
     doNotRemoveBlobs: false
   },
+
+  /*
+ArchiveData {
+  string fnr
+  string doknr
+  string laerebedrift
+  string kontaktperson
+  string medlemsbedrift
+  string navnUngdom
+  string laerefag
+  string navnFagradgiver
+  string hvaSokesDetOm
+  string hvorMyeSokesDetOm
+  string Egendefinert1
+  string Egendefinert2
+}
+  */
   parseXml: {
     enabled: true,
     options: {
@@ -23,7 +40,7 @@ module.exports = {
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          ssn: flowStatus.parseXml.result.ArchiveData.Fnr
+          ssn: flowStatus.parseXml.result.ArchiveData.fnr
         }
       }
     }
@@ -108,43 +125,35 @@ module.exports = {
   closeCase: {
     enabled: false
   },
-  /*
+
   sharepointList: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
         return [
           {
-            siteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            path: 'sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
-            listId: 'D1085908-9111-4b6d-84d3-fc8ecd29d398',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20sttte%20til%20stimuleringsmidler/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20sttte%20til%20stimuleringsmidler/AllItems.aspx',
             uploadFormPdf: true,
-            uploadFormAttachments: true,
+            uploadFormAttachments: false,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
-              Fornavn: xmlData.Fornavn,
-              Etternavn: xmlData.Etternavn,
-              Adresse: xmlData.Adresse,
-              Postnummerogsted: `${xmlData.Postnr} ${xmlData.Poststed}`,
-              Mobil: xmlData.Mobil,
-              E_x002d_postadresse: xmlData.Epost,
-              Typedokumentasjon: xmlData.TypeDok,
-              Typeautorasisjon: xmlData.TypeAut,
-              Eksamenssted: xmlData.Eksamenssted,
-              Fag: xmlData.Fag,
-              _x00d8_nsketmottak: xmlData.OnsketMottak,
-              Eksamensperiode: xmlData.AarSemester,
-              Alternativadresse: xmlData.AltAdresse
-
+              Title: flowStatus.archive.result.DocumentNumber || 'Mangler dokumentnummer', // husk å bruke internal name på kolonnen
+              L_x00e6_rebedrift_x0020__x002f__: xmlData.laerebedrift,
+              Kontaktperson: xmlData.kontaktperson,
+              Navn_x0020_p_x00e5__x0020_medlem: xmlData.medlemsbedrift,
+              Navn_x0020_p_x00e5__x0020_l_x00e: xmlData.navnUngdom,
+              F_x00f8_dselsnummer: xmlData.fnr,
+              L_x00e6_refag: xmlData.laerefag,
+              Hva_x0020_s_x00f8_kes_x0020_det_: xmlData.hvaSokesDetOm,
+              Navn_x0020_p_x00e5__x0020_fagr_x: xmlData.navnFagradgiver,
+              Hvor_x0020_mye_x0020_s_x00f8_kes: xmlData.hvorMyeSokesDetOm
             }
           }
         ]
       }
     }
   },
-  */
 
   statistics: {
     enabled: true,
