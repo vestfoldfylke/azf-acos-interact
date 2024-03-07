@@ -1,13 +1,13 @@
 // Dette skjemaet er ikke ferdig designet. Denne flow-filen er basert på A-4 og må oppdateres til A 5!!
 
 const description = 'Arkivering av varsling ved brud på oppll. § 9 A-5. Skal opprettes en ny sak pr skjema'
-// const { nodeEnv } = require('../config')
+const { nodeEnv } = require('../config')
 // const { getSchoolYear } = require('../lib/flow-helpers')
 const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
-    enabled: false,
-    doNotRemoveBlobs: false
+    enabled: true,
+    doNotRemoveBlobs: true
   },
   parseXml: {
     enabled: true
@@ -39,7 +39,7 @@ module.exports = {
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          ssn: flowStatus.parseXml.result.ArchiveData.krenketElevFnr
+          ssn: flowStatus.parseXml.result.ArchiveData.elevFnr
         }
       }
     }
@@ -88,9 +88,9 @@ module.exports = {
           service: 'CaseService',
           method: 'CreateCase',
           parameter: {
-            CaseType: '9A4-Sak',
-            Title: 'Elevsak',
-            UnofficialTitle: `§9A4-sak - ${xmlData.krenketElevNavn}`,
+            CaseType: '9A5-Sak',
+            Title: '§ 9A-5',
+            UnofficialTitle: `§ 9A-5 - ${xmlData.elevNavn}`,
             Status: 'B',
             AccessCode: '13',
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
@@ -99,13 +99,13 @@ module.exports = {
             SubArchive: '4',
             // Project: flowStatus.handleProject.result.ProjectNumber,
             ArchiveCodes: [
-            //   {
-            //     ArchiveCode: '---',
-            //     ArchiveType: '',
-            //     Sort: 1
-            //   },
+              //   {
+              //     ArchiveCode: '---',
+              //     ArchiveType: '',
+              //     Sort: 1
+              //   },
               {
-                ArchiveCode: xmlData.krenketElevFnr,
+                ArchiveCode: xmlData.elevFnr,
                 ArchiveType: 'FNR',
                 IsManualText: true,
                 Sort: 1
@@ -116,7 +116,7 @@ module.exports = {
                 Sort: 2
               },
               {
-                ArchiveCode: 'B39 - Elevforhold - Annet',
+                ArchiveCode: 'B36 - Vernetjeneste',
                 ArchiveType: 'FAGKLASSE PRINSIPP',
                 Sort: 3,
                 IsManualText: true
@@ -125,7 +125,7 @@ module.exports = {
             Contacts: [
               {
                 Role: 'Sakspart',
-                ReferenceNumber: xmlData.krenketElevFnr,
+                ReferenceNumber: xmlData.elevFnr,
                 IsUnofficial: true
               }
             ],
@@ -136,7 +136,7 @@ module.exports = {
     }
   },
   // Arkiverer dokumentet i 360
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
@@ -162,15 +162,15 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Varslingsskjema oppll. § 9A-4',
+                Title: 'Varslingsskjema oppll. § 9A-5',
                 VersionFormat: 'A'
               }
             ],
             Status: 'J',
             DocumentDate: new Date().toISOString(),
-            Title: 'Varsling',
-            UnofficialTitle: 'Varslingsskjema § 9A-4',
-            Archive: '9A4-dokument',
+            Title: 'Varslingsskjema opplæringsloven 9 A-5',
+            UnofficialTitle: `Varslingsskjema opplæringsloven 9A-5 - ${xmlData.elevNavn}`,
+            Archive: nodeEnv === 'production' ? '9A5 Dokument' : '9A5-dokument',
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             ResponsibleEnterpriseNumber: school.orgNr,
             AccessCode: '13',
@@ -200,7 +200,7 @@ module.exports = {
           company: 'OF',
           department: 'Pedagogisk støtte og utvikling',
           description,
-          type: 'Varsling ved brudd på oppll. §9a-4', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Varsling ved brudd på oppll. §9a-5', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           skole: xmlData.skjemaInnsenderSkole
         }
