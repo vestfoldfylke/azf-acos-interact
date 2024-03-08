@@ -2,7 +2,7 @@ const description = 'Sender til elevmappe. Dette er det usignerte skjemaet som s
 const { nodeEnv } = require('../config')
 module.exports = {
   config: {
-    enabled: false,
+    enabled: true,
     doNotRemoveBlobs: false
   },
   parseXml: {
@@ -108,8 +108,8 @@ module.exports = {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return {
-          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
-          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
           searchFilter: `fields/guid0 eq '${xmlData.Egendefinert1}'` // guid blir sendt med fra første skjema og lagret i lista. Denne raden søker vi etter her
         }
       }
@@ -124,8 +124,8 @@ module.exports = {
         const id = flowStatus.sharepointGetListItem.result[0]
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
             testItemId: id,
             prodItemId: id,
             uploadFormPdf: false,

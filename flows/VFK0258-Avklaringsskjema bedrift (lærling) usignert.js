@@ -2,7 +2,7 @@ const description = 'Sender til elevmappe. Dette er det usignerte skjemaet som s
 const { nodeEnv } = require('../config')
 module.exports = {
   config: {
-    enabled: false,
+    enabled: true,
     doNotRemoveBlobs: false
   },
   parseXml: {
@@ -109,8 +109,8 @@ module.exports = {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Avklaringsskjema%20bedrift/AllItems.aspx',
             uploadFormPdf: false,
             uploadFormAttachments: false,
             fields: {
