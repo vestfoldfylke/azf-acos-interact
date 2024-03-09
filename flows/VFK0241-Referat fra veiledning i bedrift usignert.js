@@ -98,43 +98,32 @@ module.exports = {
   closeCase: {
     enabled: false
   },
-  /*
+
   sharepointList: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
         return [
           {
-            siteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            path: 'sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
-            listId: 'D1085908-9111-4b6d-84d3-fc8ecd29d398',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Referat%20fra%20veiledning%20i%20bedrift/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Referat%20fra%20veiledning%20i%20bedrift/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Title: flowStatus.archive.result.DocumentNumber || 'Mangler dokumentnummer', // husk å bruke internal name på kolonnen
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
-              Adresse: xmlData.Adresse,
-              Postnummerogsted: `${xmlData.Postnr} ${xmlData.Poststed}`,
-              Mobil: xmlData.Mobil,
-              E_x002d_postadresse: xmlData.Epost,
-              Typedokumentasjon: xmlData.TypeDok,
-              Typeautorasisjon: xmlData.TypeAut,
-              Eksamenssted: xmlData.Eksamenssted,
-              Fag: xmlData.Fag,
-              _x00d8_nsketmottak: xmlData.OnsketMottak,
-              Eksamensperiode: xmlData.AarSemester,
-              Alternativadresse: xmlData.AltAdresse
-
+              Mobilnummer: xmlData.Mobilnr,
+              L_x00e6_refag: xmlData.Laerefag,
+              Fagr_x00e5_dgivers_x0020_navn: xmlData.FagradgiversNavn,
+              guid0: xmlData.Egendefinert1
             }
           }
         ]
       }
     }
   },
-  */
 
   statistics: {
     enabled: true,
