@@ -25,6 +25,7 @@ module.exports = {
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
+              Title: flowStatus.refId || 'Mangler refId', // husk å bruke internal name på kolonnen
               Navn: xmlData.Navn,
               Mobilnummer: xmlData.Mobilnummer,
               E_x002d_postadresse: xmlData.Epost,
