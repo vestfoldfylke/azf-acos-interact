@@ -26,12 +26,27 @@ module.exports = {
     enabled: true,
     options: {
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.TypeOrg !== 'Skole'
+        return flowStatus.parseXml.result.ArchiveData.TypeOrg !== 'Skole' && flowStatus.parseXml.result.ArchiveData.TypeOrg !== 'Prøvenemnd'
       },
       mapper: (flowStatus) => { // for å opprette organisasjon basert på orgnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           orgnr: flowStatus.parseXml.result.ArchiveData.Orgnr.replaceAll(' ', '')
+        }
+      }
+    }
+  },
+  syncPrivatePerson: { // Jobname is valid as long as it starts with "syncPrivatePerson"
+    enabled: true,
+    options: {
+      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Prøvenemd'
+      },
+      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+        // Mapping av verdier fra XML-avleveringsfil fra Acos.
+        return {
+          ssn: flowStatus.parseXml.result.ArchiveData.Egendefinert1,
+          forceUpdate: true // optional - forces update of privatePerson instead of quick return if it exists
         }
       }
     }
@@ -47,6 +62,21 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
+        let sender
+        let accessCode
+        let accessGroup
+        let paragraph
+        if (flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Skole' || flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Opplæringskontor') {
+          sender = xmlData.Orgnr.replaceAll(' ', '')
+          accessCode = 'U'
+          accessGroup = 'Alle'
+          paragraph = ''
+        } else {
+          sender = xmlData.Egendefinert1 // Prøvenemnd (sendes inn som privatperson)
+          accessCode = '26'
+          accessGroup = 'Fagopplæring'
+          paragraph = 'Offl. § 26 femte ledd'
+        }
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -60,12 +90,12 @@ module.exports = {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: 'U',
-            AccessGroup: 'Alle',
+            AccessCode: accessCode,
+            AccessGroup: accessGroup,
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: xmlData.Orgnr.replaceAll(' ', ''),
+                ReferenceNumber: sender,
                 Role: 'Avsender',
                 IsUnofficial: false
               }
@@ -82,7 +112,7 @@ module.exports = {
               },
               ...p360Attachments
             ],
-            // Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
+            Paragraph: paragraph,
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: 'J',
