@@ -84,7 +84,7 @@ ArchiveData {
             AccessCode: 'U',
             Title: 'Svar på høring – Skoleregler for elever ved de videregående skolene i Vestfold',
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '24-11907' : '24/00038'
+            CaseNumber: nodeEnv === 'production' ? '24/11907' : '24/00038'
           }
         }
       }
