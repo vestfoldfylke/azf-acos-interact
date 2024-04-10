@@ -15,11 +15,27 @@ module.exports = {
   xml fil fra Acos:
     ArchiveData {
       string Orgnr
-      string TypeOrg // Skole eller Opplæringskontor eller Prøvenemnd eller Annet
+      string TypeOrg
       string Skole
       string Egendefinert1
       string Egendefinert2
-    }
+      string Soker
+      string Samarbeidspartnere
+      string Gjennomforingsperiode
+      string Programomrade
+      string AndreFylker
+      string HvilkeTiltak
+      string NavnTiltak
+      string HvilkeTema
+      string YrkesfaglarerAntall
+      string InstruktorAntall
+      string AndreDeltakere
+      string KurskostnadPrDeltaker
+      string AndreKurskostnader
+      string Hospitering
+      string Annet
+      string EnkeltBudsjett
+}
 
   */
   syncEnterprise: {
@@ -66,7 +82,7 @@ module.exports = {
         let accessCode
         let accessGroup
         let paragraph
-        if (flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Skole' || flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Opplæringskontor') {
+        if (flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Skole' || flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Opplæringskontor' || flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Annet') {
           sender = xmlData.Orgnr.replaceAll(' ', '')
           accessCode = 'U'
           accessGroup = 'Alle'
@@ -134,43 +150,42 @@ module.exports = {
   closeCase: {
     enabled: false
   },
-  /*
   sharepointList: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
+        
         return [
           {
-            siteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            path: 'sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
-            listId: 'D1085908-9111-4b6d-84d3-fc8ecd29d398',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx',
             uploadFormPdf: true,
-            uploadFormAttachments: true,
+            uploadFormAttachments: false,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
-              Fornavn: xmlData.Fornavn,
-              Etternavn: xmlData.Etternavn,
-              Adresse: xmlData.Adresse,
-              Postnummerogsted: `${xmlData.Postnr} ${xmlData.Poststed}`,
-              Mobil: xmlData.Mobil,
-              E_x002d_postadresse: xmlData.Epost,
-              Typedokumentasjon: xmlData.TypeDok,
-              Typeautorasisjon: xmlData.TypeAut,
-              Eksamenssted: xmlData.Eksamenssted,
-              Fag: xmlData.Fag,
-              _x00d8_nsketmottak: xmlData.OnsketMottak,
-              Eksamensperiode: xmlData.AarSemester,
-              Alternativadresse: xmlData.AltAdresse
-
+              Title: flowStatus.archive.result.DocumentNumber,
+              S_x00f8_ker: xmlData.Soker === '' ? xmlData.Skole : xmlData.Soker,
+              Navnp_x00e5_samarbeidspartnere: xmlData.Samarbeidspartnere,
+              Erdets_x00f8_ktmidlertilsammepro: xmlData.AndreFylker,
+              Hvilketiltaks_x00f8_kesdetom: xmlData.HvilkeTiltak,
+              Navnp_x00e5_tiltaket: xmlData.NavnTiltak,
+              Gjennomf_x00f8_ringsperiode: xmlData.Gjennomforingsperiode,
+              Hvilkettemadekkes: xmlData.HvilkeTema,
+              Hvilketprogramomr_x00e5_des_x00f: xmlData.Programomrade,
+              Yrkesfagl_x00e6_rereantall: xmlData.YrkesfaglarerAntall,
+              Instrukt_x00f8_rantall: xmlData.InstruktorAntall,
+              Andredeltakere: xmlData.AndreDeltakere,
+              Kurskostnadprdeltaker: xmlData.KurskostnadPrDeltaker,
+              Andrekurskostnader: xmlData.AndreKurskostnader,
+              Hospitering: xmlData.Hospitering,
+              Annet: xmlData.Annet,
+              Settoppetenkeltbudsjettmedtotals: xmlData.EnkeltBudsjett
             }
           }
         ]
       }
     }
   },
-  */
 
   statistics: {
     enabled: true,
