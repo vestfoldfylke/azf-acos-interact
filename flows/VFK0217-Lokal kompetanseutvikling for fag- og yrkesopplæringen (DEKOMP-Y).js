@@ -155,7 +155,7 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        
+
         return [
           {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx',
