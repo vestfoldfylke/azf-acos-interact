@@ -25,8 +25,6 @@ ArchiveData {
   string kulturstrategi
   string sumUtgifter
   string soknadssum
-  string egendefinert1
-  string egendefinert2
   string typeSoker
 }
 
@@ -37,7 +35,7 @@ ArchiveData {
     enabled: true,
     options: {
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.Egendefinert1 === 'Privatperson'
+        return flowStatus.parseXml.result.ArchiveData.typeSoker === 'Privatperson'
       },
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
@@ -51,7 +49,7 @@ ArchiveData {
     enabled: true,
     options: {
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.Egendefinert1 === 'Organisasjon'
+        return flowStatus.parseXml.result.ArchiveData.typeSoker === 'Organisasjon'
       },
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
