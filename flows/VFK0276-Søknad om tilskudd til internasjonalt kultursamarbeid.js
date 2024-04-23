@@ -54,7 +54,7 @@ ArchiveData {
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          orgnr: flowStatus.parseXml.result.ArchiveData.OrgNr.replaceAll(' ', '')
+          orgnr: flowStatus.parseXml.result.ArchiveData.orgNr.replaceAll(' ', '')
         }
       }
     }
