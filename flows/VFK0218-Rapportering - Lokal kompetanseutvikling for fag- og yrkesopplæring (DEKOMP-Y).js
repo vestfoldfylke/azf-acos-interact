@@ -104,44 +104,42 @@ module.exports = {
   closeCase: {
     enabled: false
   },
-  /*
   sharepointList: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
         return [
           {
-            siteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            path: 'sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
-            listId: 'D1085908-9111-4b6d-84d3-fc8ecd29d398',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Rapportering%20%20lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Rapportering%20%20lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
-              Fornavn: xmlData.Fornavn,
-              Etternavn: xmlData.Etternavn,
-              Adresse: xmlData.Adresse,
-              Postnummerogsted: `${xmlData.Postnr} ${xmlData.Poststed}`,
-              Mobil: xmlData.Mobil,
-              E_x002d_postadresse: xmlData.Epost,
-              Typedokumentasjon: xmlData.TypeDok,
-              Typeautorasisjon: xmlData.TypeAut,
-              Eksamenssted: xmlData.Eksamenssted,
-              Fag: xmlData.Fag,
-              _x00d8_nsketmottak: xmlData.OnsketMottak,
-              Eksamensperiode: xmlData.AarSemester,
-              Alternativadresse: xmlData.AltAdresse
-
+              Title: flowStatus.archive?.result?.DocumentNumber || 'Dokumentnummer mangler', // husk å bruke internal name på kolonnen
+              Navn_x0020_p_x00e5__x0020_skole_: xmlData.NavnSkoleEllerKontor,
+              Navn_x0020_p_x00e5__x0020_samarb: xmlData.Samarbeidspartnere,
+              Gjennomf_x00f8_ringsperiode: xmlData.Gjennomforingsperiode,
+              Hvilke_x0020_tiltak_x0020_skal_x: xmlData.HvilkeTiltak,
+              Hvor_x0020_mye_x0020_midler_x002: xmlData.Midler,
+              Hvor_x0020_mye_x0020_av_x0020_mi: xmlData.MidlerBenyttet,
+              Dersom_x0020_det_x0020_er_x0020_: xmlData.UbrukteMidler,
+              Egenfinansiering: xmlData.Egenfinansiering,
+              Velg_x0020_tema: xmlData.HvilkeTema,
+              Velg_x0020_utdanningsprogram: xmlData.Utdanningsprogram,
+              Yrkesfagl_x00e6_rere: xmlData.YrkesfaglarerAntall,
+              Avdelingsledere: xmlData.AvdelingslederAntall,
+              Andre_x0020_ansatte_x0020_i_x002: xmlData.AndreAnsatteSkole,
+              Faglig_x0020_ledere_x0020_og_x00: xmlData.FagligLedereOgInstruktorer,
+              Oppl_x00e6_ringskontor: xmlData.Opplaringskontor,
+              Pr_x00f8_venemnder: xmlData.Provenemder,
+              Andre_x0020_m_x00e5_lgrupper: xmlData.AndreMalgrupper
             }
           }
         ]
       }
     }
   },
-  */
-
   statistics: {
     enabled: true,
     options: {
