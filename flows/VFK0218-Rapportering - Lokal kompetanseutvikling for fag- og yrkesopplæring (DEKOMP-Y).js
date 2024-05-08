@@ -36,6 +36,21 @@ module.exports = {
       }
     }
   },
+  syncPrivatePerson: { // Jobname is valid as long as it starts with "syncPrivatePerson"
+    enabled: true,
+    options: {
+      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Prøvenemnd'
+      },
+      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+        // Mapping av verdier fra XML-avleveringsfil fra Acos.
+        return {
+          ssn: flowStatus.parseXml.result.ArchiveData.Egendefinert1,
+          forceUpdate: true // optional - forces update of privatePerson instead of quick return if it exists
+        }
+      }
+    }
+  },
   // Arkiverer dokumentet i samlesak
   archive: {
     enabled: true,
@@ -47,6 +62,12 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
+        let sender
+        if (flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Prøvenemnd') {
+          sender = xmlData.Egendefinert1
+        } else {
+          sender = xmlData.Orgnr.replaceAll(' ', '')
+        }
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -65,7 +86,7 @@ module.exports = {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: xmlData.Orgnr.replaceAll(' ', ''),
+                ReferenceNumber: sender,
                 Role: 'Avsender',
                 IsUnofficial: false
               }
