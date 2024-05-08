@@ -86,7 +86,7 @@ ArchiveData {
               Hensikt_x0020_med_x0020_reisen: xmlData.HensiktMedReisen,
               Hvem_x0020_har_x0020_godkjent_x0: xmlData.HvemHarGodkjent,
               Kandidat_x0020_fornavn: xmlData.KandidatFornavn,
-              Kandidat_x0020_etternavn: xmlData.KandidatFornavn,
+              Kandidat_x0020_etternavn: xmlData.KandidatEtternavn,
               Kandidat_x0020_f_x00f8_dselsdato: xmlData.KandidatFdato,
               Kandidat_x0020_l_x00e6_refag: xmlData.KandidatLarefag,
               Kandidat_x0020_pr_x00f8_vedato_x: xmlData.KandidatProvedatoFra,
