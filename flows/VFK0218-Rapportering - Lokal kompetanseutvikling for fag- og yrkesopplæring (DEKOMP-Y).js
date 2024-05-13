@@ -63,10 +63,19 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         let sender
+        let accessCode
+        let accessGroup
+        let paragraph
         if (flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Prøvenemnd') {
           sender = xmlData.Egendefinert1
+          accessCode = '26'
+          accessGroup = 'Fagopplæring'
+          paragraph = 'Offl. § 26 femte ledd'
         } else {
           sender = xmlData.Orgnr.replaceAll(' ', '')
+          accessCode = 'U'
+          accessGroup = 'Alle'
+          paragraph = ''
         }
         const p360Attachments = attachments.map(att => {
           return {
@@ -81,8 +90,8 @@ module.exports = {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: 'U',
-            AccessGroup: 'Alle',
+            AccessCode: accessCode,
+            AccessGroup: accessGroup,
             Category: 'Dokument inn',
             Contacts: [
               {
@@ -103,7 +112,7 @@ module.exports = {
               },
               ...p360Attachments
             ],
-            // Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
+            Paragraph: paragraph,
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: 'J',
