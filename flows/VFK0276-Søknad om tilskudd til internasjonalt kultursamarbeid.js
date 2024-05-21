@@ -40,7 +40,7 @@ ArchiveData {
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          ssn: flowStatus.parseXml.result.ArchiveData.Fnr
+          ssn: flowStatus.parseXml.result.ArchiveData.fnr
         }
       }
     }
