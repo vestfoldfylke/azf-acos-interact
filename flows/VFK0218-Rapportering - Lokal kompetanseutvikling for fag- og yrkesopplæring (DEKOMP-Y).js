@@ -11,17 +11,6 @@ module.exports = {
     }
   },
 
-  /*
-  xml fil fra Acos:
-    ArchiveData {
-      string Orgnr
-      string TypeOrg // Skole eller Opplæringskontor
-      string Skole
-      string Egendefinert1
-      string Egendefinert2
-    }
-
-  */
   syncEnterprise: {
     enabled: true,
     options: {
@@ -163,7 +152,10 @@ module.exports = {
               Faglig_x0020_ledere_x0020_og_x00: xmlData.FagligLedereOgInstruktorer,
               Oppl_x00e6_ringskontor: xmlData.Opplaringskontor,
               Pr_x00f8_venemnder: xmlData.Provenemder,
-              Andre_x0020_m_x00e5_lgrupper: xmlData.AndreMalgrupper
+              Andre_x0020_m_x00e5_lgrupper: xmlData.AndreMalgrupper,
+              Navnp_x00e5_densomrapporterer: xmlData.NavnPaDenSomRapporterer,
+              Eposttildensomrapporterer: xmlData.EpostPaDenSomRapporterer,
+              Navnp_x00e5_deltakere: xmlData.NavnPaDeltagere
             }
           }
         ]
