@@ -117,7 +117,7 @@ string PrioriteringHjertesone
             testCaseNo: '24/00050'
           }
         ]
-        if (!xmlData.Kommune){
+        if (!xmlData.Kommune) {
           throw new Error('Could not find Kommune in xmlData')
         }
         const municipality = municipalityCaseNumbers.find(municipality => municipality.name.toUpperCase() === xmlData.Kommune.toUpperCase())

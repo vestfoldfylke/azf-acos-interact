@@ -1,5 +1,4 @@
 const description = 'Påmelding til sommerfest'
-const { nodeEnv } = require('../config')
 module.exports = {
   config: {
     enabled: true,
