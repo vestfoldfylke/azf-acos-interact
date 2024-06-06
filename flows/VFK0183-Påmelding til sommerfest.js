@@ -9,9 +9,29 @@ module.exports = {
     options: {
     }
   },
-
-  groundControl: {
-    enabled: true // Files will be copied to GROUND_CONTROL_STORAGE_ACCOUNT_CONTAINER_NAME, and will be downloaded on local server (./ground-control/index.js)
+  sharepointList: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        const xmlData = flowStatus.parseXml.result.ArchiveData
+        return [
+          {
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Sosialkomiteen/Lists/Sensommerfest%20%20pmeldte/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Sosialkomiteen/Lists/Sensommerfest%20%20pmeldte/AllItems.aspx',
+            uploadFormPdf: true,
+            uploadFormAttachments: false,
+            fields: {
+              Title: xmlData.Navn || 'Mangler navn', // husk å bruke internal name på kolonnen
+              Virksomhet: xmlData.Virksomhet,
+              Enhet: xmlData.Enhet,
+              Ansattnummer: xmlData.Ansattnummer,
+              E_x002d_post: xmlData.Epost,
+              Anneninfo: xmlData.Allergier
+            }
+          }
+        ]
+      }
+    }
   },
   statistics: {
     enabled: true,
