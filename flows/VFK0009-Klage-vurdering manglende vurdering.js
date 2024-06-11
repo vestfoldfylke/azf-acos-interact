@@ -81,7 +81,7 @@ module.exports = {
             Status: 'J',
             Title: title,
             // UnofficialTitle: '',
-            Archive: 'Sensitivt elevdokument',
+            Archive: 'Elevdokument',
             CaseNumber: elevmappe.CaseNumber
           }
         }
