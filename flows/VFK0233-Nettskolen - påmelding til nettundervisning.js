@@ -141,7 +141,7 @@ ArchiveData {
   },
 
   sharepointList: {
-    enabled: false,
+    enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
@@ -149,20 +149,41 @@ ArchiveData {
         const fagliste = Array.isArray(xmlData.ValgteFag.fagliste) ? xmlData.ValgteFag.fagliste : [xmlData.ValgteFag.fagliste] // Sjekker om det er mer enn ett fag i lista (altså et array). Hvis ikke lag et array med det ene elementet
         for (const fag of fagliste) {
           const sharepointElement = {
-            testListUrl: '',
-            prodListUrl: '',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Etternavn || 'Mangler etternavn', // husk å bruke internal name på kolonnen
-              Fornavns_x00f8_ker: xmlData.Fornavn,
-              Adresse: xmlData.Adresse,
-              Postnummerogsted: xmlData.PostnrSted,
-              Mobilnummer: xmlData.Mobilnr,
-              E_x002d_postadresse: xmlData.Epost,
-              Bostedsfylke: xmlData.Fylke,
-              Kurstidspunkt: xmlData.Kurstidspunkt,
-              Fagvalg: fag.Fagnavn
+              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Fornavnelev: xmlData.Fornavn,
+              Etternavnelev: xmlData.Etternavn,
+              Fylke: xmlData.Fylke,
+              Skole: xmlData.Skole,
+              Elevensmobilnr_x002e_: xmlData.Mobilnr,
+              Elevensadresse: xmlData.Adresse,
+              Elevenspostnr_x002e_: xmlData.Postnr,
+              Elevenspoststed: xmlData.Poststed,
+              Elevense_x002d_post: xmlData.Epost,
+              Utfyltav: xmlData.UtfyltAv,
+              Kontaktpersonensfornavn: xmlData.KontaktpersonFornavn,
+              Kontaktpersonensetternavn: xmlData.KontaktpersonEtternavn,
+              Foresatt1fornavn: xmlData.Foresatt1Fornavn,
+              Foresatt1etternavn: xmlData.Foresatt1Etternavn,
+              Foresatt1mobilnr_x002e_: xmlData.Foresatt1Mobilnr,
+              Foresatt1e_x002d_post: xmlData.Foresatt1Epost,
+              Foresatt1adresse: xmlData.Foresatt1Adresse,
+              Foresatt1postnr_x002e_: xmlData.Foresatt1Postnr,
+              Foresatt1poststed: xmlData.Foresatt1Poststed,
+              Foresatt2fornavn: xmlData.Foresatt2fornavn,
+              Foresatt2etternavn: xmlData.Foresatt2Etternavn,
+              Foresatt2mobilnr_x002e_: xmlData.Foresatt2Mobilnr,
+              Foresatt2e_x002d_post: xmlData.Foresatt2Epost,
+              Foresatt2adresse: xmlData.Foresatt2Adresse,
+              Foresatt2postnr_x002e_: xmlData.Foresatt2Postnr,
+              Foresatt2poststed: xmlData.Foresatt2Poststed,
+              Fylkeskommunensfakturaadresse: xmlData.Fakturaadresse,
+              Skolensfakturainformasjon: xmlData.Fakturainformasjon,
+              Fag: fag.Fagnavn
             }
           }
           sharepointElements.push(sharepointElement)
@@ -172,7 +193,7 @@ ArchiveData {
     }
   },
   groundControl: {
-    enabled: true // Files will be copied to GROUND_CONTROL_STORAGE_ACCOUNT_CONTAINER_NAME, and will be downloaded on local server (./ground-control/index.js)
+    enabled: false // Files will be copied to GROUND_CONTROL_STORAGE_ACCOUNT_CONTAINER_NAME, and will be downloaded on local server (./ground-control/index.js)
   },
   statistics: {
     enabled: true,
