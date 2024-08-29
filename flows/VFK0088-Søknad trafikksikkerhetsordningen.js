@@ -113,7 +113,7 @@ string PrioriteringHjertesone
           },
           {
             name: 'Holmestrand kommune',
-            caseNo: '24/15746',
+            caseNo: '24/15752',
             testCaseNo: '24/00050'
           }
         ]
