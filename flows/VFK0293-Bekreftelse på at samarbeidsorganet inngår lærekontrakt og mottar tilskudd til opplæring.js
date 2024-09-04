@@ -49,7 +49,7 @@ ArchiveData {
           method: 'CreateCase',
           parameter: {
             CaseType: 'Sak',
-            Project: flowStatus.parseXml.result.Prosjektnr || '',
+            Project: flowStatus.parseXml.result.ArchiveData.Prosjektnr || '',
             Title: `Bekreftelse på at ${flowStatus.parseXml.result.ArchiveData.Laerebedrift} kan tegne kontrakter og motta tilskudd`,
             Status: 'B',
             AccessCode: 'U',
