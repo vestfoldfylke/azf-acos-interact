@@ -206,7 +206,7 @@ ArchiveData {
           company: 'HR',
           department: '',
           description,
-          type: 'Søknad om telefonordning',
+          type: 'Søknad om hjemmekontor',
           // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           responsibleEnterprise: flowStatus.syncEmployee.result.responsibleEnterprise.shortName
