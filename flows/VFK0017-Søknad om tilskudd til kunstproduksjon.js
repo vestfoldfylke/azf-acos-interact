@@ -120,7 +120,7 @@ ArchiveData {
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Soker, // husk å bruke internal name på kolonnen
+              Title: xmlData.TypeSoker === 'Privatperson' ? `${xmlData.PrivatpersonFornavn} ${xmlData.PrivatpersonEtternavn}` : `${xmlData.Organisasjonsnavn} - ${xmlData.PrivatpersonFornavn} ${xmlData.PrivatpersonEtternavn}`, // husk å bruke internal name på kolonnen
               Tilskuddsordning: xmlData.Tilskuddsordning,
               Prosjektnavn: xmlData.Prosjektnavn,
               Prosjektbeskrivelse: xmlData.Prosjektbeskrivelse,
