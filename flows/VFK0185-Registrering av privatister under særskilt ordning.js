@@ -61,7 +61,8 @@ module.exports = {
               F_x00f8_dselsnummer: privatist.PrivFnr,
               E_x002d_postprivatist: privatist.PrivFnr,
               Mobilprivatist: privatist.PrivMobilnr,
-              Fagkode1: privatist.Fagkoder
+              Fagkode1: privatist.Fagkoder,
+              S_x00e6_rskilttilrettelegging: privatist.Tilrettelegging
             }
           }
           sharepointElements.push(sharepointElement)
