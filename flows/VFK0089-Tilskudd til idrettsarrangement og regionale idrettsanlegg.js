@@ -49,9 +49,9 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         let caseNumber
         if (flowStatus.parseXml.result.ArchiveData.Type === 'Tilskudd til idrettsarrangement') {
-          caseNumber = nodeEnv === 'production' ? '24/03678' : '24/00006'
+          caseNumber = nodeEnv === 'production' ? '24/24857' : '24/00006'
         } else if (flowStatus.parseXml.result.ArchiveData.Type === 'Tilskudd til regionale idrettsanlegg') {
-          caseNumber = nodeEnv === 'production' ? '24/03676' : '24/00007'
+          caseNumber = nodeEnv === 'production' ? '24/24857' : '24/00007'
         } else {
           throw new Error('Type tilskudd er feil eller har ikke kommet med')
         }
