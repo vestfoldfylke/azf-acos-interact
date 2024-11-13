@@ -1,4 +1,4 @@
-const description = 'Søknad om å bli godkjent lærebedrift eller godkjenning av nytt lærefag'
+const description = 'Søknad om godkjenning som nytt samarbeidsorgan for lærebedrifter'
 const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -29,18 +29,15 @@ ArchiveData {
       mapper: (flowStatus) => { // for å opprette/oppdatere en virksomhet i P3360
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return {
-          orgnr: xmlData.LaerebedriftOrgnr.replaceAll(' ', '')
+          orgnr: xmlData.NyttSamarbeidsorganOrgnr.replaceAll(' ', '')
         }
       }
     }
   },
-  /*
+
   handleProject: {
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.GodkjennesSom === 'Nytt samarbeidsorgan for lærebedrifter'
-      },
       getProjectParameter: (flowStatus) => {
         return {
           Title: flowStatus.parseXml.result.ArchiveData.NyttSamarbeidsorganNavn // check for exisiting project with this title, '%' er wildcard når vi søker i 360 eller sif api.
@@ -54,26 +51,23 @@ ArchiveData {
           method: 'CreateProject',
           parameter: {
             Title: flowStatus.parseXml.result.ArchiveData.NyttSamarbeidsorganNavn,
-            Contacts: [
+            ResponsiblePersonRecno: nodeEnv === 'production' ? '200016' : '200019' // Seks
+            /* Contacts: [
               {
                 ReferenceNumber: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring,
                 Role: 'Ansvarlig'
               }
             ]
+              */
           }
         }
       }
     }
   },
-  */
+
   handleCase: {
     enabled: true,
     options: {
-      getCaseParameter: (flowStatus) => {
-        return {
-          Title: `Lærebedrift - ${flowStatus.parseXml.result.ArchiveData.LaerebedriftNavn}` // check for exisiting case with this title
-        }
-      },
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return {
@@ -81,8 +75,8 @@ ArchiveData {
           method: 'CreateCase',
           parameter: {
             CaseType: 'Sak',
-            // Project: flowStatus.handleProject.result.ProjectNumber || '',
-            Title: `Lærebedrift - ${flowStatus.parseXml.result.ArchiveData.LaerebedriftNavn}`,
+            Project: flowStatus.handleProject.result.ProjectNumber || '',
+            Title: `Søknad om godkjenning som nytt samarbeidsorgan for lærebedrifter - ${xmlData.NyttSamarbeidsorganNavn}`,
             Status: 'B',
             AccessCode: 'U',
             JournalUnit: 'Sentralarkiv',
@@ -101,12 +95,12 @@ ArchiveData {
             Contacts: [
               {
                 Role: 'Sakspart',
-                ReferenceNumber: xmlData.LaerebedriftOrgnr.replaceAll(' ', ''),
+                ReferenceNumber: xmlData.NyttSamarbeidsorganOrgnr.replaceAll(' ', ''),
                 IsUnofficial: false
               }
             ],
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
-            ResponsiblePersonEmail: nodeEnv === 'production' ? 'jan.erik.rismyhr@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
+            // ResponsiblePersonEmail: nodeEnv === 'production' ? 'jan.erik.rismyhr@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
             AccessGroup: 'Alle'
           }
         }
@@ -120,10 +114,6 @@ ArchiveData {
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        let dokumenttittel
-        // let avsender = xmlData.LaerebedriftOrgnr.replaceAll(' ', '')
-        if (xmlData.GodkjennesSom === 'Ny lærebedrift') { dokumenttittel = 'Godkjenning av lærebedrift' }
-        if (xmlData.GodkjennesSom === 'Nytt lærefag i godkjent bedrift') { dokumenttittel = 'Nytt lærefag' }
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -142,7 +132,7 @@ ArchiveData {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: xmlData.LaerebedriftOrgnr.replaceAll(' ', ''),
+                ReferenceNumber: xmlData.NyttSamarbeidsorganOrgnr.replaceAll(' ', ''),
                 Role: 'Avsender',
                 IsUnofficial: false
               }
@@ -161,7 +151,7 @@ ArchiveData {
             Paragraph: 'Offl. § 26 femte ledd',
             Status: 'J',
             DocumentDate: new Date().toISOString(),
-            Title: dokumenttittel,
+            Title: 'Godkjenning av samarbeidsorgan',
             Archive: 'Saksdokument',
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019' // Seksjon Fag- og yrkesopplæring
@@ -179,31 +169,37 @@ ArchiveData {
   closeCase: {
     enabled: false
   },
-  /*
+
   sharepointList: {
-    enabled: false,
+    enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        let bekreftelse = 'Nei'
-        if (xmlData.Bekreftelse === 'true') { bekreftelse = 'Ja' }
+        let dagligLeder = ''
+        if (xmlData.DagligLederSammePerson === 'Ja') {
+          dagligLeder = xmlData.NavnUtfyller
+        } else {
+          dagligLeder = xmlData.NavnDagligLeder
+        }
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20midlertidig%20godkjenning%20som%20samarbeidsorg/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20midlertidig%20godkjenning%20som%20samarbeidsorg/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20godkjenning%20som%20nytt%20samarbeidsorgan%20for/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20godkjenning%20som%20nytt%20samarbeidsorgan%20for/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: flowStatus.parseXml.result.ArchiveData.Samarbeidsorgan, // husk å bruke internal name på kolonnen
-              Kontaktperson: xmlData.Kontaktperson,
-              S_x00f8_ker_x0020_om_x0020_midle: bekreftelse
+              Title: xmlData.NyttSamarbeidsorganNavn, // husk å bruke internal name på kolonnen
+              Organisasjonsnummer: xmlData.NyttSamarbeidsorganOrgnr,
+              Navn_x0020_utfyller: xmlData.NavnUtfyller,
+              Navn_x0020_daglig_x0020_leder: dagligLeder,
+              Dokumentnummer_x0020_i_x0020_360: flowStatus.archive.result.DocumentNumber
             }
           }
         ]
       }
     }
   },
-  */
+
   statistics: {
     enabled: true,
     options: {
@@ -213,7 +209,7 @@ ArchiveData {
           company: 'Opplæring',
           department: 'Fagopplæring',
           description, // Required. A description of what the statistic element represents
-          type: 'Søknad om å bli godkjent lærebedrift eller godkjenning av nytt lærefag', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Søknad om godkjenning som nytt samarbeidsorgan for lærebedrifter', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }
