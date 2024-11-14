@@ -179,31 +179,33 @@ ArchiveData {
   closeCase: {
     enabled: false
   },
-  /*
+
   sharepointList: {
-    enabled: false,
+    enabled: true,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        let bekreftelse = 'Nei'
-        if (xmlData.Bekreftelse === 'true') { bekreftelse = 'Ja' }
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20midlertidig%20godkjenning%20som%20samarbeidsorg/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20midlertidig%20godkjenning%20som%20samarbeidsorg/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20%20bli%20godkjent%20lrebedrift%20eller%20godkjennin/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20%20bli%20godkjent%20lrebedrift%20eller%20godkjennin/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: flowStatus.parseXml.result.ArchiveData.Samarbeidsorgan, // husk å bruke internal name på kolonnen
-              Kontaktperson: xmlData.Kontaktperson,
-              S_x00f8_ker_x0020_om_x0020_midle: bekreftelse
+              Navn_x0020_p_x00e5__x0020_l_x00e: xmlData.LaerebedriftNavn, // husk å bruke internal name på kolonnen
+              Hva_x0020_s_x00f8_kes_x0020_det_: xmlData.HvaSokesDetOm,
+              Tilknyttes_x0020_samarbeidsorgan: xmlData.TilknyttetSamarbeidsorgan,
+              Navn_x0020_p_x00e5__x0020_samarb: xmlData.SamarbeidsorganNavn,
+              L_x00e6_refag: xmlData.Laerefag,
+              Faglig_x0020_kvalifisert_x0020_p: xmlData.FagligKvalifisertPerson,
+              Title: flowStatus.archive.result.DocumentNumber
             }
           }
         ]
       }
     }
   },
-  */
+
   statistics: {
     enabled: true,
     options: {
