@@ -106,7 +106,7 @@ ArchiveData {
               }
             ],
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
-            ResponsiblePersonEmail: nodeEnv === 'production' ? 'jan.erik.rismyhr@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
+            ResponsiblePersonEmail: nodeEnv === 'production' ? 'jan.rismyhr@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
             AccessGroup: 'Alle'
           }
         }
