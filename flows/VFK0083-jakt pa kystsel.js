@@ -41,7 +41,7 @@ string Epost
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        const caseNumber = nodeEnv === 'production' ? '24/00001' : '24/25437'
+        const caseNumber = nodeEnv === 'production' ? '24/25437' : '24/00001'
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
