@@ -39,7 +39,7 @@ module.exports = {
             uploadFormPdf: false,
             uploadFormAttachments: false,
             fields: {
-              Tilgang_x0020_til_x0020_Visma: `Utført (${xmlData.utfortAvTidspunkt})`
+              Tilgangtiltraverseringsdisk: `Utført (${xmlData.utfortAvTidspunkt})`
             }
           }
         ]
@@ -57,7 +57,7 @@ module.exports = {
           company: 'Tannhelse',
           department: 'Tannhelse',
           description,
-          type: 'Tannhelse - bestilling av tilganger - Visma' // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Tannhelse - bestilling av tilganger - Traversering - signert' // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           // documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like
