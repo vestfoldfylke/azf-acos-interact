@@ -70,14 +70,14 @@ string Epost
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Jakt på kystsel 2024',
+                Title: 'Jakt på kystsel',
                 VersionFormat: 'A'
               },
               ...p360Attachments
             ],
             Status: 'J',
             DocumentDate: new Date().toISOString(),
-            Title: 'Jakt på kystsel 2024',
+            Title: 'Jakt på kystsel 2025',
             // UnofficialTitle: 'Jakt på kystsel 2024',
             Archive: 'Saksdokument',
             CaseNumber: caseNumber,
