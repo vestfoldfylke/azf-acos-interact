@@ -23,8 +23,7 @@ module.exports = {
             fields: {
               Title: xmlData.navn || 'Mangler navn', // husk å bruke internal name på kolonnen
               _x00d8_nsker_x0020__x00e5__x0020: xmlData.svar,
-              Kommentarer: xmlData.Enhet,
-              Ansattnummer: xmlData.annet
+              Kommentarer: xmlData.annet
             }
           }
         ]
