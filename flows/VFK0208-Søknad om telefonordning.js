@@ -1,7 +1,7 @@
 const description = 'Søknad om telefonavtale'
 module.exports = {
   config: {
-    enabled: true,
+    enabled: false,
     doNotRemoveBlobs: false
   },
   parseXml: {
