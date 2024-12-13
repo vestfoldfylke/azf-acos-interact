@@ -3,11 +3,20 @@ const description = 'Oppretter rad i SP liste. Raden blir oppdatert med status-d
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: false
+    doNotRemoveBlobs: true
   },
   parseXml: {
     enabled: true,
     options: {
+    }
+  },
+  customJobCreateAltinnForm: {
+    enabled: true,
+    runAfter: 'parseXml',
+    options: {},
+    customJob: async (flowStatus) => {
+      // const xmlData = flowStatus.parseXml.result.ArchiveData
+      return 'Hey ho lets go'
     }
   },
   sharepointList: {
@@ -40,7 +49,6 @@ module.exports = {
       }
     }
   },
-
   statistics: {
     enabled: true,
     options: {
