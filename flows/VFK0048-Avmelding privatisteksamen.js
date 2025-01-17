@@ -82,7 +82,7 @@ module.exports = {
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200015' : '200018', // Seksjon Sektorstøtte, inntak og eksamen
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Avmelding privatisteksamen våren 2024',
+            Title: 'Avmelding privatisteksamen',
             // UnofficialTitle: '',
             Archive: 'Sensitivt elevdokument',
             CaseNumber: elevmappe.CaseNumber
