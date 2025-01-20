@@ -43,10 +43,10 @@ ArchiveData {
         let archiveTitle
         if (flowStatus.parseXml.result.ArchiveData.Kategori === 'Toppidrettsstipend') {
           archiveTitle = `Søknad om idrettsstipend - ${xmlData.Idrettsgren}`
-          caseNumber = nodeEnv === 'production' ? '24/04614' : '24/00018'
+          caseNumber = nodeEnv === 'production' ? '25/03664' : '24/00018'
         } else if (flowStatus.parseXml.result.ArchiveData.Kategori === 'Kunstnerstipend') {
           archiveTitle = ` Søknad om kunstnerstipend - ${xmlData.Idrettsgren}`
-          caseNumber = nodeEnv === 'production' ? '24/04615' : '24/00017'
+          caseNumber = nodeEnv === 'production' ? '25/03661' : '24/00017'
         } else {
           throw new Error('Kategori må være enten Toppidrettsstipend eller Kunstnerstipend')
         }
