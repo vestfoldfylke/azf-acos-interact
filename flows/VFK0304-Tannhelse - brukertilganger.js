@@ -3,7 +3,7 @@ const description = 'Oppretter rad i SP liste. Raden blir oppdatert med status-d
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true,
