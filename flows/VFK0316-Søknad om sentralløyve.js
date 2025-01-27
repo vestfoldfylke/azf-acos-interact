@@ -101,7 +101,7 @@ ArchiveData {
           parameter: {
             AccessCode: '13',
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            // AccessGroup: 'Team Veiforvaltning',
+            AccessGroup: 'Løyver',
             Category: 'Dokument inn',
             Contacts: [
               {
