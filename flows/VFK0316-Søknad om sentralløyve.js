@@ -99,7 +99,8 @@ ArchiveData {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: 'U',
+            AccessCode: '13',
+            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
             // AccessGroup: 'Team Veiforvaltning',
             Category: 'Dokument inn',
             Contacts: [
