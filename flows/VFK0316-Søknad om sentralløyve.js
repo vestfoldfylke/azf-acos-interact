@@ -92,16 +92,23 @@ ArchiveData {
             Format: att.format,
             Status: 'F',
             Title: att.title,
-            VersionFormat: att.versionFormat
+            VersionFormat: att.versionFormat,
+            AccessCode: nodeEnv === 'production' ? '200008' : '200005', // recno: for kode 13, se i P360 under "Tilgangskoder" og finn riktig kode
+            AdditionalFields: [
+              {
+                Name: 'ToAuthorization',
+                Value: 'Offl. § 13 jf. fvl. § 13 (1) nr.1'
+              }
+            ]
           }
         })
         return {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
-            AccessCode: '13',
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            AccessGroup: 'Løyver',
+            AccessCode: 'U',
+            // Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
+            AccessGroup: 'Alle',
             Category: 'Dokument inn',
             Contacts: [
               {
@@ -125,7 +132,7 @@ ArchiveData {
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200100' : '200157', // Team Drift og forvaltning
             // ResponsiblePersonEmail: nodeEnv === 'production' ? 'daniel.maslohansen@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
             Status: 'J',
-            Title: 'Søknad om sentralløyve',
+            Title: `Søknad om sentralløyve - ${xmlData.sentral} - ${xmlData.orgnr.replaceAll(' ', '')}`,
             Archive: 'Saksdokument',
             SubArchive: 'Løyver',
             CaseNumber: caseNumber
