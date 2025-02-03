@@ -6,7 +6,10 @@
   const { logger, logConfig } = require('@vtfk/logger')
 
   logConfig({
-    prefix: 'ground-control - local script'
+    prefix: 'ground-control - local script',
+    betterstack: {
+      onlyInProd: false
+    }
   })
 
   const blobOptions = {
