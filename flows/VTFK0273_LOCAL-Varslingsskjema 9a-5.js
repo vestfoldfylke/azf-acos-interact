@@ -1,4 +1,4 @@
-const description = 'Arkivering av varsling ved brud på oppll. § 9 A-5 til skolen sitt 9 A-5 prosjekt. Skal opprettes en ny sak pr skjema'
+const description = 'Arkivering av varsling ved brud på oppll. § 9 A-5 til skolen sitt 9 A-5 prosjekt. Skal opprettes en ny sak pr skjema - ikke i bruk'
 // const { nodeEnv } = require('../config')
 const { getSchoolYear } = require('../lib/flow-helpers')
 const { schoolInfo } = require('../lib/data-sources/vtfk-schools')
