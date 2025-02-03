@@ -10,6 +10,9 @@ module.exports = async function (context, myTimer) {
     },
     teams: {
       onlyInProd: false
+    },
+    betterstack: {
+      onlyInProd: false
     }
   })
   try {

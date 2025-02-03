@@ -10,6 +10,9 @@ module.exports = async function (context, req) {
     azure: {
       context,
       excludeInvocationId: true
+    },
+    betterstack: {
+      onlyInProd: false
     }
   })
   try {
