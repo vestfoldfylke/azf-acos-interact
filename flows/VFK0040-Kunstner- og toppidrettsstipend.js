@@ -41,12 +41,15 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         let caseNumber
         let archiveTitle
+        let responsible
         if (flowStatus.parseXml.result.ArchiveData.Kategori === 'Toppidrettsstipend') {
           archiveTitle = `Søknad om idrettsstipend - ${xmlData.Idrettsgren}`
           caseNumber = nodeEnv === 'production' ? '25/03664' : '24/00018'
+          responsible = 'baard.andresen@vestfoldfylke.no'
         } else if (flowStatus.parseXml.result.ArchiveData.Kategori === 'Kunstnerstipend') {
           archiveTitle = ` Søknad om kunstnerstipend - ${xmlData.Idrettsgren}`
           caseNumber = nodeEnv === 'production' ? '25/03661' : '24/00017'
+          responsible = 'yvonne.pleym@vestfoldfylke.no'
         } else {
           throw new Error('Kategori må være enten Toppidrettsstipend eller Kunstnerstipend')
         }
@@ -89,7 +92,7 @@ ArchiveData {
             Archive: 'Saksdokument',
             CaseNumber: caseNumber,
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
-            ResponsiblePersonEmail: 'baard.andresen@vestfoldfylke.no',
+            ResponsiblePersonEmail: responsible,
             AccessCode: '5',
             Paragraph: 'Offl. § 5',
             AccessGroup: 'Seksjon Kultur'
