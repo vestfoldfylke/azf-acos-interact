@@ -17,14 +17,14 @@ module.exports = {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.Produksjon
         return {
-          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
-          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
+          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
+          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
           searchFilter: `fields/ProdID eq '${xmlData.ProdID}'`
         }
       }
     }
   },
-  
+
   sharepointListProduksjoner: {
     enabled: true,
     options: {
@@ -32,8 +32,8 @@ module.exports = {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
@@ -47,8 +47,20 @@ module.exports = {
       }
     }
   },
-  
-  
+  sharepointGetListItemKommunikasjon: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        const xmlData = flowStatus.parseXml.result.Produksjon
+        return {
+          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
+          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
+          searchFilter: `fields/ProdID eq '${xmlData.ProdID}'`
+        }
+      }
+    }
+  },
+
   sharepointListKommunikasjon: {
     enabled: true,
     options: {
@@ -84,7 +96,7 @@ module.exports = {
       }
     }
   },
-/* TRENGS VIRKELIG DENNE???? Antakelig ikke, for det skal jo lages en ny rad med reisefølgedeltaker
+
   sharepointGetListItemLogistikk: {
     enabled: true,
     options: {
@@ -98,7 +110,7 @@ module.exports = {
       }
     }
   },
-*/
+
   sharepointListLogistikk: {
     enabled: true,
     options: {
@@ -107,7 +119,7 @@ module.exports = {
         const sharepointElements = []
         const reisefolge = Array.isArray(xmlData.Reisefolge) ? xmlData.Reisefolge.Reisefolge : [xmlData.Reisefolge.Reisefolge] // Sjekker om det er mer enn ett fag i lista (altså et array). Hvis ikke lag et array med det ene elementet
         if (flowStatus.sharepointGetListItemLogistikk.result.length !== 1) throw new Error('Fant ikke unik match i lista når vi kjørte sharepointGetListItemLogistikk, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila')
-        // const id = flowStatus.SharepointGetListItemLogistikk.result[0]
+        const id = flowStatus.sharepointGetListItemLogistikk.result[0]
         for (const person of reisefolge) {
           const sharepointElement = {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Logistikkartister/AllItems.aspx',
