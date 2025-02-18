@@ -2,7 +2,7 @@ const description = 'Behandling av personopplysninger i tjenester'
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true,
