@@ -2,7 +2,7 @@ const description = 'Registrering av unntak for fakturering'
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseXml: {
     enabled: true,
