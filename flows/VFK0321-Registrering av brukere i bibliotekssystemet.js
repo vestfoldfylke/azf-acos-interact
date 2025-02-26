@@ -28,10 +28,11 @@ module.exports = {
               Navnp_x00e5_bruker: rad.navnBruker,
               Rollebruker: rad.rolle,
               Skolebruker: rad.skole,
-              Innmelding_x002f_utmelding: rad.innEllerUt,
+              Innmelding_x002f_utmelding: rad.gjelder,
               Navnp_x00e5_innsender: xmlData.innsenderNavn,
               Tittel_x0028_innsender_x0029_: xmlData.innsenderTittel,
-              Skole_x0028_innsender_x0029_: xmlData.innsenderSkole
+              Skole_x0028_innsender_x0029_: xmlData.innsenderSkole,
+              E_x002d_postadresse_x0028_innsen: xmlData.epost
             }
           }
           sharepointElements.push(sharepointElement)
