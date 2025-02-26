@@ -32,7 +32,7 @@ module.exports = {
               Navnp_x00e5_innsender: xmlData.innsenderNavn,
               Tittel_x0028_innsender_x0029_: xmlData.innsenderTittel,
               Skole_x0028_innsender_x0029_: xmlData.innsenderSkole,
-              E_x002d_postadresse_x0028_innsen: xmlData.epost
+              E_x002d_postadresse_x0028_innsen: rad.epost
             }
           }
           sharepointElements.push(sharepointElement)
