@@ -128,7 +128,7 @@ ArchiveData {
             // UnofficialTitle: '',
             Archive: 'Saksdokument',
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200023' : '200029', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200023' : '200029', // Seksjon Samfunn og plan. Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
             ResponsiblePersonEmail: nodeEnv === 'production' ? 'tone.helen.jorgensen@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
             AccessCode: 'U'
             // Paragraph: 'Offl. § 26 femte ledd',
