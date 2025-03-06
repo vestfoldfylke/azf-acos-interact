@@ -98,7 +98,7 @@ ArchiveData {
             Title: 'Tilbakemelding - Fylkeskommunale tilskudd til inkluderingsarbeid',
             // UnofficialTitle: '',
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '25/05842' : '25/00009',
+            CaseNumber: nodeEnv === 'production' ? '25/05841' : '25/00009',
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200023' : '200029',
             ResponsiblePersonEmail: nodeEnv === 'production' ? 'elin.gunleiksrud@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
             AccessCode: 'U'
