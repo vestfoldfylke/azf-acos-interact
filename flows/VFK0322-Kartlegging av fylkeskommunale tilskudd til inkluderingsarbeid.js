@@ -131,6 +131,7 @@ ArchiveData {
             uploadFormAttachments: true,
             fields: {
               Title: xmlData.organisasjonsnavn, // husk å bruke internal name på kolonnen
+              Prosjektnavn_x0020__x002f__x0020: xmlData.prosjektnavn,
               Kontaktperson: xmlData.kontaktperson,
               E_x002d_post: xmlData.epost,
               Telefon: xmlData.telefon,
