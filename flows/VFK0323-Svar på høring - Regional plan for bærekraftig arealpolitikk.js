@@ -101,7 +101,7 @@ ArchiveData {
             AccessCode: 'U',
             Title: 'Høringsinnspill - Revisjon av RPBA 2025 - 2027 - Planprogram',
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '24/18970' : '25/00010'
+            CaseNumber: nodeEnv === 'production' ? '24/18974' : '25/00010'
           }
         }
       }
