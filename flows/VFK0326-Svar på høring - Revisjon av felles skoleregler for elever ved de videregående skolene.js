@@ -1,4 +1,4 @@
-const description = 'Svar på høring - Regional plan for opplæring'
+const description = 'Svar på høring - Revisjon av felles skoleregler for elever ved de videregående skolene i Vestfold.'
 const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -19,10 +19,11 @@ ArchiveData {
   string organisasjon
   string orgnr
   string innspillFormal
-  string innspillKunnskapsgrunnlag
-  string innspillSatsning
-  string innspillProsess
-  string andreInnspill
+  string innspillOrganiseringAvSkoledemokrati
+  string innspillElevenesPlikter
+  string innspillElevenesRettigheter
+  string innspillKonsekvenserVedBrudd
+  string innspillDiverse
   string privatperson
 }
 
@@ -96,9 +97,9 @@ ArchiveData {
             ResponsiblePersonEmail: nodeEnv === 'production' ? 'karen.anne.kjendlie@vestfoldfylke.no' : '',
             Status: 'J',
             AccessCode: 'U',
-            Title: 'Regional plan for opplæring - Høringsinnspill',
+            Title: 'Svar på høring - Revisjon av felles skoleregler for elever ved de videregående skolene i Vestfold fylkeskommune',
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '25/06412' : '25/00012'
+            CaseNumber: nodeEnv === 'production' ? '25/06429' : '25/00013'
           }
         }
       }
@@ -119,8 +120,8 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/Regionalplanvideregendeopplring-Vestfoldskolen/Lists/RPO/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/Regionalplanvideregendeopplring-Vestfoldskolen/Lists/RPO/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Svar%20p%20hring%20%20Revisjon%20av%20felles%20skoleregler/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Svar%20p%20hring%20%20Revisjon%20av%20felles%20skoleregler/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -130,10 +131,11 @@ ArchiveData {
               Organisasjonsnavn: xmlData.organisasjon || 'Privatperson',
               Organisasjonsnummer: xmlData.orgnr || 'Privatperson',
               Form_x00e5_l: xmlData.innspillFormal,
-              Kunnskapsgrunnlaget: xmlData.innspillKunnskapsgrunnlag,
-              Satsningsomr_x00e5_der: xmlData.innspillSatsning,
-              Prosessogmedvirkning: xmlData.innspillProsess,
-              Andreinnspill: xmlData.andreInnspill,
+              Organisering_x0020_av_x0020_skol: xmlData.innspillOrganiseringAvSkoledemokrati,
+              Elevens_x0020_plikter: xmlData.innspillElevenesPlikter,
+              Elevens_x0020_rettigheter: xmlData.innspillElevenesRettigheter,
+              Konsekvenser_x0020_ved_x0020_reg: xmlData.innspillKonsekvenserVedBrudd,
+              Diverse_x0020_bestemmelser: xmlData.innspillDiverse,
               Dokumentnummer_x0020_i_x0020_360: flowStatus.archive.result.DocumentNumber
             }
           }
@@ -151,7 +153,7 @@ ArchiveData {
           company: 'Opplæring og tannhelse',
           department: 'Kompetanse og pedagogisk utvikling',
           description,
-          type: 'Svar på høring - Regional plan for opplæring', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Svar på høring - Revisjon av felles skoleregler for elever ved de videregående skolene i Vestfold', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
