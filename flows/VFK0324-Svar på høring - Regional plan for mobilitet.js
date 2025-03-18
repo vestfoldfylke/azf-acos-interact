@@ -114,7 +114,7 @@ ArchiveData {
             AccessCode: 'U',
             Title: 'Høringsinnspill - Forslag til planprogram Regional plan for mobilitet',
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '25/03752' : '25/00011'
+            CaseNumber: nodeEnv === 'production' ? '25/06427' : '25/00011'
           }
         }
       }
