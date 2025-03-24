@@ -1,7 +1,7 @@
 const description = 'Tilleggsavtale om hjemmekontor'
 module.exports = {
   config: {
-    enabled: false,
+    enabled: true,
     doNotRemoveBlobs: false
   },
   parseXml: {
