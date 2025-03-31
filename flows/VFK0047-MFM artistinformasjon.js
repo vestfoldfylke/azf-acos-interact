@@ -119,7 +119,7 @@ module.exports = {
         const sharepointElements = []
         const reisefolge = Array.isArray(xmlData.Reisefolge) ? xmlData.Reisefolge.Reisefolge : [xmlData.Reisefolge.Reisefolge] // Sjekker om det er mer enn ett fag i lista (altså et array). Hvis ikke lag et array med det ene elementet
         if (flowStatus.sharepointGetListItemLogistikk.result.length !== 1) throw new Error('Fant ikke unik match i lista når vi kjørte sharepointGetListItemLogistikk, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila')
-        const id = flowStatus.sharepointGetListItemLogistikk.result[0]
+        const id = flowStatus.sharepointGetListItemLogistikk.result[0].id
         for (const person of reisefolge) {
           const sharepointElement = {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Logistikkartister/AllItems.aspx',

@@ -51,12 +51,12 @@ ArchiveData {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        return flowStatus.sharepointGetListItem.result.map(id => { // det opprettes en jobb pr element i id-lista
+        return flowStatus.sharepointGetListItem.result.map(listElement => { // det opprettes en jobb pr element i id-lista
           return {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
             prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx',
-            testItemId: id,
-            prodItemId: id,
+            testItemId: listElement.id,
+            prodItemId: listElement.id,
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -65,7 +65,7 @@ ArchiveData {
               Etternavn: xmlData.Etternavn,
               Enhetsnavn: xmlData.Seksjon,
               Kommentar: xmlData.Kommentar,
-              Ansattnummer: `${id}-666`,
+              Ansattnummer: `${listElement.id}-666`,
               F_x00f8_dselsdato: xmlData.Fdato
             }
           }
