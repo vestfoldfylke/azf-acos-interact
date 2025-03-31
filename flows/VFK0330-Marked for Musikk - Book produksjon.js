@@ -1,5 +1,5 @@
 const description = 'SharePointlogikk for MFM'
-// const { nodeEnv } = require('../config')
+// Dette skjemaet brukes for å booke produksjoner fra Alle programforslag-lista ved at Linda trykker på en lenke til skjema med ref-id i query param. Når en produksjon bookes, legges den til i produksjonslista og status i programforslag-lista settes til booket. Booking-skjemaet legges til som vedlegg i begge lister
 
 module.exports = {
   config: {
@@ -55,7 +55,8 @@ module.exports = {
               M_x00e5_lgruppe: `${alleProgramforslagListItem.fields.Alder_x0020_fra} - ${alleProgramforslagListItem.fields.Alder_x0020_til}`,
               Ut_x00f8_vere: alleProgramforslagListItem.fields.Ut_x00f8_vere_x0020_og_x0020_ins || 'Mangler utøvere',
               Kontaktinformasjonfraprogramfors: alleProgramforslagListItem.fields.Kontaktinformasjon || 'Mangler kontaktinformasjon',
-              Produksjonsinfo_x0020_sceneansva: alleProgramforslagListItem.fields.Produksjonsinfo || 'Mangler produksjonsinfo'
+              Produksjonsinfo_x0020_sceneansva: alleProgramforslagListItem.fields.Produksjonsinfo || 'Mangler produksjonsinfo',
+              innmeldingAcosRefId: xmlData.innmeldingRefId
             }
           }
         ]
