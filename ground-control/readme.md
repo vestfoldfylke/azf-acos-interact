@@ -23,7 +23,7 @@ Install dependencies
 npm i
 ```
 
-Create the path set in AVLEVERING_ROOT if it doesnt exist
+Create the path set in AVLEVERING_ROOT if it doesn't exist
 
 ## Run
 ```sh

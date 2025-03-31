@@ -118,7 +118,7 @@ finishFlow vil alltid være enabled. Denne sletter blobene hvis man ikke setter 
 }
 ```
 ## flow-helpers.js
-En fil som eksporterer enkle funjsoner som du kanskje har bruk for i andre flow filer. 
+En fil som eksporterer enkle funksjoner som du kanskje har bruk for i andre flow filer. 
 
 ### getSchoolYear
 Denne funksjonen returnerer skoleår på dette formatet: 2023/2024. 
@@ -149,15 +149,15 @@ roomService er en egen timertrigger som kjører tre ganger om dagen. Den sjekker
     - Archive API
      - Archive
   - Remember to grant admin consent for the permissions
-- Make sure you have a valid certificate that can be used for SharePoint requests. Can be [created as a self signed certificate in an Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/certificates/quick-create-portal#add-a-certificate-to-key-vault)
+- Make sure you have a valid certificate that can be used for SharePoint requests. Can be [created as a self-signed certificate in an Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/certificates/quick-create-portal#add-a-certificate-to-key-vault)
   - Upload certificate as pfx to an Azure Key Vault (if you did not create it there)
   - Upload the public key for the certificate to the App registration (to be used for SharePoint requests) Download in CER format in Key Vault
   - Create a client secret on the App registration (to be used for Graph requests)
   - Enable Managed Identity (System assigned) on the Azure Function and give it access to secrets from Key Vault (Access policies). Get and List on Secret permissions
-- Set up the Azure Function configuration coresponding to you local.settings.json
+- Set up the Azure Function configuration corresponding to you local.settings.json
   - First set up the certificate in the configuration
     - Get the reference to the certificate from Key Vault (copy the Secret identifier from the certificate) [use Key Vault references](https://learn.microsoft.com/en-us/azure/app-service/app-service-key-vault-references?tabs=azure-cli)
-    - create a application setting called SP_PFX_BASE64 and paste in the value (@Microsoft.KeyVault(SecretUri={Secret Identifier you have copied}))
+    - create an application setting called SP_PFX_BASE64 and paste in the value (@Microsoft.KeyVault(SecretUri={Secret Identifier you have copied}))
         - if you always want the Azure function to fetch the latest version of the certificate / secret, remove the id from the Secret Identifier uri. Example: https://myvault.vault.azure.net/secrets/mysecret/
     - save the configuration and check that the connection to Key Vault is valid (save, refresh page and see connection status inside the key)
   - then the rest:
@@ -190,4 +190,4 @@ roomService er en egen timertrigger som kjører tre ganger om dagen. Den sjekker
   }
 }
 ```
-- deploy the code with your prefered method
+- deploy the code with your preferred method

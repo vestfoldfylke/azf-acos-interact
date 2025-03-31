@@ -7,7 +7,7 @@
   const path = require('path')
   const jobToTest = require('../../lib/jobs/sharepoint-list') // Require the job you want to test
 
-  const mockJobDef = { // Equivalent to the jobdef in the flowfile (e.g if you're testing syncEnterprise, this is the property syncEnterprise in the flowfile)
+  const mockJobDef = { // Equivalent to the jobdef in the flowfile (e.g. if you're testing syncEnterprise, this is the property syncEnterprise in the flowfile)
     enabled: true,
     options: {
       mapper: (flowStatus) => {

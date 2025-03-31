@@ -56,18 +56,17 @@
           path: `${inProgressDir}/${blob.name}`,
           name: blob.name
         })
-        logger('info', `refId ${refId} - succesfully downloaded blob ${blob.name}`)
+        logger('info', `refId ${refId} - successfully downloaded blob ${blob.name}`)
       }
-      logger('info', `refId ${refId} - succesfully downloaded all blobs to inProgressDir - moving to schemaDir`)
+      logger('info', `refId ${refId} - successfully downloaded all blobs to inProgressDir - moving to schemaDir`)
       for (const blob of blobsToMove) {
         renameSync(blob.path, `${schemaDir}/${blob.name}`)
       }
-      logger('info', `refId ${refId} - succesfully moved all files to schemaDir, deleting files from storage account`)
+      logger('info', `refId ${refId} - successfully moved all files to schemaDir, deleting files from storage account`)
       await remove(`${schemaName}/${refId}`, blobOptions)
-      logger('info', `refId ${refId} - succesfully deleted files from storage account`)
+      logger('info', `refId ${refId} - successfully deleted files from storage account`)
     } catch (error) {
       logger('warn', ['Major Tom to ground control!', 'Error when fetching blobs to ground control', `refId: ${refId}`, error.stack || error.toString()])
-      continue
     }
   }
   logger('info', 'Finished downloading all refids and blobs to ground control')
