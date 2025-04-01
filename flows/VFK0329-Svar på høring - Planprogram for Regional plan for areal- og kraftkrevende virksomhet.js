@@ -22,6 +22,7 @@ ArchiveData {
   string innspillOrganisering
   string innspillGjennomforing
   string innspillSaerligAktuelle
+  string innspillTemaene
   string andreInnspill
   string privatperson
 }
@@ -98,7 +99,7 @@ ArchiveData {
             AccessCode: 'U',
             Title: 'Regional plan for areal- og kraftkrevende virksomhet - Høringsinnspill',
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '25/06760' : '25/00015'
+            CaseNumber: nodeEnv === 'production' ? '25/06820' : '25/00017'
           }
         }
       }
@@ -130,9 +131,10 @@ ArchiveData {
               Organisasjon: xmlData.organisasjon || 'Privatperson',
               Innspill_x0020_til_x0020_fremdri: xmlData.innspillFremdriftsplan,
               Innspill_x0020_til_x0020_organis: xmlData.innspillOrganisering,
-              Innspill_x0020_til_x0020_gjenomf: xmlData.innspillGjennomforing,
+              Innspill_x0020_til_x0020_temaene: xmlData.innspillGjennomforing,
+              Innspill_x0020_til_x0020_temaene0: xmlData.innspillTemaene,
               Andre_x0020_innspill: xmlData.andreInnspill,
-              S_x00e6_rlig_x0020_aktuelle_x0020_: xmlData.innspillSaerligAktuelle,
+              S_x00e6_rlig_x0020_aktuelle_x002: xmlData.innspillSaerligAktuelle,
               Dokumentnummer_x0020_i_x0020_360: flowStatus.archive.result.DocumentNumber
             }
           }
