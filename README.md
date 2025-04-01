@@ -61,11 +61,34 @@ Man kan manipulere nextRun (sett tidligere dato) og runs (sett lavere siffer).
 2. Sette opp jobbene som skal kjøres i filen som ble laget i pkt. 1. Eksempel på ulike jobber finner du i mappen ./example-flows
 3. Test lokalt. Rett feil og sett i prod (commit -> push -> jrelease *patch || minor || major*)
 
+## Acos Interact+
+Denne Azure-function'en kan brukes til å håndtere avleveringer fra både 'gammel' Interact og nye Interact+ (2025). 
+
+### Tekniske forskjeller mellom Interact og Interact+ når det gjelder avlevering
+- Interact+ avleverer JSON-filer direkte (i motsetning til XML-filer som må parses i azf)
+- Typisk avlvering for Interact:
+  - VFK0329 (AcosID)
+    - 1403299 (ref id)
+      - 1403299_skjema.xml (egendefinert xml-fil med data fra skjema)
+      - 1403299_vedlegg1.jpg (eventuelle vedlegg. Kan være mange filtyper)
+      - 68511_131134_800329_WEBSAK_HODE.pdf (skjemaet som PDF)
+      - 68511_131134_800329_WEBSAK_HODE.xml (info om vedlegg)
+      - NetAxeptQueryResult.xml (evt betalingsfil fra NetAxept)
+- Typisk avlevering for Interact+
+  - VFK-2 (Acos ID)
+    - 8KS-SQ5 (ref id)
+      - 8KS-SQ5-data.json (json-fil med alle data fra skjema inkludert metadata som info om vedlegg (kommer våren -25))
+      - 8KS-SQ5-data.xml (valgfri å ta med. Som over, men i XML-format)
+      - Navn_på_skjema_8KS-SQ5.pdf (skjemaet som PDF)
+      - Hva_som_helst.jpg (evt. vedlegg)
 
 ## Jobber som kan brukes
 Jobbene er listet opp i rekkefølgen de vil bli kjørt
 ### parseXml
-Denne jobben gjør om XML fra Acos-avleveringen til JSON. Jobben leser også XML-metadata-fila fra Acos og henter ut vedleggsmetadata. Denne jobben må være med.
+Denne jobben gjør om XML fra Acos-avleveringen til JSON. Jobben leser også XML-metadata-fila fra Acos og henter ut vedleggsmetadata. Denne eller parseJson-jobben må være med.
+
+### parseJson
+Denne jobben validerer og henter ut JSON. Jobben leser også metadata fra data.json-fila og henter ut vedleggsmetadata. Denne eller parseXml-jobben må være med.
 
 ### syncElevmappe
 Denne jobben får inn fødselsnummer eller annen persondata (kan også generere opp fiktive fødselsnummer), oppretter eller oppdaterer elevmappe for elev. Returnerer persondata og saksnummer. [Se eksempler her](./example-flows/EX001-elevmappe.js)
