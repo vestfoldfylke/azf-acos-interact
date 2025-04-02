@@ -56,7 +56,8 @@ ArchiveData {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         if (flowStatus.sharepointGetListItem.result.length !== 1) throw new Error('Fant ikke unik match i lista når vi kjørte sharepointGetListItem, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila')
-        const id = flowStatus.sharepointGetListItem.result[0]
+        const id = flowStatus.sharepointGetListItem.result[0].id
+        // merk at du kan også hente ut resten av listeelementets data. For eks. kolonnenavn og verdi i flowstatus.sharepointGetListItem.result[0].fields
         return [
           {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
@@ -95,12 +96,12 @@ ArchiveData {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        return flowStatus.sharepointGetListItem.result.map(id => { // det opprettes en jobb pr element i id-lista
+        return flowStatus.sharepointGetListItem.result.map(listElement => { // det opprettes en jobb pr element i id-lista
           return {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
             prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx',
-            testItemId: id,
-            prodItemId: id,
+            testItemId: listElement.id,
+            prodItemId: listElement.id,
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -109,7 +110,7 @@ ArchiveData {
               Etternavn: xmlData.Etternavn,
               Enhetsnavn: xmlData.Seksjon,
               Kommentar: xmlData.Kommentar,
-              Ansattnummer: `${id}-666`,
+              Ansattnummer: `${listElement.id}-666`,
               F_x00f8_dselsdato: xmlData.Fdato
             }
           }

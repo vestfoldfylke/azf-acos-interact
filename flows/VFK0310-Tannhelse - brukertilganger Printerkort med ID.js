@@ -29,7 +29,7 @@ module.exports = {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         if (flowStatus.sharepointGetListItem.result.length !== 1) throw new Error('Fant ikke unik match i lista når vi kjørte sharepointGetListItem, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila')
-        const id = flowStatus.sharepointGetListItem.result[0]
+        const id = flowStatus.sharepointGetListItem.result[0].id
         return [
           {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Tilgangsbestillinger/AllItems.aspx',
