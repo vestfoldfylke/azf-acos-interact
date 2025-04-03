@@ -5,14 +5,14 @@ module.exports = async function (context, req) {
   logConfig({
     prefix: 'azf-acos-interact - Dispatcher',
     teams: {
-      onlyInProd: false
+      onlyInProd: true
     },
     azure: {
       context,
       excludeInvocationId: true
     },
     betterstack: {
-      onlyInProd: false
+      onlyInProd: true
     }
   })
   try {
