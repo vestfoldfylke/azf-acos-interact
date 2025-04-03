@@ -82,8 +82,8 @@ Denne Azure-function'en kan brukes til å håndtere avleveringer fra både 'gamm
       - Navn_på_skjema_8KS-SQ5.pdf (skjemaet som PDF)
       - Hva_som_helst.jpg (evt. vedlegg)
 
-## Jobber som kan brukes
-Jobbene er listet opp i rekkefølgen de vil bli kjørt
+## Standardjobber som kan brukes
+Jobbene er listet opp i rekkefølgen de vil bli kjørt med unntak av customJobs, disse definerer du selv rekkefølgen på
 ### parseXml
 Denne jobben gjør om XML fra Acos-avleveringen til JSON. Jobben leser også XML-metadata-fila fra Acos og henter ut vedleggsmetadata. Denne eller parseJson-jobben må være med.
 
@@ -140,6 +140,17 @@ finishFlow vil alltid være enabled. Denne sletter blobene hvis man ikke setter 
   }
 }
 ```
+
+## customJob
+Du kan også definere customJobs, der standardjobber ikke passer til det du skal gjøre. En customJob MÅ prefixes med "customJob", og ha en "runAfter" property, der du setter hvilken jobb den skal kjøres etter. I en customJob styrer du all koden som skal kjøres selv. Se [eksempel for bruken](./example-flows/EX0016-custom-job.js)
+
+## jobOptions
+### Condition
+Bruk skjemadata for å bestemme om en jobb skal kjøres eller ikke. [Se eksempel](./example-flows/EX009-archive-condition.js)
+
+### RunAfterTimestamp
+Vent med å kjøre en jobb til etter en gitt timestamp basert på skjemadata. [Se eksempel](./example-flows/EX0017-run-after-timestamp.js)
+
 ## flow-helpers.js
 En fil som eksporterer enkle funksjoner som du kanskje har bruk for i andre flow filer. 
 
