@@ -7,7 +7,7 @@ module.exports = {
     options: {
       mapper: (dialogueInstance) => {
         return {
-          fornavn: dialogueInstance.innlogging.fornavn,
+          fornavn: dialogueInstance.innlogging.fornavn
         }
       }
     }

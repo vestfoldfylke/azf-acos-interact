@@ -1,5 +1,3 @@
-const { run } = require("jest")
-
 module.exports = {
   config: {
     enabled: true
@@ -9,7 +7,7 @@ module.exports = {
     options: {
       mapper: (dialogueInstance) => {
         return {
-          fornavn: dialogueInstance.innlogging.fornavn,
+          fornavn: dialogueInstance.innlogging.fornavn
         }
       }
     }
