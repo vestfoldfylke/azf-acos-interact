@@ -8,19 +8,53 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueInstance) => {
+      mapper: (dialogData) => {
+        const countries = dialogData.dialogueInstance?.Informasjon_om_?.Hvilke_land_ska
+        if (!countries) {
+          throw new Error('Missing countries in property Informasjon_om_.Hvilke_land_ska')
+        }
+        
+        const countryCodes = countries.split('),')
+          .map(cc => cc.slice(-3).replace('(', '').replace(')', ''))
         return {
           entraUserObjectId: '00000000-0000-0000-0000-000000000000',
           travel: {
             dateFrom: '2025-10-01T00:00:00Z',
             dateTo: '2025-10-31T00:00:00Z',
-            countryCodes: [
-              'SE',
-              'ES'
-            ]
+            countryCodes
           }
         }
       }
+    }
+  },
+  customJobPrepareAndCleanData: {
+    enabled: true,
+    runAfter: 'parseJson',
+    customJob: async (jobDef, flowStatus) => {
+    }
+  },
+  customJobAddToRegionGroups: {
+    enabled: true,
+    runAfter: 'customJobPrepareData',
+    options: {
+      runAfterTimestamp: (jobDef, flowStatus) => {
+        return '2025-04-03T13:06:00Z'
+      }
+    },
+    customJob: async (jobDef, flowStatus) => {
+      // do shit
+    }
+  },
+  customJobRemoveFromRegionGroups: {
+    enabled: true,
+    runAfter: 'customJobAddToRegionGroups',
+    options: {
+      runAfterTimestamp: (jobDef, flowStatus) => {
+        return '2025-04-03T13:06:00Z'
+      }
+    },
+    customJob: async (jobDef, flowStatus) => {
+      // do shit
     }
   },
   customJobAddAccessPackageAssignments: {

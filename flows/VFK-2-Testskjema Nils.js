@@ -17,8 +17,8 @@ module.exports = {
     enabled: true,
     runAfter: 'parseJson',
     options: {
-    runAfterTimestamp: (jobDef, flowStatus) => {
-      return '2025-04-03T13:06:00Z'
+      runAfterTimestamp: (jobDef, flowStatus) => {
+        return '2025-04-03T13:06:00Z'
       }
     },
     customJob: async (jobDef, flowStatus) => {
@@ -29,8 +29,8 @@ module.exports = {
     enabled: true,
     runAfter: 'customJobDritOgMokk',
     options: {
-    runAfterTimestamp: (jobDef, flowStatus) => {
-      return '2025-04-03T13:09:00Z'
+      runAfterTimestamp: (jobDef, flowStatus) => {
+        return '2025-04-03T13:09:00Z'
       }
     },
     customJob: async (jobDef, flowStatus) => {
