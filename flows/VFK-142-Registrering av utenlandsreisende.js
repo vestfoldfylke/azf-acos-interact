@@ -1,4 +1,7 @@
 const { logger } = require('@vtfk/logger')
+const { remove } = require('@vtfk/azure-blob-client')
+const { storageAccount } = require('../config')
+const { addUserToRegionGroup, getEntraUserRegionGroups, getRegionGroups, removeUserFromRegionGroup } = require('../lib/utenlandsreisende/region-groups')
 
 module.exports = {
   config: {
@@ -9,19 +12,42 @@ module.exports = {
     enabled: true,
     options: {
       mapper: (dialogData) => {
-        const countries = dialogData.dialogueInstance?.Informasjon_om_?.Hvilke_land_ska
+        const countries = dialogData.DialogueInstance.Informasjon_om_?.Hvilke_land_ska
         if (!countries) {
-          throw new Error('Missing countries in property Informasjon_om_.Hvilke_land_ska')
+          throw new Error('Missing Informasjon_om_.Hvilke_land_ska in JSON file. There is something wrong')
+        }
+        
+        if (!dialogData.SavedValues) {
+          throw new Error('Missing SavedValues in JSON file. There is something wrong')
+        }
+        
+        const travelTimeframe = dialogData.DialogueInstance.Informasjon_om_?.Tidsrom
+        if (!travelTimeframe) {
+          throw new Error('Missing Informasjon_om_.Tidsrom in JSON file. There is something wrong')
+        }
+        
+        const dateFrom = new Date(travelTimeframe.Fra)
+        const dateTo = new Date(travelTimeframe.Til)
+        if (dateFrom.toString() === 'Invalid Date' || dateTo.toString() === 'Invalid Date' || dateFrom > dateTo) {
+          throw new Error('Invalid date range in travel timeframe')
+        }
+        
+        const dialogUPN = dialogData.DialogueInstance.Informasjon_om_?.Privatperson?.Velg_bruker_du_
+        const integrationDataEntraUser = dialogData.SavedValues?.Integration?.Hent_brukere__ssn_?.users
+        if (!dialogUPN || !integrationDataEntraUser || dialogUPN !== integrationDataEntraUser.userPrincipalName) {
+          throw new Error('UserPrincipalName mismatch between dialogData and integration data')
         }
         
         const countryCodes = countries.split('),')
           .map(cc => cc.slice(-3).replace('(', '').replace(')', ''))
+        
         return {
-          entraUserObjectId: '00000000-0000-0000-0000-000000000000',
+          entraUser: integrationDataEntraUser,
           travel: {
-            dateFrom: '2025-10-01T00:00:00Z',
-            dateTo: '2025-10-31T00:00:00Z',
-            countryCodes
+            dateFrom: travelTimeframe.Fra,
+            dateTo: travelTimeframe.Til,
+            countryCodes,
+            countries
           }
         }
       }
@@ -31,18 +57,39 @@ module.exports = {
     enabled: true,
     runAfter: 'parseJson',
     customJob: async (jobDef, flowStatus) => {
+      delete flowStatus.parseJson.result.DialogueInstance
+      delete flowStatus.parseJson.result.SavedValues
+      
+      await remove(flowStatus.parseJson.result.jsonFile.path, {
+        connectionString: storageAccount.connectionString,
+        containerName: storageAccount.containerName
+      })
     }
   },
   customJobAddToRegionGroups: {
     enabled: true,
-    runAfter: 'customJobPrepareData',
+    runAfter: 'customJobPrepareAndCleanData',
     options: {
       runAfterTimestamp: (jobDef, flowStatus) => {
-        return '2025-04-03T13:06:00Z'
+        return flowStatus.parseJson.result.mapped.travel.dateFrom
       }
     },
     customJob: async (jobDef, flowStatus) => {
-      // do shit
+      const regionGroups = await getRegionGroups(flowStatus.parseJson.result.mapped.travel.countryCodes)
+      const entraUserRegionGroups = await getEntraUserRegionGroups(flowStatus.parseJson.result.mapped.entraUser.userPrincipalName)
+      
+      for (const regionGroup of regionGroups) {
+        if (entraUserRegionGroups.find(group => group.id === regionGroup.id)) {
+          logger('warn', ['region-groups', 'User is already a member of region group', regionGroup.displayName, 'GroupId:', regionGroup.id])
+          continue
+        }
+        
+        await addUserToRegionGroup(regionGroup.id, flowStatus.parseJson.result.mapped.entraUser.id)
+      }
+      
+      return {
+        regionGroups
+      }
     }
   },
   customJobRemoveFromRegionGroups: {
@@ -50,51 +97,26 @@ module.exports = {
     runAfter: 'customJobAddToRegionGroups',
     options: {
       runAfterTimestamp: (jobDef, flowStatus) => {
-        return '2025-04-03T13:06:00Z'
+        return flowStatus.parseJson.result.mapped.travel.dateTo
       }
     },
     customJob: async (jobDef, flowStatus) => {
-      // do shit
-    }
-  },
-  customJobAddAccessPackageAssignments: {
-    enabled: true,
-    runAfter: 'parseJson',
-    customJob: async (jobDef, flowStatus) => {
-      const { getAccessPackages } = require('../lib/utenlandsreisende/get-access-packages')
-      const { createAssignmentRequest, getAssignmentRequests } = require('../lib/utenlandsreisende/add-user-to-access-packages')
+      const regionGroups = await getRegionGroups(flowStatus.parseJson.result.mapped.travel.countryCodes)
+      const entraUserRegionGroups = await getEntraUserRegionGroups(flowStatus.parseJson.result.mapped.entraUser.userPrincipalName)
 
-      const countryCodes = flowStatus.parseJson.result.mapped.travel.countryCodes
-
-      const accessPackages = await getAccessPackages(countryCodes)
-      const activeAssignments = await getAssignmentRequests(flowStatus.parseJson.result.mapped.entraUserObjectId)
-
-      const assignedAccessPackages = []
-      for (const accessPackage of accessPackages) {
-        const activeAssignment = activeAssignments.find(assignment => assignment.accessPackage.id === accessPackage.id)
-        if (activeAssignment) {
-          logger('warn', ['access-package', 'User already has an active assignment for access package', accessPackage.displayName, 'accessPackageId:', accessPackage.id])
+      for (const regionGroup of regionGroups) {
+        if (!entraUserRegionGroups.find(group => group.id === regionGroup.id)) {
+          logger('warn', ['region-groups', "User isn't a member of this region group", regionGroup.displayName, 'GroupId:', regionGroup.id])
           continue
         }
 
-        const assignmentRequestId = await createAssignmentRequest(accessPackage, flowStatus.parseJson.result.mapped.entraUserObjectId, flowStatus.parseJson.result.mapped.travel.dateFrom, flowStatus.parseJson.result.mapped.travel.dateTo)
-        if (!assignmentRequestId) {
-          logger('error', ['access-package', 'Failed to create assignment request for access package', accessPackage.displayName, 'accessPackageId:', accessPackage.id])
-          throw new Error('Failed to create assignment request')
-        }
-
-        assignedAccessPackages.push({
-          accessPackage,
-          assignmentRequestId
-        })
-        logger('info', ['access-package', 'Created assignment request for access package', accessPackage.displayName, 'accessPackageId:', accessPackage.id, 'with assignmentRequestId:', assignmentRequestId])
+        await removeUserFromRegionGroup(regionGroup.id, flowStatus.parseJson.result.mapped.entraUser.id)
       }
-
-      return assignedAccessPackages
+      
+      return {
+        regionGroups
+      }
     }
-  },
-  groundControl: {
-    enabled: true // Files will be copied to GROUND_CONTROL_STORAGE_ACCOUNT_CONTAINER_NAME, and will be downloaded on local server (./ground-control/index.js)
   },
   failOnPurpose: {
     enabled: false
