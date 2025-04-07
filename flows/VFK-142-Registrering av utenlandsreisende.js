@@ -62,7 +62,7 @@ module.exports = {
         if (dateFrom.toString() === 'Invalid Date' || dateTo.toString() === 'Invalid Date' || dateFrom > dateTo) {
           throw new Error('Invalid date range in travel timeframe')
         }
-        
+
         const useSms = dialogData.DialogueInstance.Informasjon_om_?.Ønsker_du_SMS_n === 'Ja'
         const phoneNumber = useSms ? dialogData.DialogueInstance.Informasjon_om_?.Telefonnummer : undefined
 
