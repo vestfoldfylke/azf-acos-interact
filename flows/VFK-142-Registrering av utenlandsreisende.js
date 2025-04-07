@@ -57,11 +57,17 @@ module.exports = {
           throw new Error('Missing Informasjon_om_.Tidsrom in JSON file. There is something wrong')
         }
 
-        const dateFrom = new Date(travelTimeframe.Fra)
-        const dateTo = new Date(travelTimeframe.Dato_for_utløp || travelTimeframe.Til)
+        const fromStr = travelTimeframe.Fra
+        const toStr = travelTimeframe.Dato_for_utløp || travelTimeframe.Til
+        const dateFrom = new Date(fromStr)
+        let dateTo = new Date(toStr)
+
         if (dateFrom.toString() === 'Invalid Date' || dateTo.toString() === 'Invalid Date' || dateFrom > dateTo) {
           throw new Error('Invalid date range in travel timeframe')
         }
+
+        // add one day to have end date inclusive
+        dateTo = new Date(dateTo.getTime() + 24 * 60 * 60 * 1000)
 
         const useSms = dialogData.DialogueInstance.Informasjon_om_?.Ønsker_du_SMS_n === 'Ja'
         const phoneNumber = useSms ? dialogData.DialogueInstance.Informasjon_om_?.Telefonnummer : undefined
@@ -78,8 +84,8 @@ module.exports = {
         return {
           entraUser: integrationDataEntraUser,
           travel: {
-            dateFrom: travelTimeframe.Fra,
-            dateTo: travelTimeframe.Dato_for_utløp || travelTimeframe.Til,
+            dateFrom: `${dateFrom.getFullYear()}-${String(dateFrom.getMonth() + 1).padStart(2, '0')}-${String(dateFrom.getDate()).padStart(2, '0')}`,
+            dateTo: `${dateTo.getFullYear()}-${String(dateTo.getMonth() + 1).padStart(2, '0')}-${String(dateTo.getDate()).padStart(2, '0')}`,
             countryCodes,
             countries
           },
