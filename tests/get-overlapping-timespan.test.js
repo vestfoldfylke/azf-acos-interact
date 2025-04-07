@@ -1,4 +1,4 @@
-const { getOverlappingRegionGroups } = require('../flows/VFK-142-Registrering av utenlandsreisende')
+const { getOverlappingRegionGroups } = require('../lib/utenlandsreisende/region-groups')
 
 const defaultFlowStatus = () => ({
   entraUser: {
