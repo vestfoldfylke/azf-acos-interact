@@ -132,8 +132,8 @@ module.exports = {
     runAfter: 'customJobAddToRegionGroups',
     customJob: async (jobDef, flowStatus) => {
       const confirmation = flowStatus.parseJson.result.mapped.confirmation
-      const regions = flowStatus.customJobAddToRegionGroups.result.regionGroups.join(', ')
-      return await sendSmsToUser(confirmation, `Du kan nå bruke epost og teams i følgende regioner ${regions} i perioden ${flowStatus.parseJson.result.mapped.travel.dateFrom} - ${flowStatus.parseJson.result.mapped.travel.dateTo}.`)
+      const regions = flowStatus.customJobAddToRegionGroups.result.regionGroups.join('\n- ')
+      return await sendSmsToUser(confirmation, `Du kan nå bruke epost og teams i følgende regioner:\n- ${regions}\ni perioden ${flowStatus.parseJson.result.mapped.travel.dateFrom} - ${flowStatus.parseJson.result.mapped.travel.dateTo}.`)
     }
   },
   customJobRemoveFromRegionGroups: {
@@ -175,8 +175,8 @@ module.exports = {
     runAfter: 'customJobRemoveFromRegionGroups',
     customJob: async (jobDef, flowStatus) => {
       const confirmation = flowStatus.parseJson.result.mapped.confirmation
-      const regions = flowStatus.customJobRemoveFromRegionGroups.result.regionGroups.join(', ')
-      return await sendSmsToUser(confirmation, `Du har ikke lenger tilgang til jobbressurser fra regioner: ${regions}. Hvis du fortsatt trenger tilgang, må nytt skjema sendes via: https://dialog.vestfoldfylke.no/dialogue/VFK-142`)
+      const regions = flowStatus.customJobRemoveFromRegionGroups.result.regionGroups.join('\n- ')
+      return await sendSmsToUser(confirmation, `Du har ikke lenger tilgang til jobbressurser fra regioner:\n- ${regions}.\nHvis du fortsatt trenger tilgang, må nytt skjema sendes via: https://dialog.vestfoldfylke.no/dialogue/VFK-142`)
     }
   },
   statistics: {
