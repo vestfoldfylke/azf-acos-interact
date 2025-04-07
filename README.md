@@ -212,7 +212,6 @@ roomService er en egen timertrigger som kjører tre ganger om dagen. Den sjekker
     "APP_REG_TENANT_ID": "your tenant id",
     "GRAPH_SCOPE": "graph scope",
     "GRAPH_URL": "url to graph",
-    "GRAPH_SSN_EXTENSION_ATTRIBUTE": "ssn extension attribute",
     "SP_TENANT_NAME": "name of sharePoint tenant",
     "SP_PFX_BASE64": "reference to the certificate in key vault",
     "SP_PFX_THUMBPRINT": "certificate thumbprint",
@@ -222,8 +221,11 @@ roomService er en egen timertrigger som kjører tre ganger om dagen. Den sjekker
     "ROBOT_EMAIL": "robot@domene.no",
     "TEAMS_WEBHOOK_URL": "teams webhook url",
     "ROOMSERVICE_TEAMS_WEBHOOK_URL": "webhook url for roomservice reports",
-    "PAPERTRAIL_HOST": "papertrail.example.com/v1/log", // optional. NODE_ENV must be production for logging to PaperTrail
-    "PAPERTRAIL_TOKEN": "jvkuvuyoufyofo8ygo8f609fo7ouyvcio7=" // optional
+    "BETTERSTACK_URL": "betterstack_url", // optional. NODE_ENV must be production for logging to better stack
+    "BETTERSTACK_TOKEN": "jvkuv", // optional
+    "SMS_URL": "sendsmsUrl",
+    "SMS_API_KEY": "sgsgas",
+    "UTENLANDSREISENDE_REGION_GROUPS_PREFIX": "A-CA-REGION-"
   }
 }
 ```

@@ -28,8 +28,7 @@ module.exports = {
   },
   graph: {
     url: process.env.GRAPH_URL || 'tullballfinnessikkertikkeeleer.sharepoint.com',
-    scope: process.env.GRAPH_SCOPE ?? 'etSkikkeligSkuup',
-    ssnExtensionAttribute: process.env.GRAPH_SSN_EXTENSION_ATTRIBUTE || 'ssn_ext_attr'
+    scope: process.env.GRAPH_SCOPE ?? 'etSkikkeligSkuup'
   },
   sharepointCredentials: {
     clientId: process.env.APP_REG_CLIENT_ID ?? 'superId',
