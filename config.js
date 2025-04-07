@@ -1,14 +1,6 @@
 const retryList = (process.env.RETRY_INTERVALS_MINUTES && process.env.RETRY_INTERVALS_MINUTES.split(',').map(numStr => Number(numStr))) || [15, 60, 240, 3600]
 retryList.unshift(0)
 
-const getAccessPackageAssignmentRequestStatuses = (value) => {
-  if (!value) {
-    return []
-  }
-
-  return value.split(',')
-}
-
 module.exports = {
   storageAccount: {
     connectionString: process.env.STORAGE_ACCOUNT_CONNECTION_STRING || 'En connection string',
@@ -47,10 +39,6 @@ module.exports = {
     pfxBase64: process.env.SP_PFX_BASE64 ?? '',
     pfxPassphrase: process.env.SP_PFX_PASSPHRASE ?? null,
     pfxThumbprint: process.env.SP_PFX_THUMBPRINT ?? ''
-  },
-  accessPackage: {
-    assignmentPolicyId: process.env.ACCESS_PACKAGE_ASSIGNMENT_POLICY_ID || 'assignment policy id',
-    assignmentRequestStatuses: getAccessPackageAssignmentRequestStatuses(process.env.ACCESS_PACKAGE_ASSIGNMENT_REQUEST_STATUSES)
   },
   nodeEnv: process.env.NODE_ENV ?? 'dev',
   robotEmail: process.env.ROBOT_EMAIL ?? 'robot@robot.com',
