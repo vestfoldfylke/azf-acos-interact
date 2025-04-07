@@ -126,6 +126,24 @@ module.exports = {
       }
     }
   },
+  statistics: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        return {
+          company: 'Digitale tjenester',
+          department: 'Forvaltning',
+          description: 'Automatisk inn- og utmelding av utenlandsreiser',
+          type: 'utenlandsreise', // Required. A short searchable type-name that distinguishes the statistic element
+          // optional fields:
+          countryCodes: flowStatus.parseJson.result.mapped.travel.countryCodes.join(','),
+          countries: flowStatus.parseJson.result.mapped.travel.countries,
+          dateFrom: flowStatus.parseJson.result.mapped.travel.dateFrom,
+          dateTo: flowStatus.parseJson.result.mapped.travel.dateTo
+        }
+      }
+    }
+  },
   failOnPurpose: {
     enabled: false
   }
