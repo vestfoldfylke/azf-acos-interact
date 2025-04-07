@@ -40,6 +40,13 @@ module.exports = {
     pfxPassphrase: process.env.SP_PFX_PASSPHRASE ?? null,
     pfxThumbprint: process.env.SP_PFX_THUMBPRINT ?? ''
   },
+  sms: {
+    apiKey: process.env.SMS_API_KEY || 'api key',
+    url: process.env.SMS_URL || 'url to sms endpoint'
+  },
+  utenlandsreisende: {
+    regionGroupsPrefix: process.env.UTENLANDSREISENDE_REGION_GROUPS_PREFIX || 'A-CA-REGION',
+  },
   nodeEnv: process.env.NODE_ENV ?? 'dev',
   robotEmail: process.env.ROBOT_EMAIL ?? 'robot@robot.com',
   roomServiceTeamsWebhook: process.env.ROOMSERVICE_TEAMS_WEBHOOK_URL ?? 'teams.com'

@@ -1,11 +1,37 @@
 const { logger } = require('@vtfk/logger')
 const { remove } = require('@vtfk/azure-blob-client')
-const { storageAccount } = require('../config')
+const { storageAccount, utenlandsreisende: { regionGroupsPrefix } } = require('../config')
 const { addUserToRegionGroup, getEntraUserRegionGroups, getOverlappingTimespan, getRegionGroups, removeUserFromRegionGroup } = require('../lib/utenlandsreisende/region-groups')
+const sendSms = require('../lib/send-sms')
 
 const blobOptions = {
   connectionString: storageAccount.connectionString,
   containerName: storageAccount.containerName
+}
+
+const sendSmsToUser = async (confirmation, message) => {
+  if (!confirmation || !confirmation.useSms || !confirmation.phoneNumber) {
+    return 'User did not want SMS or phone number is missing'
+  }
+
+  if (!confirmation.phoneNumber.startsWith('+47') && !confirmation.phoneNumber.startsWith('0047')) {
+    logger('warn', ['sms', 'Phone number does not start with "+47" or "0047". Will not send SMS', confirmation.phoneNumber])
+    return 'Phone number does not start with "+47" or "0047". Will not send SMS'
+  }
+
+  const phoneNumber = confirmation.phoneNumber.slice(-8)
+  if (phoneNumber.length !== 8 || isNaN(phoneNumber)) {
+    logger('warn', ['sms', 'Phone number is not valid. Will not send SMS', confirmation.phoneNumber])
+    return 'Phone number is not valid. Will not send SMS'
+  }
+
+  const payload = {
+    receivers: [`47${phoneNumber}`],
+    message,
+    sender: 'VFK' // max 11 tegn
+  }
+
+  return await sendSms(payload)
 }
 
 module.exports = {
@@ -32,10 +58,13 @@ module.exports = {
         }
 
         const dateFrom = new Date(travelTimeframe.Fra)
-        const dateTo = new Date(travelTimeframe.Til)
+        const dateTo = new Date(travelTimeframe.Dato_for_utløp || travelTimeframe.Til)
         if (dateFrom.toString() === 'Invalid Date' || dateTo.toString() === 'Invalid Date' || dateFrom > dateTo) {
           throw new Error('Invalid date range in travel timeframe')
         }
+        
+        const useSms = dialogData.DialogueInstance.Informasjon_om_?.Ønsker_du_SMS_n === 'Ja'
+        const phoneNumber = useSms ? dialogData.DialogueInstance.Informasjon_om_?.Telefonnummer : undefined
 
         const dialogUPN = dialogData.DialogueInstance.Informasjon_om_?.Privatperson?.Velg_bruker_du_
         const integrationDataEntraUser = dialogData.SavedValues?.Integration?.Hent_brukere__ssn_?.users
@@ -50,9 +79,13 @@ module.exports = {
           entraUser: integrationDataEntraUser,
           travel: {
             dateFrom: travelTimeframe.Fra,
-            dateTo: travelTimeframe.Til,
+            dateTo: travelTimeframe.Dato_for_utløp || travelTimeframe.Til,
             countryCodes,
             countries
+          },
+          confirmation: {
+            useSms,
+            phoneNumber
           }
         }
       }
@@ -82,7 +115,7 @@ module.exports = {
 
       for (const regionGroup of regionGroups) {
         if (entraUserRegionGroups.find(group => group.id === regionGroup.id)) {
-          logger('warn', ['region-groups', 'User is already a member of region group', regionGroup.displayName, 'GroupId:', regionGroup.id])
+          logger('info', ['region-groups', 'User is already a member of region group', regionGroup.displayName, 'GroupId:', regionGroup.id])
           continue
         }
 
@@ -90,13 +123,22 @@ module.exports = {
       }
 
       return {
-        regionGroups
+        regionGroups: regionGroups.map(regionGroup => regionGroup.displayName.replace(regionGroupsPrefix, ''))
       }
+    }
+  },
+  customJobSendSmsAdd: {
+    enabled: true,
+    runAfter: 'customJobAddToRegionGroups',
+    customJob: async (jobDef, flowStatus) => {
+      const confirmation = flowStatus.parseJson.result.mapped.confirmation
+      const regions = flowStatus.customJobAddToRegionGroups.result.regionGroups.join(', ')
+      return await sendSmsToUser(confirmation, `Du kan nå bruke epost og teams i følgende regioner ${regions} i perioden ${flowStatus.parseJson.result.mapped.travel.dateFrom} - ${flowStatus.parseJson.result.mapped.travel.dateTo}.`)
     }
   },
   customJobRemoveFromRegionGroups: {
     enabled: true,
-    runAfter: 'customJobAddToRegionGroups',
+    runAfter: 'customJobSendSmsAdd',
     options: {
       runAfterTimestamp: (jobDef, flowStatus) => {
         return flowStatus.parseJson.result.mapped.travel.dateTo
@@ -108,22 +150,33 @@ module.exports = {
 
       const regionGroupsToSkip = await getOverlappingTimespan('VFK-142', flowStatus.refId, regionGroups, flowStatus.parseJson.result.mapped.entraUser)
 
+      const regionGroupsRemovedFrom = []
       for (const regionGroup of regionGroups) {
         if (regionGroupsToSkip.find(group => group.id === regionGroup.id)) {
-          logger('warn', ['region-groups', 'User has an overlapping travel in the same region. Will be removed later', regionGroup.displayName, 'GroupId:', regionGroup.id])
+          logger('info', ['region-groups', 'User has an overlapping travel in the same region. Will be removed later', regionGroup.displayName, 'GroupId:', regionGroup.id])
           continue
         }
         if (!entraUserRegionGroups.find(group => group.id === regionGroup.id)) {
-          logger('warn', ['region-groups', "User isn't a member of this region group", regionGroup.displayName, 'GroupId:', regionGroup.id])
+          logger('info', ['region-groups', "User isn't a member of this region group", regionGroup.displayName, 'GroupId:', regionGroup.id])
           continue
         }
 
         await removeUserFromRegionGroup(regionGroup.id, flowStatus.parseJson.result.mapped.entraUser.id)
+        regionGroupsRemovedFrom.push(regionGroup.displayName.replace(regionGroupsPrefix, ''))
       }
 
       return {
-        regionGroups
+        regionGroups: regionGroupsRemovedFrom
       }
+    }
+  },
+  customJobSendSmsRemove: {
+    enabled: true,
+    runAfter: 'customJobRemoveFromRegionGroups',
+    customJob: async (jobDef, flowStatus) => {
+      const confirmation = flowStatus.parseJson.result.mapped.confirmation
+      const regions = flowStatus.customJobRemoveFromRegionGroups.result.regionGroups.join(', ')
+      return await sendSmsToUser(confirmation, `Du har ikke lenger tilgang til jobbressurser fra regioner: ${regions}. Hvis du fortsatt trenger tilgang, må nytt skjema sendes via: https://dialog.vestfoldfylke.no/dialogue/VFK-142`)
     }
   },
   statistics: {
