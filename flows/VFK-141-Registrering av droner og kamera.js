@@ -85,7 +85,7 @@ module.exports = {
           for (const row of cameraList) {
             const sharepointCameraElement = {
               testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/innsida-varorganisasjon/Lists/Kameraivfk/AllItems.aspx',
-              prodListUrl: 'hhttps://vestfoldfylke.sharepoint.com/sites/innsida-varorganisasjon/Lists/Kameraivfk/AllItems.aspx',
+              prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/innsida-varorganisasjon/Lists/Kameraivfk/AllItems.aspx',
               uploadFormPdf: true,
               uploadFormAttachments: false,
               fields: {
