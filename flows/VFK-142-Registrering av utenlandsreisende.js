@@ -53,9 +53,14 @@ module.exports = {
     enabled: true,
     options: {
       mapper: (dialogData) => {
-        const countries = dialogData.DialogueInstance.Informasjon_om_?.Hvilke_land_ska
-        if (!countries) {
-          throw new Error('Missing Informasjon_om_.Hvilke_land_ska in JSON file. There is something wrong')
+        const countries = dialogData.DialogueInstance.Informasjon_om_?.Land.map(country => country.Hvilket_land_sk)
+        if (countries.length === 0) {
+          throw new Error('Missing Informasjon_om_.Land in JSON file. There is something wrong')
+        }
+
+        const countryCodes = countries.map(country => country.slice(-3).replace('(', '').replace(')', ''))
+        if (countryCodes.length === 0) {
+          throw new Error('No countryCodes found in Informasjon_om_.Land in JSON file. There is something wrong')
         }
 
         if (!dialogData.SavedValues) {
@@ -95,9 +100,6 @@ module.exports = {
         if (!dialogUPN || !integrationDataEntraUser || dialogUPN !== integrationDataEntraUser.userPrincipalName) {
           throw new Error('UserPrincipalName mismatch between dialogData and integration data')
         }
-
-        const countryCodes = countries.split('),')
-          .map(cc => cc.slice(-3).replace('(', '').replace(')', ''))
 
         return {
           entraUser: integrationDataEntraUser,
@@ -219,7 +221,7 @@ module.exports = {
           type: 'utenlandsreise', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           countryCodes: flowStatus.parseJson.result.mapped.travel.countryCodes.join(','),
-          countries: flowStatus.parseJson.result.mapped.travel.countries,
+          countries: flowStatus.parseJson.result.mapped.travel.countries.join(','),
           dateFrom: flowStatus.parseJson.result.mapped.travel.dateFrom,
           dateTo: flowStatus.parseJson.result.mapped.travel.dateTo
         }
