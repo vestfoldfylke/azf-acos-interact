@@ -79,6 +79,14 @@ module.exports = {
         // add one day to have end date inclusive
         dateTo = new Date(dateTo.getTime() + 24 * 60 * 60 * 1000)
 
+        if (dateTo <= dateFrom) {
+          throw new Error('End date must be after start date')
+        }
+
+        if (dateTo < new Date()) {
+          throw new Error('End date must be in the future')
+        }
+
         const useSms = dialogData.DialogueInstance.Informasjon_om_?.Ønsker_du_SMS_n === 'Ja'
         const phoneNumber = useSms ? dialogData.DialogueInstance.Informasjon_om_?.Telefonnummer : undefined
 
