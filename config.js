@@ -44,7 +44,7 @@ module.exports = {
     url: process.env.SMS_URL || 'url to sms endpoint'
   },
   utenlandsreisende: {
-    regionGroupsPrefix: process.env.UTENLANDSREISENDE_REGION_GROUPS_PREFIX || 'A-CA-REGION'
+    regionGroupsPrefix: process.env.UTENLANDSREISENDE_REGION_GROUPS_PREFIX || 'A-CA-REGION-'
   },
   nodeEnv: process.env.NODE_ENV ?? 'dev',
   robotEmail: process.env.ROBOT_EMAIL ?? 'robot@robot.com',
