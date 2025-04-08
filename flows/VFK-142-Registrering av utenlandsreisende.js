@@ -34,6 +34,16 @@ const sendSmsToUser = async (confirmation, message) => {
   return await sendSms(payload)
 }
 
+const prettifyDate = (date) => {
+  const options = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }
+
+  return new Date(date).toLocaleDateString('no-NO', options)
+}
+
 module.exports = {
   config: {
     enabled: true,
@@ -139,7 +149,7 @@ module.exports = {
     customJob: async (jobDef, flowStatus) => {
       const confirmation = flowStatus.parseJson.result.mapped.confirmation
       const regions = flowStatus.customJobAddToRegionGroups.result.regionGroups.join('\n- ')
-      return await sendSmsToUser(confirmation, `Du kan nå bruke epost og teams i følgende regioner:\n- ${regions}\ni perioden ${flowStatus.parseJson.result.mapped.travel.dateFrom} - ${flowStatus.parseJson.result.mapped.travel.dateTo}.`)
+      return await sendSmsToUser(confirmation, `Du kan nå bruke epost og teams i følgende regioner:\n- ${regions}\ni perioden ${prettifyDate(flowStatus.parseJson.result.mapped.travel.dateFrom)} - ${prettifyDate(flowStatus.parseJson.result.mapped.travel.dateTo)}.`)
     }
   },
   customJobRemoveFromRegionGroups: {
