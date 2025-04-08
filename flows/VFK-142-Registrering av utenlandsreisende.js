@@ -72,8 +72,8 @@ module.exports = {
           throw new Error('Missing Informasjon_om_.Tidsrom in JSON file. There is something wrong')
         }
 
-        const fromStr = travelTimeframe.Fra
-        const toStr = travelTimeframe.Dato_for_utløp || travelTimeframe.Til
+        const fromStr = travelTimeframe.Fra_og_med
+        const toStr = travelTimeframe.Dato_for_utløp || travelTimeframe.Til_og_med
         const dateFrom = new Date(fromStr)
         let dateTo = new Date(toStr)
 
@@ -81,8 +81,10 @@ module.exports = {
           throw new Error('Invalid date range in travel timeframe')
         }
 
-        // add one day to have end date inclusive
-        dateTo = new Date(dateTo.getTime() + 24 * 60 * 60 * 1000)
+        // if dateTo is less than or equal to now, set it to tomorrow
+        if (dateTo <= new Date()) {
+          dateTo = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+        }
 
         if (dateTo <= dateFrom) {
           throw new Error('End date must be after start date')
@@ -95,7 +97,7 @@ module.exports = {
         const useSms = dialogData.DialogueInstance.Informasjon_om_?.Ønsker_du_SMS_n === 'Ja'
         const phoneNumber = useSms ? dialogData.DialogueInstance.Informasjon_om_?.Telefonnummer : undefined
 
-        const dialogUPN = dialogData.DialogueInstance.Informasjon_om_?.Privatperson?.Velg_bruker_du_
+        const dialogUPN = dialogData.DialogueInstance.Informasjon_om_?.Privatperson?.Velg_bruker
         const integrationDataEntraUser = dialogData.SavedValues?.Integration?.Hent_brukere__ssn_?.users
         if (!dialogUPN || !integrationDataEntraUser || dialogUPN !== integrationDataEntraUser.userPrincipalName) {
           throw new Error('UserPrincipalName mismatch between dialogData and integration data')
