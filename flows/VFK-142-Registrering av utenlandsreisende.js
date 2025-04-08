@@ -44,6 +44,8 @@ const prettifyDate = (date) => {
   return new Date(date).toLocaleDateString('no-NO', options)
 }
 
+const toShortUtcString = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+
 module.exports = {
   config: {
     enabled: true,
@@ -106,8 +108,8 @@ module.exports = {
         return {
           entraUser: integrationDataEntraUser,
           travel: {
-            dateFrom: `${dateFrom.getFullYear()}-${String(dateFrom.getMonth() + 1).padStart(2, '0')}-${String(dateFrom.getDate()).padStart(2, '0')}`,
-            dateTo: `${dateTo.getFullYear()}-${String(dateTo.getMonth() + 1).padStart(2, '0')}-${String(dateTo.getDate()).padStart(2, '0')}`,
+            dateFrom: toShortUtcString(dateFrom),
+            dateTo: toShortUtcString(dateTo),
             countryCodes,
             countries
           },
@@ -134,7 +136,9 @@ module.exports = {
     runAfter: 'customJobPrepareAndCleanData',
     options: {
       runAfterTimestamp: (jobDef, flowStatus) => {
-        return flowStatus.parseJson.result.mapped.travel.dateFrom
+        // subtract 8 hours from the date to notify user in a reasonable time
+        const dateWithMinuteOffset = new Date(new Date(flowStatus.parseJson.result.mapped.travel.dateFrom).getTime() - (8 * 60 * 60 * 1000))
+        return dateWithMinuteOffset.toISOString()
       }
     },
     customJob: async (jobDef, flowStatus) => {
@@ -161,7 +165,8 @@ module.exports = {
     customJob: async (jobDef, flowStatus) => {
       const confirmation = flowStatus.parseJson.result.mapped.confirmation
       const regions = flowStatus.customJobAddToRegionGroups.result.regionGroups.join('\n- ')
-      return await sendSmsToUser(confirmation, `Du kan nå bruke epost og teams i følgende regioner:\n- ${regions}\ni perioden ${prettifyDate(flowStatus.parseJson.result.mapped.travel.dateFrom)} - ${prettifyDate(flowStatus.parseJson.result.mapped.travel.dateTo)}.`)
+      const message = `Du kan logge inn med brukeren din i følgende regioner:\n- ${regions}\ni perioden ${prettifyDate(flowStatus.parseJson.result.mapped.travel.dateFrom)} - ${prettifyDate(flowStatus.parseJson.result.mapped.travel.dateTo)}.\n\nGod reise!\n\nHilsen Digitale tjenester, Vestfold fylkeskommune`
+      return await sendSmsToUser(confirmation, message)
     }
   },
   customJobRemoveFromRegionGroups: {
@@ -169,7 +174,9 @@ module.exports = {
     runAfter: 'customJobSendSmsAdd',
     options: {
       runAfterTimestamp: (jobDef, flowStatus) => {
-        return flowStatus.parseJson.result.mapped.travel.dateTo
+        // add 8 hours to the date to notify user in a reasonable time
+        const dateWithMinuteOffset = new Date(new Date(flowStatus.parseJson.result.mapped.travel.dateTo).getTime() + (8 * 60 * 60 * 1000))
+        return dateWithMinuteOffset.toISOString()
       }
     },
     customJob: async (jobDef, flowStatus) => {
@@ -209,7 +216,8 @@ module.exports = {
 
       const confirmation = flowStatus.parseJson.result.mapped.confirmation
       const regions = flowStatus.customJobRemoveFromRegionGroups.result.regionGroups.join('\n- ')
-      return await sendSmsToUser(confirmation, `Du har ikke lenger tilgang til jobbressurser fra regioner:\n- ${regions}\n\nHvis du fortsatt trenger tilgang, må nytt skjema sendes via: https://dialog.vestfoldfylke.no/dialogue/VFK-142`)
+      const message = `Du kan ikke lenger logge inn med brukeren din fra følgende regioner:\n- ${regions}\n\nHvis du fortsatt trenger tilgang, må nytt skjema sendes via: https://dialog.vestfoldfylke.no/dialogue/VFK-142\n\nHilsen Digitale tjenester, Vestfold fylkeskommune`
+      return await sendSmsToUser(confirmation, message)
     }
   },
   statistics: {
