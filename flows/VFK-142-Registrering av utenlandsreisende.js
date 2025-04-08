@@ -205,7 +205,7 @@ module.exports = {
 
       const confirmation = flowStatus.parseJson.result.mapped.confirmation
       const regions = flowStatus.customJobRemoveFromRegionGroups.result.regionGroups.join('\n- ')
-      return await sendSmsToUser(confirmation, `Du har ikke lenger tilgang til jobbressurser fra regioner:\n- ${regions}.\nHvis du fortsatt trenger tilgang, må nytt skjema sendes via: https://dialog.vestfoldfylke.no/dialogue/VFK-142`)
+      return await sendSmsToUser(confirmation, `Du har ikke lenger tilgang til jobbressurser fra regioner:\n- ${regions}\n\nHvis du fortsatt trenger tilgang, må nytt skjema sendes via: https://dialog.vestfoldfylke.no/dialogue/VFK-142`)
     }
   },
   statistics: {
