@@ -4,7 +4,7 @@ const description = 'Sender til Sharepoint'
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: false
+    doNotRemoveBlobs: true
   },
   parseXml: {
     enabled: true,
@@ -17,23 +17,27 @@ module.exports = {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.Produksjon
         return {
-          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
-          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
-          searchFilter: `fields/ProdID eq '${xmlData.ProdID}'`
+          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
+          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
+          searchFilter: `fields/innmeldingAcosRefId eq '${xmlData.innmeldingAcosRefId}'`
         }
       }
     }
   },
 
   sharepointListProduksjoner: {
-    enabled: true,
+    enabled: false,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
+        if (!flowStatus.sharepointGetListItemProduksjoner.result.length > 1) throw new Error(`Fant mer enn ett listeelement med innmeldingAcosRefId: ${xmlData.innmeldingRefId}`)
+        const id = flowStatus.sharepointGetListItemProduksjoner.result[0].id
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
+            testItemId: id,
+            prodItemId: id,
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
@@ -48,7 +52,7 @@ module.exports = {
     }
   },
   sharepointGetListItemKommunikasjon: {
-    enabled: true,
+    enabled: false,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.Produksjon
@@ -62,7 +66,7 @@ module.exports = {
   },
 
   sharepointListKommunikasjon: {
-    enabled: true,
+    enabled: false,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
@@ -98,7 +102,7 @@ module.exports = {
   },
 
   sharepointGetListItemLogistikk: {
-    enabled: true,
+    enabled: false,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.Produksjon
@@ -112,7 +116,7 @@ module.exports = {
   },
 
   sharepointListLogistikk: {
-    enabled: true,
+    enabled: false,
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.Produksjon
@@ -148,7 +152,7 @@ module.exports = {
   },
 
   statistics: {
-    enabled: true,
+    enabled: false,
     options: {
       mapper: (flowStatus) => {
         // const xmlData = flowStatus.parseXml.result.Produksjon
