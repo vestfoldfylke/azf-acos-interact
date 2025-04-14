@@ -25,15 +25,15 @@ module.exports = {
     }
   },
 
-  sharepointListProduksjoner: {
-    enabled: false,
+  sharepointList: {
+    enabled: true,
     options: {
       mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
+        const xmlData = flowStatus.parseXml.result.Produksjon
         if (!flowStatus.sharepointGetListItemProduksjoner.result.length > 1) throw new Error(`Fant mer enn ett listeelement med innmeldingAcosRefId: ${xmlData.innmeldingRefId}`)
         const id = flowStatus.sharepointGetListItemProduksjoner.result[0].id
-        return [
-          {
+        const sharepointElements = [
+          { // Produksjoner
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
             prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Produksjoner/AllItems.aspx',
             testItemId: id,
@@ -41,112 +41,71 @@ module.exports = {
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
-              Title: xmlData.KonsertNavn || 'Mangler konsertnavn', // husk å bruke internal name på kolonnen
-              Elevpublikum: xmlData.Elevpublikum,
-              M_x00e5_lgruppe: `${xmlData.MalgruppeFra} - ${xmlData.MalgruppeTil}`,
-              Ut_x00f8_vere: xmlData.UtoverOgInstrument
+              Produksjon_x0020__x0028_fra_x002: xmlData.KonsertNavn || 'Mangler konsertnavn', // husk å bruke internal name på kolonnen
+              Ut_x00f8_vere: xmlData.UtoverOgInstrument,
+              Ut_x00f8_ver_x002d_navn_x002f_tl: `${xmlData.KontaktNavn} - ${xmlData.KontaktTlf}`,
+              Ut_x00f8_vere_x002d_post: xmlData.KontaktEpost,
+              Tekniske_x0020_merknader: xmlData.TekniskeKrav,
+              _x00d8_nsket_x0020_m_x00e5_lgrup: xmlData.Merknader,
+              M_x00e5_lgruppe: `${xmlData.MalgruppeFra} - ${xmlData.MalgruppeTil}`
             }
-          }
-        ]
-      }
-    }
-  },
-  sharepointGetListItemKommunikasjon: {
-    enabled: false,
-    options: {
-      mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.Produksjon
-        return {
-          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
-          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
-          searchFilter: `fields/ProdID eq '${xmlData.ProdID}'`
-        }
-      }
-    }
-  },
-
-  sharepointListKommunikasjon: {
-    enabled: false,
-    options: {
-      mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
-        return [
-          {
+          },
+          { // Kommunikasjon
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
             prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Artistinfokommunikasjon/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
-              Title: xmlData.KonsertNavn || 'Mangler etternavn', // husk å bruke internal name på kolonnen
-              Andremerknader: xmlData.TekniskeKrav,
-              Blending: xmlData.Blending,
-              Erkonsertenprodusertform_x00e5_l: xmlData.ProdusertForMalgruppa,
-              Kommentar: xmlData.Kommentar,
-              Konsertlengde_x0028_min_x0029_: xmlData.Konsertlengde,
+              Title: xmlData.KonsertNavn || 'Mangler konsertnavn', // husk å bruke internal name på kolonnen
               Kontaktperson: xmlData.KontaktNavn,
-              Kortbeskrivelseavproduksjonen: xmlData.Beskrivelse,
+              Telefon: xmlData.KontaktTlf,
+              e_x002d_post: xmlData.KontaktEpost,
+              Ut_x00f8_vere: xmlData.UtoverOgInstrument,
               Link_x0020_til_x0020_nettside: xmlData.LinkWeb,
               Link_x0020_til_x0020_videoklipp: xmlData.linkVideo,
+              Kortbeskrivelseavproduksjonen: xmlData.Beskrivelse,
               M_x00e5_lgruppealder: `${xmlData.MalgruppeFra} - ${xmlData.MalgruppeTil}`,
+              Kommentar: xmlData.Kommentar,
+              Erkonsertenprodusertform_x00e5_l: xmlData.ProdusertForMalgruppa,
               Navnp_x00e5_produsenter: xmlData.ProdusentNavn,
-              Nedrigg_x0028_min_x0029_: xmlData.NedriggTid,
+              Konsertlengde_x0028_min_x0029_: xmlData.Konsertlengde,
               Opprigg_x0028_min_x0029_: xmlData.OppriggTid,
-              Telefon: xmlData.KontaktTlf,
-              Ut_x00f8_vere: xmlData.UtoverOgInstrument,
-              e_x002d_post: xmlData.KontaktEpost
+              Nedrigg_x0028_min_x0029_: xmlData.NedriggTid,
+              Blending: xmlData.Blending,
+              Andremerknader: xmlData.Merknader,
+              innmeldingAcosRefId: xmlData.innmeldingAcosRefId
             }
           }
         ]
-      }
-    }
-  },
-
-  sharepointGetListItemLogistikk: {
-    enabled: false,
-    options: {
-      mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.Produksjon
-        return {
-          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Logistikkartister/AllItems.aspx',
-          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Logistikkartister/AllItems.aspx',
-          searchFilter: `fields/ProdID eq '${xmlData.ProdID}'`
-        }
-      }
-    }
-  },
-
-  sharepointListLogistikk: {
-    enabled: false,
-    options: {
-      mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.Produksjon
-        const sharepointElements = []
-        const reisefolge = Array.isArray(xmlData.Reisefolge) ? xmlData.Reisefolge.Reisefolge : [xmlData.Reisefolge.Reisefolge] // Sjekker om det er mer enn ett fag i lista (altså et array). Hvis ikke lag et array med det ene elementet
-        if (flowStatus.sharepointGetListItemLogistikk.result.length !== 1) throw new Error('Fant ikke unik match i lista når vi kjørte sharepointGetListItemLogistikk, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila')
-        const id = flowStatus.sharepointGetListItemLogistikk.result[0].id
+        // Logistikk
+        const reisefolge = Array.isArray(xmlData.Reisefolge.Reisefolge) ? xmlData.Reisefolge.Reisefolge : [xmlData.Reisefolge.Reisefolge] // Sjekker om det er mer enn en person i lista (altså et array). Hvis ikke lag et array med det ene elementet
+        console.log('reisefolge', reisefolge)
+        console.log('reisefolge.length', reisefolge.length)
+        if (reisefolge.length === 0) throw new Error(`Fant ikke noe reisefølge med innmeldingAcosRefId: ${xmlData.innmeldingAcosRefId}`)
         for (const person of reisefolge) {
-          const sharepointElement = {
+          const reisefolgeElement = {
             testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Logistikkartister/AllItems.aspx',
             prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMU-MarkedforMusikk/Lists/Logistikkartister/AllItems.aspx',
-            testItemId: id,
-            prodItemId: id,
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.KonsertNavn,
+              Title: xmlData.KonsertNavn || 'Mangler konsertnavn',
               Artist: person.Navn,
               Artist_x002d_tlf: person.Mobil,
+              Artist_x002d_epost: xmlData.KontaktEpost,
+              Overnattingsbehov: person.Overnattingsbehov,
+              Spesiellebehov: person.SpesielleBehov,
+              Kommentar: xmlData.ReisefolgeKommentar,
               Henting: xmlData.Henting,
               Kommentartransport: xmlData.TransportKommentar,
-              Overnattingsbehov: person.Overnattingsbehov,
               Reiseform: xmlData.Reiseform,
               Reiserfra: xmlData.ReiseFra,
-              Spesiellebehov: person.SpesielleBehov,
-              ProdID: xmlData.ProdID
+              innmeldingAcosRefId: xmlData.innmeldingAcosRefId
             }
           }
-          sharepointElements.push(sharepointElement)
+          sharepointElements.push(reisefolgeElement)
         }
+        return sharepointElements
       }
     }
   },
