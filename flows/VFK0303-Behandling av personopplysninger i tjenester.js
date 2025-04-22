@@ -55,26 +55,28 @@ module.exports = {
             }
           }
         ]
-        const liste = Array.isArray(xmlData.underdatabehandlere.underdatabehandler) ? xmlData.underdatabehandlere.underdatabehandler : [xmlData.underdatabehandlere.underdatabehandler] // Sjekker om det er mer enn ett tilbud i lista (altså et array). Hvis ikke lag et array med det ene elementet
-        for (const rad of liste) {
-          const sharepointElement = {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/DigitalutviklingiVestfoldskolen-Forvaltningsteamlringsressurserogfagsystem/Lists/Underleverandrer%20i%20tjenester/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/DigitalutviklingiVestfoldskolen-Forvaltningsteamlringsressurserogfagsystem/Lists/Underleverandrer%20i%20tjenester/AllItems.aspx',
-            uploadFormPdf: true,
-            uploadFormAttachments: false,
-            fields: {
-              Title: rad.navn || 'Mangler title', // husk å bruke internal name på kolonnen
-              Organisasjonsnummer: rad.orgnr,
-              Adresse: rad.adresse,
-              Beskrivelse: rad.beskrivelse,
-              Lokasjon: rad.lokasjon,
-              Kontaktinformasjon: rad.kontaktinformasjon,
-              S_x00e6_rlig_x0020_kategorier: rad.sarligKategorier === 'Ja', // ja/nei-felt i SP,
-              Tilh_x00f8_rer_x0020_tjeneste: xmlData.navnTjeneste,
-              tilh_x00f8_rer_x0020_databehandl: xmlData.orgNavn
+        if (xmlData.underdatabehandlere?.underdatabehandler) {
+          const liste = Array.isArray(xmlData.underdatabehandlere.underdatabehandler) ? xmlData.underdatabehandlere.underdatabehandler : [xmlData.underdatabehandlere.underdatabehandler] // Sjekker om det er mer enn ett tilbud i lista (altså et array). Hvis ikke lag et array med det ene elementet
+          for (const rad of liste) {
+            const sharepointElement = {
+              testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/DigitalutviklingiVestfoldskolen-Forvaltningsteamlringsressurserogfagsystem/Lists/Underleverandrer%20i%20tjenester/AllItems.aspx',
+              prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/DigitalutviklingiVestfoldskolen-Forvaltningsteamlringsressurserogfagsystem/Lists/Underleverandrer%20i%20tjenester/AllItems.aspx',
+              uploadFormPdf: true,
+              uploadFormAttachments: false,
+              fields: {
+                Title: rad.navn || 'Mangler title', // husk å bruke internal name på kolonnen
+                Organisasjonsnummer: rad.orgnr,
+                Adresse: rad.adresse,
+                Beskrivelse: rad.beskrivelse,
+                Lokasjon: rad.lokasjon,
+                Kontaktinformasjon: rad.kontaktinformasjon,
+                S_x00e6_rlig_x0020_kategorier: rad.sarligKategorier === 'Ja', // ja/nei-felt i SP,
+                Tilh_x00f8_rer_x0020_tjeneste: xmlData.navnTjeneste,
+                tilh_x00f8_rer_x0020_databehandl: xmlData.orgNavn
+              }
             }
+            sharepointElements.push(sharepointElement)
           }
-          sharepointElements.push(sharepointElement)
         }
         return sharepointElements
       }
