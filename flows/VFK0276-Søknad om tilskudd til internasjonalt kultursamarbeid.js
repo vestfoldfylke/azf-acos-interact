@@ -103,7 +103,7 @@ ArchiveData {
             Status: 'J',
             Title: `Søknad om tilskudd til internasjonalt kultursamarbeid - ${xmlData.navnPaProsjekt}`,
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '24/10628' : '24/00034'
+            CaseNumber: nodeEnv === 'production' ? '25/08624' : '24/00034'
           }
         }
       }
