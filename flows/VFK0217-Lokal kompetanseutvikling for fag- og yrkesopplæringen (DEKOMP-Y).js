@@ -82,6 +82,7 @@ module.exports = {
         let accessCode
         let accessGroup
         let paragraph
+        let category = ''
         if (flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Skole' || flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Opplæringskontor' || flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Annet') {
           sender = xmlData.Orgnr.replaceAll(' ', '')
           accessCode = 'U'
@@ -93,6 +94,14 @@ module.exports = {
           accessGroup = 'Fagopplæring'
           paragraph = 'Offl. § 26 femte ledd'
         }
+        /* // Klargjort for å endre kategori basert på type organisasjon
+        if (flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Skole') {
+          category = 'Internt notat med oppfølging'
+        } else {
+          category = 'Dokument inn'
+        }
+          */
+        category = 'Dokument inn' // Husk å slette denne og = '' på linje 90 når koden over aktiveres!
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -108,7 +117,7 @@ module.exports = {
           parameter: {
             AccessCode: accessCode,
             AccessGroup: accessGroup,
-            Category: 'Dokument inn',
+            Category: category,
             Contacts: [
               {
                 ReferenceNumber: sender,
