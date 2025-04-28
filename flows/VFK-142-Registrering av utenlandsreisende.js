@@ -49,7 +49,7 @@ const toShortUtcString = (date) => `${date.getFullYear()}-${String(date.getMonth
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true // TODO: Set to false when the flow is ready
+    doNotRemoveBlobs: false
   },
   parseJson: {
     enabled: true,
