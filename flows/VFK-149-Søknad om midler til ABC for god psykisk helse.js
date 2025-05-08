@@ -128,7 +128,7 @@ ArchiveData {
               Begrunnelse: jsonData.Beskrivelse_av_.Begrunnelse,
               Antall: jsonData.Beskrivelse_av_.Antall,
               Samarbeidspartnere: jsonData.Beskrivelse_av_.Samarbeidspartn,
-              Forankring_x0020_i_x0020_ledelse: jsonData.Beskrivelse_av_.Forankring_i_le,
+              Forankring_x0020_i_x0020_ledelse: jsonData.Beskrivelse_av_.Forankring,
               Sum_x0020_kostnader: jsonData.Budsjett_og_fin.Utgifter.Sum_utgifter,
               Sum_x0020_inntekter: jsonData.Budsjett_og_fin.Inntekter.Sum_inntekter,
               S_x00f8_knadsbel_x00f8_p: jsonData.Budsjett_og_fin.Inntekter.Søknadsbeløp,
