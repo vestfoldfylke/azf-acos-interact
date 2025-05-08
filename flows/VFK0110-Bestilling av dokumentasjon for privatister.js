@@ -151,7 +151,11 @@ module.exports = {
               Fag: xmlData.Fag,
               _x00d8_nsketmottak: xmlData.OnsketMottak,
               Eksamensperiode_x0028_semester_x: xmlData.AarSemester,
-              Alternativadresse: xmlData.AltAdresse
+              Alternativadresse: xmlData.AltAdresse,
+              Avgangs_x00e5_r: xmlData.avgAr,
+              Utdanningsprogram: xmlData.utdProg,
+              Spr_x00e5_k: xmlData.sprak,
+              Bestillingen_x0020_gjelder_x0020: xmlData.bestGjelder
             }
           }
         ]
