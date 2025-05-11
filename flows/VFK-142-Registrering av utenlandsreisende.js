@@ -75,7 +75,7 @@ module.exports = {
         }
 
         const fromStr = travelTimeframe.Fra_og_med
-        const toStr = travelTimeframe.Dato_for_utløp || travelTimeframe.Til_og_med
+        const toStr = travelTimeframe.Til_og_med
         const dateFrom = new Date(fromStr)
         let dateTo = new Date(toStr)
 
