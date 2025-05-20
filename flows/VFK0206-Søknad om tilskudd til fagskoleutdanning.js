@@ -93,7 +93,7 @@ ArchiveData {
             Status: 'J',
             Title: `Søknad om fagskolemidler - ${xmlData.OrgNavn}`,
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '24/20493' : '24/00059'
+            CaseNumber: nodeEnv === 'production' ? '25/09509' : '24/00059'
           }
         }
       }
