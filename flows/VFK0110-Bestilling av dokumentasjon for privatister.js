@@ -108,7 +108,7 @@ module.exports = {
         if (xmlData.eksamenskontoret === 'true') {
           documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200015' : '200018' // Seksjon Sektorstøtte, inntak og eksamen
           documentData.parameter.AccessGroup = 'Eksamen'
-        } else if (xmlData.Egendefinert1 === 'Elev') {
+        } else if (xmlData.eksamenskontoret === 'false') {
           const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.AnsVirksomhet)
           if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.AnsVirksomhet}`)
           documentData.parameter.ResponsibleEnterpriseNumber = xmlData.AnsVirksomhet
