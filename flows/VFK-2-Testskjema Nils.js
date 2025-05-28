@@ -13,6 +13,7 @@ module.exports = {
       }
     }
   },
+  /*
   customJobDritOgMokk: {
     enabled: true,
     runAfter: 'parseJson',
@@ -37,6 +38,7 @@ module.exports = {
       return 'Drit og Møkk 2'
     }
   },
+  */
   failOnPurpose: {
     enabled: false
   }
