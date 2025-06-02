@@ -134,6 +134,7 @@ module.exports = {
               Typeikkebest_x00e5_tt: row.Type_ikke_bestå,
               Kveldstid: jsonData.Påmelding.Informasjon.Kan_du_følge_op,
               Nettundervisning: jsonData.Påmelding.Informasjon.Er_nettundervis,
+              AvleggeNUS: jsonData.Bakgrunnsinform.Skal_du_avlegge,
               Dokumentnummeri360: flowStatus.archive.result.DocumentNumber || 'Ikke arkivert'
             }
           }
