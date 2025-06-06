@@ -79,7 +79,7 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Påmelding til mer opplæring i enkeltfag',
+                Title: 'Søknad om mer opplæring i enkeltfag',
                 VersionFormat: 'A'
               },
               ...p360Attachments
@@ -88,7 +88,7 @@ module.exports = {
             ResponsibleEnterpriseNumber: school.orgNr,
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Påmelding til mer opplæring i enkeltfag',
+            Title: 'Søknad om mer opplæring i enkeltfag',
             // UnofficialTitle: '',
             Archive: 'Elevdokument',
             CaseNumber: elevmappe.CaseNumber
@@ -154,7 +154,7 @@ module.exports = {
           company: 'Opplæring og tannhelse',
           department: 'Seksjon kompetanse og pedagogisk utvikling',
           description,
-          type: 'Påmelding til mer opplæring i enkeltfag', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Søknad om mer opplæring i enkeltfag', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
