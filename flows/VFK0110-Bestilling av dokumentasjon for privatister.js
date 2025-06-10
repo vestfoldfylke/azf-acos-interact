@@ -214,7 +214,7 @@ module.exports = {
     enabled: true,
     options: {
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.eksamenskontoret === 'false'
+        return flowStatus.parseXml.result.ArchiveData.eksamenskontoret === 'true' // de som skal til skolene skal ikke i lista
       },
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
