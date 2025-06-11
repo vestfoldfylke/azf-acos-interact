@@ -83,7 +83,7 @@ ArchiveData {
               {
                 Role: 'Avsender',
                 ReferenceNumber: xmlData.typeSoker === 'Privatperson' ? xmlData.fnr : xmlData.orgNr.replaceAll(' ', ''), // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
-                IsUnofficial: false
+                IsUnofficial: xmlData.typeSoker === 'Privatperson'
               }
             ],
             DocumentDate: new Date().toISOString(),
@@ -103,7 +103,9 @@ ArchiveData {
             Status: 'J',
             Title: `Søknad om tilskudd til internasjonalt kultursamarbeid - ${xmlData.navnPaProsjekt}`,
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '25/08624' : '24/00034'
+            CaseNumber: nodeEnv === 'production' ? '25/08624' : '24/00034',
+            AccessCode: xmlData.typeSoker === 'Privatperson' ? '26' : '',
+            Paragraph: xmlData.typeSoker === 'Privatperson' ? 'Offl. § 26 femte ledd' : ''
           }
         }
       }
