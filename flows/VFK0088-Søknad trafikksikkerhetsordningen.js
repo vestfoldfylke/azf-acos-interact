@@ -88,32 +88,32 @@ string PrioriteringHjertesone
         const municipalityCaseNumbers = [
           {
             name: 'Færder kommune',
-            caseNo: '24/15746',
+            caseNo: '25/10645',
             testCaseNo: '24/00050'
           },
           {
             name: 'Tønsberg kommune',
-            caseNo: '24/15747',
+            caseNo: '25/10646',
             testCaseNo: '24/00050'
           },
           {
             name: 'Sandefjord kommune',
-            caseNo: '24/15748',
+            caseNo: '25/10647',
             testCaseNo: '24/00050'
           },
           {
             name: 'Larvik kommune',
-            caseNo: '24/15749',
+            caseNo: '25/10648',
             testCaseNo: '24/00050'
           },
           {
             name: 'Horten kommune',
-            caseNo: '24/15750',
+            caseNo: '25/10649',
             testCaseNo: '24/00050'
           },
           {
             name: 'Holmestrand kommune',
-            caseNo: '24/15752',
+            caseNo: '25/10650',
             testCaseNo: '24/00050'
           }
         ]
@@ -151,7 +151,7 @@ string PrioriteringHjertesone
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Søknad om midler til trafikksikkerhetsordningen 2025',
+                Title: 'Søknad om midler til trafikksikkerhetsordningen 2026',
                 VersionFormat: 'A'
               },
               ...p360Attachments
@@ -160,7 +160,7 @@ string PrioriteringHjertesone
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200015' : '200018', // Seksjon Sektorstøtte, inntak og eksamen
             ResponsiblePersonEmail: 'henriette.auensen@vestfoldfylke.no',
             Status: 'J',
-            Title: `Søknad om midler til trafikksikkerhetsordningen 2025 - ${title}`,
+            Title: `Søknad om midler til trafikksikkerhetsordningen 2026 - ${title}`,
             // UnofficialTitle: `Søknad om godkjenning av tidligere bestått videregående opplæring i Norge eller utlandet - ${xmlData.Fornavn} ${xmlData.Etternavn}`,
             Archive: 'Saksdokument',
             CaseNumber: nodeEnv === 'production' ? municipality.caseNo : municipality.testCaseNo
@@ -186,8 +186,8 @@ string PrioriteringHjertesone
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/TSordningen%202025/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/TSordningen%202025/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/TSordningen%202026/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/TSordningen%202026/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
