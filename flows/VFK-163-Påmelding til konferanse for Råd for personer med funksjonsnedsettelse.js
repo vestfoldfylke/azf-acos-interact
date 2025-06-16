@@ -2,7 +2,7 @@ const description = 'Påmelding til konferanse for råd for personer med funksjo
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseJson: {
     enabled: true,
