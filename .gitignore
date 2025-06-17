@@ -120,3 +120,6 @@ cert/*
 
 # Mock results
 tests/jobs/mock-results/*
+
+# DS Store
+.DS_Store
