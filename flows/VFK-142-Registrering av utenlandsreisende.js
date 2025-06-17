@@ -83,10 +83,8 @@ module.exports = {
           throw new Error('Invalid date range in travel timeframe')
         }
 
-        // if dateTo is less than or equal to now, set it to tomorrow
-        if (dateTo <= new Date()) {
-          dateTo = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
-        }
+        // add one day to have end date inclusiveAdd
+        dateTo = new Date(dateTo.getTime() + 24 * 60 * 60 * 1000)
 
         if (dateTo <= dateFrom) {
           throw new Error('End date must be after start date')
