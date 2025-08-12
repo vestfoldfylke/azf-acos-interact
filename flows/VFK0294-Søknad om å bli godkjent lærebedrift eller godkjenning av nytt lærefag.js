@@ -153,7 +153,7 @@ ArchiveData {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Bekreftelse',
+                Title: 'Søknadsskjema',
                 VersionFormat: 'A'
               },
               ...p360Attachments
