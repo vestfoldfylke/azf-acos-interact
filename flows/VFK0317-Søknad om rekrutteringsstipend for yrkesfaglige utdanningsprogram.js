@@ -63,8 +63,8 @@ module.exports = {
               },
               ...p360Attachments
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200017' : '200020', // Seksjon Kompetanse og pedagogisk utvikling
-            // ResponsiblePersonEmail: nodeEnv === 'production' ? 'karen.anne.kjendlie@vestfoldfylke.no' : '',
+            // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200017' : '200020', // Seksjon Kompetanse og pedagogisk utvikling
+            ResponsiblePersonEmail: nodeEnv === 'production' ? 'tonje.hareide@vestfoldfylke.no' : '',
             Status: 'J',
             Title: 'Søknad om rekrutteringsstipend for yrkesfaglige utdanningsprogram',
             UnofficialTitle: 'Søknad om rekrutteringsstipend for yrkesfaglige utdanningsprogram',
