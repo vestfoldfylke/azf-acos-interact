@@ -80,7 +80,7 @@ ArchiveData {
             Archive: 'Saksdokument',
             CaseNumber: nodeEnv === 'production' ? '25/04673' : '25/00008',
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200107' : '200016', // Seksjon Virksomhetsstyring Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
-            ResponsiblePersonEmail: nodeEnv === 'production' ? 'trygve.borsting1@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
+            ResponsiblePersonEmail: nodeEnv === 'production' ? 'anna.karpych@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
             AccessCode: 'U'
             // Paragraph: 'Offl. § 26 femte ledd',
             // AccessGroup: 'Seksjon Kulturarv'
