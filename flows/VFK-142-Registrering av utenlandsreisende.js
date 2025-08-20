@@ -99,7 +99,10 @@ module.exports = {
 
         const dialogUPN = dialogData.DialogueInstance.Informasjon_om_?.Privatperson?.Velg_bruker
         const integrationDataEntraUser = dialogData.SavedValues?.Integration?.Hent_brukere__ssn_?.users
-        if (!dialogUPN || !integrationDataEntraUser || dialogUPN !== integrationDataEntraUser.userPrincipalName) {
+        if (!dialogUPN) {
+          throw new Error('Missing userPrincipalName in dialogData (Fant ingen aktiv bruker i Entra Id. Slett skjema)')
+        }
+        if (!integrationDataEntraUser || dialogUPN !== integrationDataEntraUser.userPrincipalName) {
           throw new Error('UserPrincipalName mismatch between dialogData and integration data')
         }
 
