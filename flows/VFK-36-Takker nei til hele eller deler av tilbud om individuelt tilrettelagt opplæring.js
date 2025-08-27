@@ -64,7 +64,7 @@ module.exports = {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
+                ReferenceNumber: jsonData.SavedValues.Login.UserID,
                 Role: 'Avsender',
                 IsUnofficial: true
               }
@@ -116,7 +116,6 @@ module.exports = {
           description,
           type: 'Takker nei til hele eller deler av tilbud om individuelt tilrettelagt opplæring', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
         }
       }
