@@ -66,7 +66,7 @@ module.exports = {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: jsonData.SavedValues.Login.UserI,
+                ReferenceNumber: jsonData.SavedValues.Login.UserID,
                 Role: 'Avsender',
                 IsUnofficial: true
               }
