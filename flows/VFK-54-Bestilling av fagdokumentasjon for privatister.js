@@ -1,6 +1,3 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
-const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
     enabled: true,
@@ -33,14 +30,10 @@ module.exports = {
       }
     }
   },
+  /*
   archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
-      /*
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
-      },
-      */
       mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
@@ -104,86 +97,7 @@ module.exports = {
     }
 
   },
-  /*
-  // Arkiverer dokumentet i elevmappa
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
-    enabled: true,
-    options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
-      },
-      mapper: (flowStatus, base64, attachments) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
-        const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        let tilgangsgruppe
-        let eksamenskontoret = false
-        if (flowStatus.parseXml.result.ArchiveData.eksamenskontoret === 'true') {
-          eksamenskontoret = true
-          tilgangsgruppe = 'Eksamen'
-        } else {
-          const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.AnsVirksomhet)
-          if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.AnsVirksomhet}`)
-          tilgangsgruppe = school.tilgangsgruppe
-        }
 
-        // if (!eksamenskontoret) {
-        //  const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.AnsVirksomhet)
-        //  if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.AnsVirksomhet}`)
-        // }
-        const p360Attachments = attachments.map(att => {
-          return {
-            Base64Data: att.base64,
-            Format: att.format,
-            Status: 'F',
-            Title: att.title,
-            VersionFormat: att.versionFormat
-          }
-        })
-        return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
-          parameter: {
-            AccessCode: '13',
-            AccessGroup: tilgangsgruppe,
-            Category: 'Dokument inn',
-            Contacts: [
-              {
-                ReferenceNumber: xmlData.Fnr,
-                Role: 'Avsender',
-                IsUnofficial: true
-              }
-            ],
-            DocumentDate: new Date().toISOString(),
-            Files: [
-              {
-                Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Bestilling av dokumentasjon for privatister',
-                VersionFormat: 'A'
-              },
-              ...p360Attachments
-            ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            if (eksamenskontoret) {
-              ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200015' : '200018', // Seksjon Sektorstøtte, inntak og eksamen
-            } else {
-              ResponsibleEnterpriseNumber: xmlData.AnsVirksomhet,
-            },
-            // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Bestilling av dokumentasjon for privatister',
-            // UnofficialTitle: '',
-            Archive: 'Elevdokument',
-            CaseNumber: elevmappe.CaseNumber
-          }
-        }
-      }
-    }
-
-  },
-*/
   signOff: {
     enabled: false
   },
@@ -250,7 +164,7 @@ module.exports = {
       }
     }
   },
-
+*/
   failOnPurpose: {
     enabled: false
   }
