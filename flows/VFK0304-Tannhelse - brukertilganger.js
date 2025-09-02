@@ -42,7 +42,7 @@ module.exports = {
               Tilgang_x0020_til_x0020_Altinn: xmlData.nyTilgangAltinn === 'true' ? `Bestilt (${xmlData.tidspunkt})` : 'Ikke bestilt',
               Tilgang_x0020_til_x0020_epostmot: xmlData.nyTilgangEpostmottak === 'true' ? `Bestilt (${xmlData.tidspunkt})` : 'Ikke bestilt',
               Tilgangtiltraverseringsdisk: xmlData.nyTilgangTraverseringsdisk === 'true' ? `Bestilt (${xmlData.tidspunkt})` : 'Ikke bestilt',
-              TilgangtilOpus: xmlData.nyTilgangOpus === 'true' ? `Bestilt (${xmlData.tidspunkt})` : 'Ikke bestilt',
+              Tilgang_x0020_til_x0020_Opus: xmlData.nyTilgangOpus === 'true' ? `Bestilt (${xmlData.tidspunkt})` : 'Ikke bestilt',
               Tilgang_x0020_til_x0020_FIKS: xmlData.nyTilgangFiks === 'true' ? `Bestilt (${xmlData.tidspunkt})` : 'Ikke bestilt',
               Tilgang_x0020_Intrum: xmlData.nyTilgangIntrum === 'true' ? `Bestilt (${xmlData.tidspunkt})` : 'Ikke bestilt',
               guid0: xmlData.guid
