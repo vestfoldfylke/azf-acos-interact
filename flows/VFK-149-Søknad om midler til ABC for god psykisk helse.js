@@ -119,7 +119,7 @@ ArchiveData {
               Mobil: jsonData.Informasjon_om_.Kontaktinformas.Mobilnummer,
               E_x002d_post: jsonData.Informasjon_om_.Kontaktinformas.E_postadresse,
               Tilskuddstype: jsonData.Beskrivelse_av_.Vi_søker_om_til.split(' ')[0], // henter første ordet som er navnet på ordningen
-              Navnp_x00e5_tiltaket: jsonData.Beskrivelse_av_.Navn_på_tiltake,
+              Navnp_x00e5_tiltaket: jsonData.Beskrivelse_av_.Navn_på_arrange,
               M_x00e5_l: jsonData.Beskrivelse_av_.Mål_og_målgrupp, // Mål og målgruppe
               Innhold: jsonData.Beskrivelse_av_.Innhold_og_gjen || jsonData.Beskrivelse_av_.Innhold_og_gjen1, // Innhold_og_gjen1 / Innhold_og_gjen
               Tidspunkt: jsonData.Beskrivelse_av_.Tidspunkt, // null?
