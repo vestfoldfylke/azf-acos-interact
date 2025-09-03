@@ -1,3 +1,6 @@
+const description = 'Sender til elevmappe'
+const { nodeEnv } = require('../config')
+const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
     enabled: true,
@@ -30,13 +33,19 @@ module.exports = {
       }
     }
   },
-  /*
+
   archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
+        let eksamenskontoret
+        if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === 'Jeg trenger kompetansebevis med fag jeg har tatt som privatist før høsten 2021') {
+          eksamenskontoret = true
+        } else if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === 'Jeg trenger vitnemål for autorisasjon som helsepersonell') {
+          eksamenskontoret = true
+        } else eksamenskontoret = false
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -80,18 +89,18 @@ module.exports = {
           }
         }
 
-        if (xmlData.eksamenskontoret === 'true') {
+        if (eksamenskontoret === true) {
           documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200015' : '200018' // Seksjon Sektorstøtte, inntak og eksamen
           documentData.parameter.AccessGroup = 'Eksamen'
-        } else if (xmlData.eksamenskontoret === 'false') {
-          const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.AnsVirksomhet)
-          if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.AnsVirksomhet}`)
-          documentData.parameter.ResponsibleEnterpriseNumber = xmlData.AnsVirksomhet
+        } else if (eksamenskontoret === false) {
+          const school = schoolInfo.find(school => school.orgNr.toString() === jsonData.SavedValues.Dataset.Hvilken_skole_gar_eller_.Orgnr)
+          if (!school) throw new Error(`Could not find any school with orgnr: ${jsonData.SavedValues.Dataset.Hvilken_skole_gar_eller_.Orgnr}`)
+          documentData.parameter.ResponsibleEnterpriseNumber = jsonData.SavedValues.Dataset.Hvilken_skole_gar_eller_.Orgnr
           documentData.parameter.AccessGroup = school.tilgangsgruppe
         } else {
           throw new Error('Finner ikke ut om dette er eksamenskontoret eller en skole. Sjekk logikk')
         }
-        console.log(documentData)
+        // console.log(documentData)
         return documentData
       }
     }
@@ -110,10 +119,17 @@ module.exports = {
     enabled: true,
     options: {
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.eksamenskontoret === 'true' // de som skal til skolene skal ikke i lista
+        const jsonData = flowStatus.parseJson.result
+        let eksamenskontoret
+        if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === 'Jeg trenger kompetansebevis med fag jeg har tatt som privatist før høsten 2021') {
+          eksamenskontoret = true
+        } else if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === 'Jeg trenger vitnemål for autorisasjon som helsepersonell') {
+          eksamenskontoret = true
+        } else eksamenskontoret = false
+        return eksamenskontoret // === true // de som skal til skolene skal ikke i lista
       },
       mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
+        const jsonData = flowStatus.parseJson.result
         // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
@@ -123,23 +139,23 @@ module.exports = {
             uploadFormAttachments: true,
             fields: {
               Title: jsonData.SavedValues.Login.UserID,
-              Fornavn: xmlData.Fornavn,
-              Etternavn: xmlData.Etternavn,
-              Adresse: xmlData.Adresse,
-              Postnummerogsted: xmlData.PostnummerSted,
-              Mobilnummer: xmlData.Mobil,
-              E_x002d_postadresse: xmlData.Epost,
-              Typedokumentasjon: xmlData.TypeDok,
-              Typeautorisasjon: xmlData.TypeAut,
-              Eksamenssted: xmlData.Eksamenssted,
-              Fag: xmlData.Fag,
-              _x00d8_nsketmottak: xmlData.OnsketMottak,
-              Eksamensperiode_x0028_semester_x: xmlData.AarSemester,
-              Alternativadresse: xmlData.AltAdresse,
-              Avgangs_x00e5_r: xmlData.avgAr,
-              Utdanningsprogram: xmlData.utdProg,
-              Spr_x00e5_k: xmlData.sprak,
-              Bestillingen_x0020_gjelder_x0020: xmlData.bestGjelder
+              Fornavn: jsonData.SavedValues.Login.FirstName,
+              Etternavn: jsonData.SavedValues.Login.LastName,
+              Adresse: jsonData.SavedValues.Login.Address,
+              Postnummerogsted: `${jsonData.SavedValues.Login.PostalCode} ${jsonData.SavedValues.Login.PostalArea}`,
+              Mobilnummer: jsonData.DialogueInstance.Kontaktopplysninger2.Personinformasj.Mobilnummer,
+              E_x002d_postadresse: jsonData.DialogueInstance.Kontaktopplysninger2.Personinformasj.E_postadresse,
+              Typedokumentasjon: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3,
+              Typeautorisasjon: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_trenger_du_,
+              Eksamenssted: null,
+              Fag: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Skriv_inn_hvilke_t__fag2,
+              _x00d8_nsketmottak: null,
+              Eksamensperiode_x0028_semester_x: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hvilket_arstall_og_semes,
+              Alternativadresse: `${jsonData.DialogueInstance.Kontaktopplysninger2.Alternativ_postadresse.Gateadresse}, ${jsonData.DialogueInstance.Kontaktopplysninger2.Alternativ_postadresse.Postnr} ${jsonData.DialogueInstance.Kontaktopplysninger2.Alternativ_postadresse.Sted}`,
+              Avgangs_x00e5_r: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Skriv_inn_avgangsaret_di,
+              Utdanningsprogram: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hvilket_utdanni,
+              Spr_x00e5_k: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Jeg_trenger_dok,
+              Bestillingen_x0020_gjelder_x0020: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hvis_du_har_fle
             }
           }
         ]
@@ -158,13 +174,13 @@ module.exports = {
           description,
           type: 'Bestilling av dokumentasjon for privatister', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
+          // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
         }
       }
     }
   },
-*/
+
   failOnPurpose: {
     enabled: false
   }
