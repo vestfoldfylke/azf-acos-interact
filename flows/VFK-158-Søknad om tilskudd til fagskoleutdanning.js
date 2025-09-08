@@ -6,37 +6,16 @@ module.exports = {
     enabled: true,
     doNotRemoveBlobs: false
   },
-  parseXml: {
-    enabled: true
-  },
-
-  /* XML from Acos:
-ArchiveData {
-  string OrgNavn
-  string OrgNr
-  tilbud[] Tilbud
-    tilbud{
-      string Omrade
-      string Tilbudstype
-      string Tilbudsnavn
-      string Studiested
-      string Studieform
-      string ForventetAntStudieplasser
-      string StudiepoengTotalt
-      string StudiepoengPrAr
-      string Varighet
-      string Startmaned
-      string Startar
-      string Sluttmaned
-      string Sluttar
-      string Skolenummer
-      string Studiestednummer
-      string Tilbudskode
-      string NUSkode
+  parseJson: {
+    enabled: true,
+    options: {
+      mapper: (dialogueData) => {
+        // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
+        return {
+        }
+      }
     }
-}
-
-  */
+  },
 
   syncEnterprise: {
     enabled: true,
@@ -44,7 +23,7 @@ ArchiveData {
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          orgnr: flowStatus.parseXml.result.ArchiveData.OrgNr.replaceAll(' ', '')
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon3.Organisasjonsnu3.replaceAll(' ', '')
         }
       }
     }
@@ -54,7 +33,6 @@ ArchiveData {
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -72,7 +50,7 @@ ArchiveData {
             Contacts: [
               {
                 Role: 'Avsender',
-                ReferenceNumber: xmlData.OrgNr.replaceAll(' ', ''),
+                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon3.Organisasjonsnu3.replaceAll(' ', ''),
                 IsUnofficial: false
               }
             ],
@@ -91,7 +69,7 @@ ArchiveData {
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200091' : '200148', // Seksjon voksenopplæring og karriereutvikling
             // ResponsiblePersonEmail: nodeEnv === 'production' ? '' : '',
             Status: 'J',
-            Title: `Søknad om fagskolemidler - ${xmlData.OrgNavn}`,
+            Title: `Søknad om fagskolemidler - ${flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon3.Organisasjonsna2}`,
             Archive: 'Saksdokument',
             CaseNumber: nodeEnv === 'production' ? '25/09509' : '24/00059'
           }
@@ -111,34 +89,35 @@ ArchiveData {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
-        const xmlData = flowStatus.parseXml.result.ArchiveData
+        const jsonData = flowStatus.parseJson.result.DialogueInstance
         const sharepointElements = []
-        const tilbudsliste = Array.isArray(xmlData.Tilbud.tilbud) ? xmlData.Tilbud.tilbud : [xmlData.Tilbud.tilbud] // Sjekker om det er mer enn ett tilbud i lista (altså et array). Hvis ikke lag et array med det ene elementet
+        const tilbudsliste = Array.isArray(jsonData.Informasjon_om_.Tilbud) ? jsonData.Informasjon_om_.Tilbud : [jsonData.Informasjon_om_.Tilbud] // Sjekker om det er mer enn ett tilbud i lista (altså et array). Hvis ikke lag et array med det ene elementet
         for (const tilbud of tilbudsliste) {
           const sharepointElement = {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-FagskoleforvaltningVFK/Lists/Tilskudd%20til%20fagskoleutdanning/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-FagskoleforvaltningVFK/Lists/Tilskudd%20til%20fagskoleutdanning/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-FagskoleforvaltningVFK/Lists/Tilskudd%20til%20fagskoleutdanning%202627/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-FagskoleforvaltningVFK/Lists/Tilskudd%20til%20fagskoleutdanning%202627/AllItems.aspx',
             uploadFormPdf: true,
-            uploadFormAttachments: true,
+            uploadFormAttachments: false,
             fields: {
-              Title: xmlData.OrgNavn || 'Mangler title', // husk å bruke internal name på kolonnen
-              Omr_x00e5_de: tilbud.Omrade,
+              Title: jsonData.Informasjon_om_.Organisasjon3.Organisasjonsna2 || 'Mangler orgnavn', // husk å bruke internal name på kolonnen
+              Omr_x00e5_de: tilbud.Fagområde,
               Tilbudstype: tilbud.Tilbudstype,
-              Tilbudsnavn: tilbud.Tilbudsnavn,
+              Tilbudsnavn: tilbud.Utdanningsnavn,
               Studiested: tilbud.Studiested,
               Studieform: tilbud.Studieform,
-              Forventetantallstudieplasser: tilbud.ForventetAntStudieplasser,
-              Studiepoengtotalt: tilbud.StudiepoengTotalt,
-              Studiepoengpr_x002e__x00e5_r: tilbud.StudiepoengPrAr,
+              Informasjonomtilbudutenferdigbeh: tilbud.Informasjon_om_,
+              Forventetantallstudieplasser: tilbud.Antall_studiepl,
+              Studiepoengtotalt: tilbud.Antall_studiepo2,
+              Studiepoengpr_x002e__x00e5_r: tilbud.Antall_studiepo1,
               Varighet: tilbud.Varighet,
-              Startm_x00e5_ned: tilbud.Startmaned,
-              Start_x00e5_r: tilbud.Startar,
-              Sluttm_x00e5_ned: tilbud.Sluttmaned,
-              Slutt_x00e5_r: tilbud.Sluttar,
-              Skolenummer: xmlData.Skolenummer,
-              Studiestednummer: tilbud.Studiestednummer,
-              Tilbudskode: tilbud.Tilbudskode,
-              NUS_x002d_kode: tilbud.NUSkode,
+              Startm_x00e5_ned: tilbud.Start_måned1,
+              Start_x00e5_r: tilbud.Start_år1,
+              Sluttm_x00e5_ned: tilbud.Slutt_måned1,
+              Slutt_x00e5_r: tilbud.Slutt_år1,
+              Skolenummer: jsonData.Informasjon_om_.Skolenummer,
+              Studiestednummer: tilbud.Studiestedsnumm,
+              Tilbudskode: tilbud.DBH_F_kode,
+              NUS_x002d_kode: tilbud.NUS_kode1,
               Dokumentnummeri360: flowStatus.archive.result.DocumentNumber
             }
           }
