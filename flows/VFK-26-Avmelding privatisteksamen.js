@@ -141,7 +141,7 @@ module.exports = {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
           company: 'Opplæring',
-          department: 'Fag- og yrkesopplæring',
+          department: 'Sektorstøtte, inntak og eksamen',
           description,
           type: 'Vedlegg for lærlinger', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
