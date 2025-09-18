@@ -19,28 +19,58 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
-        return [
-          {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/REV-Personalrom/Lists/Registrering%20av%20lrerstudenter/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/REV-Personalrom/Lists/Registrering%20av%20lrerstudenter/AllItems.aspx',
-            uploadFormPdf: true,
-            uploadFormAttachments: false,
-            fields: {
-              Title: flowStatus.parseJson.result.SavedValues.Login.UserID || 'Mangler fnr', // husk å bruke internal name på kolonnen
-              Fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || 'Mangler fornavn',
-              Etternavn: flowStatus.parseJson.result.SavedValues.Login.LastName || 'Mangler etternavn',
-              Adresse: flowStatus.parseJson.result.SavedValues.Login.Address || 'Mangler adresse',
-              Postnr_x0020_og_x0020_sted: `${flowStatus.parseJson.result.SavedValues.Login.PostalCode} ${flowStatus.parseJson.result.SavedValues.Login.PostalArea}`,
-              Telefonnummer: flowStatus.parseJson.result.SavedValues.Login.Telephone || 'Mangler telefonnummer',
-              E_x002d_post: flowStatus.parseJson.result.SavedValues.Login.Email || 'Mangler epost',
-              Skole: jsonData.Lærerstudenter.Informasjon_om_.Skole || 'Mangler skole',
-              Tidsrom_x0020_fra: jsonData.Lærerstudenter.Informasjon_om_.Tidsrom_fra || 'Mangler tidsrom fra',
-              Tidsrom_x0020_til: jsonData.Lærerstudenter.Informasjon_om_.Tidsrom_til || 'Mangler tidsrom til',
-              Fag: jsonData.Lærerstudenter.Informasjon_om_.Fag,
-              Navn_x0020_p_x00e5__x0020_veiled: jsonData.Lærerstudenter.Informasjon_om_.Navn_på_veilede
+        if (jsonData.Lærerstudenter.Informasjon_om_.Skole === null || jsonData.Lærerstudenter.Informasjon_om_.Skole === undefined) {
+          throw new Error('Skole mangler i JSON filen')
+        }
+        if (jsonData.Lærerstudenter.Informasjon_om_.Skole.includes('Re videregående skole')) {
+          return [
+            {
+              testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/REV-Personalrom/Lists/Registrering%20av%20lrerstudenter/AllItems.aspx',
+              prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/REV-Personalrom/Lists/Registrering%20av%20lrerstudenter/AllItems.aspx',
+              uploadFormPdf: true,
+              uploadFormAttachments: false,
+              fields: {
+                Title: flowStatus.parseJson.result.SavedValues.Login.UserID || 'Mangler fnr', // husk å bruke internal name på kolonnen
+                Fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || 'Mangler fornavn',
+                Etternavn: flowStatus.parseJson.result.SavedValues.Login.LastName || 'Mangler etternavn',
+                Adresse: flowStatus.parseJson.result.SavedValues.Login.Address || 'Mangler adresse',
+                Postnr_x0020_og_x0020_sted: `${flowStatus.parseJson.result.SavedValues.Login.PostalCode} ${flowStatus.parseJson.result.SavedValues.Login.PostalArea}`,
+                Telefonnummer: flowStatus.parseJson.result.SavedValues.Login.Telephone || 'Mangler telefonnummer',
+                E_x002d_post: flowStatus.parseJson.result.SavedValues.Login.Email || 'Mangler epost',
+                Skole: jsonData.Lærerstudenter.Informasjon_om_.Skole || 'Mangler skole',
+                Tidsrom_x0020_fra: jsonData.Lærerstudenter.Informasjon_om_.Tidsrom_fra || 'Mangler tidsrom fra',
+                Tidsrom_x0020_til: jsonData.Lærerstudenter.Informasjon_om_.Tidsrom_til || 'Mangler tidsrom til',
+                Fag: jsonData.Lærerstudenter.Informasjon_om_.Fag,
+                Navn_x0020_p_x00e5__x0020_veiled: jsonData.Lærerstudenter.Informasjon_om_.Navn_på_veilede
+              }
             }
-          }
-        ]
+          ]
+        } else if (jsonData.Lærerstudenter.Informasjon_om_.Skole.includes('Thor Heyerdahl videregående skole')) {
+          return [
+            {
+              testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/THV-Personalrom-Studenter2025-2026/Lists/Registrering%20av%20lrerstudenter/AllItems.aspx',
+              prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/THV-Personalrom-Studenter2025-2026/Lists/Registrering%20av%20lrerstudenter/AllItems.aspx',
+              uploadFormPdf: true,
+              uploadFormAttachments: false,
+              fields: {
+                Title: flowStatus.parseJson.result.SavedValues.Login.UserID || 'Mangler fnr', // husk å bruke internal name på kolonnen
+                Fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || 'Mangler fornavn',
+                Etternavn: flowStatus.parseJson.result.SavedValues.Login.LastName || 'Mangler etternavn',
+                Adresse: flowStatus.parseJson.result.SavedValues.Login.Address || 'Mangler adresse',
+                Postnr_x0020_og_x0020_sted: `${flowStatus.parseJson.result.SavedValues.Login.PostalCode} ${flowStatus.parseJson.result.SavedValues.Login.PostalArea}`,
+                Telefonnummer: flowStatus.parseJson.result.SavedValues.Login.Telephone || 'Mangler telefonnummer',
+                E_x002d_post: flowStatus.parseJson.result.SavedValues.Login.Email || 'Mangler epost',
+                Skole: jsonData.Lærerstudenter.Informasjon_om_.Skole || 'Mangler skole',
+                Tidsrom_x0020_fra: jsonData.Lærerstudenter.Informasjon_om_.Tidsrom_fra || 'Mangler tidsrom fra',
+                Tidsrom_x0020_til: jsonData.Lærerstudenter.Informasjon_om_.Tidsrom_til || 'Mangler tidsrom til',
+                Fag: jsonData.Lærerstudenter.Informasjon_om_.Fag,
+                Navn_x0020_p_x00e5__x0020_veiled: jsonData.Lærerstudenter.Informasjon_om_.Navn_på_veilede
+              }
+            }
+          ]
+        } else {
+          throw new Error(`Ukjent skole i JSON fil: ${jsonData.Lærerstudenter.Informasjon_om_.Skole}`)
+        }
       }
     }
   },
