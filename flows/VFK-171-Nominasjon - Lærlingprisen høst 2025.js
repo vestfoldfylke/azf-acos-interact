@@ -5,12 +5,25 @@ module.exports = {
     enabled: true,
     doNotRemoveBlobs: false
   },
+
   parseJson: {
     enabled: true,
     options: {
       mapper: (dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
         return {
+        }
+      }
+    }
+  },
+
+  syncPrivatePerson: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+        // Mapping av verdier fra XML-avleveringsfil fra Acos.
+        return {
+          ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
         }
       }
     }
