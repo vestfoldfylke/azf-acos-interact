@@ -133,7 +133,7 @@ ArchiveData {
             uploadFormAttachments: true,
             fields: {
               Title: xmlData.navnPaProsjekt || 'Mangler title', // husk å bruke internal name på kolonnen
-              S_x00f8_ker: xmlData.navnPaProsjekt,
+              S_x00f8_ker: xmlData.soker,
               Kort_x0020_oppsummering: xmlData.kortOppsummering,
               Kort_x0020_beskrivelse_x0020_av_: xmlData.kortBeskrivelseAvSoker,
               Utfyllende_x0020_beskrivelse: xmlData.utfyllendeBeskrivelse,
