@@ -117,7 +117,10 @@ module.exports = {
               Skolenummer: jsonData.Informasjon_om_.Skolenummer,
               Studiestednummer: tilbud.Studiestedsnumm,
               Tilbudskode: tilbud.DBH_F_kode,
-              NUS_x002d_kode: tilbud.NUS_kode1,
+              NUS_x002d_kode: tilbud.NUS_kode1 || 'Manuell NUS-kode eller nytt tilbud',
+              NUS_x002d_kode_x0020__x0028_manu: tilbud.NUS_kode2,
+              Fagomr_x00e5_de_x0020__x0028_man: tilbud.Fagområde1,
+              Utdanningsnavn_x0020__x0028_manu: tilbud.Utdanningsnavn1,
               Dokumentnummeri360: flowStatus.archive.result.DocumentNumber
             }
           }
