@@ -40,6 +40,7 @@ module.exports = {
               Prioritet: jsonData.Informasjon_om_.Prioritet,
               Finansiering: jsonData.Informasjon_om_.Finansiering,
               Kompetansekartlegging: jsonData.Informasjon_om_.Kompetansekartl,
+              Konskv_x002e_avikkeansettelse: jsonData.Konsekvenser_av,
               Evt_x002e_kommentar: jsonData.Informasjon_om_.Eventuelle_komm,
               Telefon: jsonData.Informasjon_om_.Innsender.Telefon1,
               E_x002d_post0: jsonData.Informasjon_om_.Innsender.E_post
