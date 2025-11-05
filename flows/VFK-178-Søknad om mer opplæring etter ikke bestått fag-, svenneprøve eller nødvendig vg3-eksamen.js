@@ -1,4 +1,4 @@
-const description = 'Sender til elevmappe. Dette er det signerte skjemaet som sendes til lærling for signatur'
+const description = 'Sender til elevmappe'
 const { nodeEnv } = require('../config')
 module.exports = {
   config: {
@@ -35,7 +35,7 @@ module.exports = {
   },
 
   // Arkiverer dokumentet i elevmappa
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
     enabled: true,
     options: {
       /*
