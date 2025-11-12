@@ -1,4 +1,4 @@
-const { logger } = require('@vtfk/logger')
+const { logger } = require('@vestfoldfylke/loglady')
 const { remove } = require('@vtfk/azure-blob-client')
 const { storageAccount, utenlandsreisende: { regionGroupsPrefix } } = require('../config')
 const { addUserToRegionGroup, getEntraUserRegionGroups, getOverlappingTimespan, getRegionGroups, removeUserFromRegionGroup } = require('../lib/utenlandsreisende/region-groups')
@@ -15,13 +15,13 @@ const sendSmsToUser = async (confirmation, message) => {
   }
 
   if (!confirmation.phoneNumber.startsWith('+47') && !confirmation.phoneNumber.startsWith('0047')) {
-    logger('warn', ['sms', 'Phone number does not start with "+47" or "0047". Will not send SMS', confirmation.phoneNumber])
+    logger.warn('sms - phone number does not start with "+47" or "0047". Will not send SMS to {phoneNumber}', confirmation.phoneNumber)
     return 'Phone number does not start with "+47" or "0047". Will not send SMS'
   }
 
   const phoneNumber = confirmation.phoneNumber.slice(-8)
   if (phoneNumber.length !== 8 || isNaN(phoneNumber)) {
-    logger('warn', ['sms', 'Phone number is not valid. Will not send SMS', confirmation.phoneNumber])
+    logger.warn('sms - phone number is not valid. Will not send SMS to {phoneNumber}', confirmation.phoneNumber)
     return 'Phone number is not valid. Will not send SMS'
   }
 
@@ -148,7 +148,7 @@ module.exports = {
 
       for (const regionGroup of regionGroups) {
         if (entraUserRegionGroups.find(group => group.id === regionGroup.id)) {
-          logger('info', ['region-groups', 'User is already a member of region group', regionGroup.displayName, 'GroupId:', regionGroup.id])
+          logger.info('region-groups - User is already a member of region group {displayName} {id}', regionGroup.displayName, regionGroup.id)
           continue
         }
 
@@ -189,11 +189,11 @@ module.exports = {
       const regionGroupsRemovedFrom = []
       for (const regionGroup of regionGroups) {
         if (regionGroupsToSkip.find(group => group.id === regionGroup.id)) {
-          logger('info', ['region-groups', 'User has an overlapping travel in the same region. Will be removed later', regionGroup.displayName, 'GroupId:', regionGroup.id])
+          logger.info('region-groups - User has an overlapping travel in the same region. Will be removed later {displayName} {id}', regionGroup.displayName, regionGroup.id)
           continue
         }
         if (!entraUserRegionGroups.find(group => group.id === regionGroup.id)) {
-          logger('info', ['region-groups', "User isn't a member of this region group", regionGroup.displayName, 'GroupId:', regionGroup.id])
+          logger.info('region-groups - User is not a member of region group {displayName} {id}', regionGroup.displayName, regionGroup.id)
           continue
         }
 
@@ -211,7 +211,7 @@ module.exports = {
     runAfter: 'customJobRemoveFromRegionGroups',
     customJob: async (jobDef, flowStatus) => {
       if (flowStatus.customJobRemoveFromRegionGroups.result.regionGroups.length === 0) {
-        logger('info', ['region-groups', 'User has no region groups to remove'])
+        logger.info('region-groups - User has no region groups to remove')
         return 'User has no region groups to remove'
       }
 
