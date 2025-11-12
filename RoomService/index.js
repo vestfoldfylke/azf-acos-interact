@@ -1,17 +1,13 @@
 const roomService = require('../lib/room-service/room-service')
-const { logConfig, logger } = require('@vtfk/logger')
+const { logger } = require('@vestfoldfylke/loglady')
 
 module.exports = async function (context, myTimer) {
-  logConfig({
-    prefix: 'azf-acos-interact - RoomService',
-    azure: {
-      context,
-      excludeInvocationId: true
-    }
+  logger.logConfig({
+    prefix: 'azf-acos-interact - RoomService'
   })
   try {
     await roomService()
   } catch (error) {
-    logger('error', ['Statusrapportering feilet', error.response?.data || error.stack || error.toString()])
+    logger.errorException(error, 'Statusrapportering feilet. Error: {@message}', error.response?.data || error.stack || error.toString())
   }
 }
