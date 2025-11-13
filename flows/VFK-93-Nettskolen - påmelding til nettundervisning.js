@@ -20,7 +20,7 @@ module.exports = {
 
   // Synkroniser elevmappe
   syncElevmappe: {
-    enabled: false,
+    enabled: true,
     options: {
       /*
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
@@ -43,7 +43,7 @@ module.exports = {
 
   // Arkiverer dokumentet i elevmappa
   archive: {
-    enabled: false,
+    enabled: true,
     options: {
       /*
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
