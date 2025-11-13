@@ -111,10 +111,26 @@ module.exports = {
   },
 
   sharepointList: {
-    enabled: false,
+    enabled: true,
     options: {
       mapper: (flowStatus) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
+        let utfyllerErElev
+        if (jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Jeg_fyller_ut === 'på vegne av meg selv (jeg er elev)') {
+          utfyllerErElev = true
+        } else {
+          utfyllerErElev = false
+        }
+        let vgs
+        if (jsonData.Informasjon_om_elev.Bakgrunnsinform.I_hvilket_fylke_bor_elev === 'Vestfold') {
+          if (jsonData.Informasjon_om_elev.Bakgrunnsinform.Hvilken_skole_gar_eleven === 'Annen skole (for eks. OT)') {
+            vgs = jsonData.Informasjon_om_elev.Bakgrunnsinform.Skolenavn
+          } else {
+            vgs = jsonData.Informasjon_om_elev.Bakgrunnsinform.Hvilken_skole_gar_eleven2
+          }
+        } else {
+          vgs = jsonData.Informasjon_om_elev.Bakgrunnsinform.Hvilken_skole_gar_eleven
+        }
         const sharepointElements = []
         const fagString = jsonData.Fag.Fag.Velg_fag
         const fagliste = fagString.split(',').map(fag => fag.trim())
@@ -126,36 +142,36 @@ module.exports = {
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
-              Fornavnelev: xmlData.Fornavn,
-              Etternavnelev: xmlData.Etternavn,
-              Fylke: xmlData.Fylke,
-              Skole: xmlData.Skole,
-              Elevensmobilnr_x002e_: xmlData.Mobilnr,
-              Elevensadresse: xmlData.Adresse,
-              Elevenspostnr_x002e_: xmlData.Postnr,
-              Elevenspoststed: xmlData.Poststed,
-              Elevense_x002d_post: xmlData.Epost,
-              Utfyltav: xmlData.UtfyltAv,
-              Kontaktpersonensfornavn: xmlData.KontaktpersonFornavn,
-              Kontaktpersonensetternavn: xmlData.KontaktpersonEtternavn,
-              Foresatt1fornavn: xmlData.Foresatt1Fornavn,
-              Foresatt1etternavn: xmlData.Foresatt1Etternavn,
-              Foresatt1mobilnr_x002e_: xmlData.Foresatt1Mobilnr,
-              Foresatt1e_x002d_post: xmlData.Foresatt1Epost,
-              Foresatt1adresse: xmlData.Foresatt1Adresse,
-              Foresatt1postnr_x002e_: xmlData.Foresatt1Postnr,
-              Foresatt1poststed: xmlData.Foresatt1Poststed,
-              Foresatt2fornavn: xmlData.Foresatt2fornavn,
-              Foresatt2etternavn: xmlData.Foresatt2Etternavn,
-              Foresatt2mobilnr_x002e_: xmlData.Foresatt2Mobilnr,
-              Foresatt2e_x002d_post: xmlData.Foresatt2Epost,
-              Foresatt2adresse: xmlData.Foresatt2Adresse,
-              Foresatt2postnr_x002e_: xmlData.Foresatt2Postnr,
-              Foresatt2poststed: xmlData.Foresatt2Poststed,
-              Fylkeskommunensfakturaadresse: xmlData.Fakturaadresse,
-              Skolensfakturainformasjon: xmlData.Fakturainformasjon,
-              Fag: fag.Fagnavn
+              Title: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Fodselsnummer : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Fodselsnummer2,
+              Fornavnelev: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Fornavn : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Fornavn2,
+              Etternavnelev: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Etternavn : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Etternavn2,
+              Fylke: jsonData.Informasjon_om_elev.Bakgrunnsinform.I_hvilket_fylke_bor_elev,
+              Skole: vgs,
+              Elevensmobilnr_x002e_: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Mobilnummer : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Mobiltelefonnr,
+              Elevensadresse: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Adresse : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Adresse2,
+              Elevenspostnr_x002e_: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Postnummer_sted_postnr : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Postnr_sted_postnr,
+              Elevenspoststed: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Postnummer_sted_poststed : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Postnr_sted_poststed,
+              Elevense_x002d_post: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.E_postadresse : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Epost,
+              Utfyltav: jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Jeg_fyller_ut,
+              Kontaktpersonensfornavn: jsonData.Informasjon_om_elev.Informasjon_om_kontaktpe.Fornavn3,
+              Kontaktpersonensetternavn: jsonData.Informasjon_om_elev.Informasjon_om_kontaktpe.Etternavn3,
+              Foresatt1fornavn: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt.Fornavn4,
+              Foresatt1etternavn: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt.Etternavn4,
+              Foresatt1mobilnr_x002e_: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt.Mobilnummer2,
+              Foresatt1e_x002d_post: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt.E_postadresse2,
+              Foresatt1adresse: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt.Adresse3,
+              Foresatt1postnr_x002e_: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt.Postnummer_sted2_postnr,
+              Foresatt1poststed: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt.Postnummer_sted2_poststed,
+              Foresatt2fornavn: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt2.Fornavn5,
+              Foresatt2etternavn: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt2.Etternavn5,
+              Foresatt2mobilnr_x002e_: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt2.Mobilnummer3,
+              Foresatt2e_x002d_post: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt2.E_postadresse3,
+              Foresatt2adresse: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt2.Adresse4,
+              Foresatt2postnr_x002e_: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt2.Postnummer_sted3_postnr,
+              Foresatt2poststed: jsonData.Informasjon_om_elev.Opplysninger_om_foresatt2.Postnummer_sted3_poststed,
+              Fylkeskommunensfakturaadresse: jsonData.Informasjon_om_elev.Bakgrunnsinform.Fylkeskommunens_fakturaa,
+              Skolensfakturainformasjon: jsonData.Informasjon_om_elev.Bakgrunnsinform.Skolens_fakturainformasj,
+              Fag: fag
             }
           }
           sharepointElements.push(sharepointElement)
