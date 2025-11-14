@@ -41,7 +41,8 @@ module.exports = {
   },
   sms: {
     apiKey: process.env.SMS_API_KEY || 'api key',
-    url: process.env.SMS_URL || 'url to sms endpoint'
+    url: process.env.SMS_URL || 'url to sms endpoint',
+    referenceId: process.env.SMS_REFERENCE_ID || 'azf-acos-interact'
   },
   utenlandsreisende: {
     regionGroupsPrefix: process.env.UTENLANDSREISENDE_REGION_GROUPS_PREFIX || 'A-CA-REGION-'

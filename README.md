@@ -225,6 +225,7 @@ roomService er en egen timertrigger som kjører tre ganger om dagen. Den sjekker
     "BETTERSTACK_TOKEN": "jvkuv", // optional
     "SMS_URL": "sendsmsUrl",
     "SMS_API_KEY": "sgsgas",
+    "SMS_REFERENCE_ID": "default-reference-id", // optional. Can be used to override reference id in sms job
     "UTENLANDSREISENDE_REGION_GROUPS_PREFIX": "A-CA-REGION-"
   }
 }
