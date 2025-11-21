@@ -1,11 +1,12 @@
 const description = 'Sender til Sharepoint. Hver privatist som meldes inn i skjema blir en rad i lista.'
-// const { nodeEnv } = require('../config')
+const { nodeEnv } = require('../config')
 
 module.exports = {
   config: {
-    enabled: true,
-    doNotRemoveBlobs: false
+    enabled: false,
+    doNotRemoveBlobs: true
   },
+
   parseJson: {
     enabled: true,
     options: {
@@ -15,6 +16,97 @@ module.exports = {
         }
       }
     }
+  },
+
+  syncEmployee: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        return {
+          ssn: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.extension_0fe49c4c681d427aa4cad2252aba12f5_employeeNumber,
+          forceUpdate: false // optional - forces update of privatePerson instead of quick return if it exists
+        }
+      }
+    }
+  },
+
+  handleCase: {
+    enabled: true,
+    options: {
+      // no mapper here means that we will not create a case if we do not find an existing one and throw error if case is missing
+      getCaseParameter: (flowStatus) => {
+        return {
+          // check for exisiting case with this title
+          Title: `Rapportering på hospiteringsordning for yrkesfaglærere - ${flowStatus.parseJson.result.DialogueInstance.Rapportering.Innsender.Skole.split(' ')[0]}%`
+        }
+      }
+    }
+  },
+  // Arkiverer dokumentet i 360
+  archive: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus, base64, attachments) => {
+        const jsonData = flowStatus.parseJson.result.DialogueInstance
+        const p360Attachments = attachments.map(att => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: 'F',
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
+        return {
+          service: 'DocumentService',
+          method: 'CreateDocument',
+          parameter: {
+            Category: 'Internt notat med oppfølging',
+            Contacts: [
+              {
+                // ReferenceNumber: flowStatus.syncEmployee.result.privatePerson.ssn,
+                ExternalId: jsonData.Rapportering.Innsender.Brukernavn,
+                Role: 'Avsender',
+                IsUnofficial: false
+              },
+              {
+                ReferenceNumber: nodeEnv === 'production' ? 'recno:200313' : 'recno:200005', // Mottaker: Ole H. / Stine MH
+                Role: 'Mottaker',
+                IsUnofficial: false
+              }
+            ],
+            Files: [
+              {
+                Base64Data: base64,
+                Category: '1',
+                Format: 'pdf',
+                Status: 'F',
+                Title: 'Rapportering på hospiteringsordning for yrkesfaglærere',
+                VersionFormat: 'A'
+              },
+              ...p360Attachments
+            ],
+            Status: 'J',
+            DocumentDate: new Date().toISOString(),
+            Title: `Rapportering på hospiteringsordning for yrkesfaglærere - ${jsonData.Rapportering.Innsender.Skole}`,
+            // UnofficialTitle: '',
+            Archive: 'Saksdokument',
+            CaseNumber: flowStatus.handleCase.result.CaseNumber,
+            ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno,
+            // ResponsiblePersonEmail: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.mail,
+            AccessCode: 'U'
+          }
+        }
+      }
+    }
+  },
+
+  signOff: {
+    enabled: false
+  },
+
+  closeCase: {
+    enabled: false
   },
 
   sharepointList: {
