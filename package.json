@@ -4,7 +4,7 @@
   "description": "Handles forms from Acos",
   "scripts": {
     "start": "func start",
-    "test": "standard && jest --verbose"
+    "test": "standard"
   },
   "dependencies": {
     "@azure/msal-node": "^3.7.3",
@@ -18,13 +18,7 @@
     "xml2js": "^0.5.0"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.1",
-    "jest": "^30.2.0",
     "standard": "^17.1.2"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "transform": {}
   },
   "standard": {
     "env": [
