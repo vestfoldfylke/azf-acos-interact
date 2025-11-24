@@ -11,7 +11,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "."
-  NODE_VERSION: "20.x"
+  NODE_VERSION: "22.x"
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: "Resolve Project Dependencies Using Npm"
+      - name: "Resolve Project Dependencies Using Npm, Build and Test"
         shell: pwsh
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
@@ -33,12 +33,8 @@ jobs:
           npm run build --if-present
           npm run test --if-present
           popd
-
-  deploy:
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: "Resolve Project Dependencies Using Npm"
+      
+      - name: "Resolve Production Project Dependencies Using Npm"
         shell: pwsh
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
@@ -53,4 +49,5 @@ jobs:
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }}
+
 
