@@ -52,7 +52,7 @@ module.exports = {
             Category: 'Internt notat med oppfølging',
             Contacts: [
               {
-                ReferenceNumber: nodeEnv === 'production' ? 'recno:200313' : 'recno:200005', // Mottaker: Ole H. / Stine MH
+                ReferenceNumber: nodeEnv === 'production' ? 'recno:200725' : 'recno:200005', // Mottaker: Ole H. / Stine MH
                 Role: 'Mottaker',
                 IsUnofficial: false
               }
