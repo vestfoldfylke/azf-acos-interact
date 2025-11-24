@@ -44,12 +44,6 @@ jobs:
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           npm i --omit=dev
           popd
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-app
-          path: |
-            .
 
       - name: "Run Azure Functions Action"
         uses: Azure/functions-action@v1
