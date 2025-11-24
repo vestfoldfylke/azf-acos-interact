@@ -64,12 +64,6 @@ module.exports = {
             Category: 'Internt notat med oppfølging',
             Contacts: [
               {
-                // ReferenceNumber: flowStatus.syncEmployee.result.privatePerson.ssn,
-                ExternalId: jsonData.Rapportering.Innsender.Brukernavn,
-                Role: 'Avsender',
-                IsUnofficial: false
-              },
-              {
                 ReferenceNumber: nodeEnv === 'production' ? 'recno:200313' : 'recno:200005', // Mottaker: Ole H. / Stine MH
                 Role: 'Mottaker',
                 IsUnofficial: false
@@ -92,8 +86,8 @@ module.exports = {
             // UnofficialTitle: '',
             Archive: 'Saksdokument',
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
-            ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno,
-            // ResponsiblePersonEmail: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.mail,
+            // ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno, // skolen
+            ResponsiblePersonEmail: 'navn@vestfoldfylke.no', // flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.mail,
             AccessCode: 'U'
           }
         }
