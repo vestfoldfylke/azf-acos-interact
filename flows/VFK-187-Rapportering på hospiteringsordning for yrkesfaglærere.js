@@ -18,18 +18,6 @@ module.exports = {
     }
   },
 
-  syncEmployee: {
-    enabled: true,
-    options: {
-      mapper: (flowStatus) => {
-        return {
-          ssn: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.extension_0fe49c4c681d427aa4cad2252aba12f5_employeeNumber,
-          forceUpdate: false // optional - forces update of privatePerson instead of quick return if it exists
-        }
-      }
-    }
-  },
-
   handleCase: {
     enabled: true,
     options: {
