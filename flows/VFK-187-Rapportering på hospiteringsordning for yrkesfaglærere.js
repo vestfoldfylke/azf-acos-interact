@@ -3,8 +3,8 @@ const { nodeEnv } = require('../config')
 
 module.exports = {
   config: {
-    enabled: false,
-    doNotRemoveBlobs: true
+    enabled: true,
+    doNotRemoveBlobs: false
   },
 
   parseJson: {
@@ -87,7 +87,7 @@ module.exports = {
             Archive: 'Saksdokument',
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             // ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno, // skolen
-            ResponsiblePersonEmail: 'navn@vestfoldfylke.no', // flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.mail,
+            ResponsiblePersonEmail: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.mail,
             AccessCode: 'U'
           }
         }
@@ -128,8 +128,8 @@ module.exports = {
               Tema_x0020_for_x0020_hospitering: row.Tema_for_hospit,
               _x00c5_r: row.År, // År
               Uke: row.Uke,
-              Antall_x0020_dager: row.Antall_dager
-              // Dokumentnummeri360: flowStatus.archive.result.DocumentNumber || 'Ikke arkivert'
+              Antall_x0020_dager: row.Antall_dager,
+              Dokumentnummeri360: flowStatus.archive.result.DocumentNumber || 'Ikke arkivert'
             }
           }
           sharepointElements.push(sharepointFagElement)
