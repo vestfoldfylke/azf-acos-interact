@@ -4,7 +4,7 @@ const description = 'Sender til Sharepoint. Hver privatist som meldes inn i skje
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
   parseJson: {
     enabled: true,
