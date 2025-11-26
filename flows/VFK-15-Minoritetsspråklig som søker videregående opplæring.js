@@ -24,8 +24,8 @@ module.exports = {
       mapper: (flowStatus) => { // for å opprette person manuelt uten oppslag i Freg (Eks. utenlandske elever)
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         if (flowStatus.parseJson.result.DialogueInstance.Opplysninger.Om_soker.Har_du_norsk_fodselsnumm === 'Nei') {
-          const dateList = flowStatus.parseJson.result.DialogueInstance.Opplysninger.Om_soker.Fodselsdato.split('.')
-          const newDate = `${dateList[2]}-${dateList[1]}-${dateList[0]}`
+          // const dateList = flowStatus.parseJson.result.DialogueInstance.Opplysninger.Om_soker.Fodselsdato.split('.')
+          // const newDate = `${dateList[2]}-${dateList[1]}-${dateList[0]}`
           let gender
           if (flowStatus.parseJson.result.DialogueInstance.Opplysninger.Om_soker.Kjonn === 'Mann') {
             gender = 'm'
@@ -37,7 +37,7 @@ module.exports = {
           const payload = {
             fakeSsn: true,
             manualData: true,
-            birthdate: newDate,
+            birthdate: flowStatus.parseJson.result.DialogueInstance.Opplysninger.Om_soker.Fodselsdato,
             gender,
             firstName: flowStatus.parseJson.result.DialogueInstance.Opplysninger.Om_soker.Fornavn,
             lastName: flowStatus.parseJson.result.DialogueInstance.Opplysninger.Om_soker.Etternavn,
