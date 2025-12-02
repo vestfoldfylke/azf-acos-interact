@@ -17,17 +17,6 @@ module.exports = {
     }
   },
 
-  /* XML from Acos:
-ArchiveData {
-  string navn
-  string fnr
-  string orgnr
-  string typeInnsender
-  string innspill
-}
-
-  */
-
   syncEnterprise: {
     enabled: true,
     options: {
