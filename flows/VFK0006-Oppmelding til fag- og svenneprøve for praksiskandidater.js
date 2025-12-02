@@ -80,7 +80,7 @@ module.exports = {
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Oppmelding til fag-/svenneprøve for praksiskandidater',
+            Title: `Oppmelding til praksiskandidatprøve i ${xmlData.Egendefinert1}`,
             // UnofficialTitle: '',
             Archive: 'Elevdokument',
             CaseNumber: elevmappe.CaseNumber
