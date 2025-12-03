@@ -79,7 +79,7 @@ module.exports = {
             ResponsiblePersonEmail: 'steinar.engeland@vestfoldfylke.no',
             Status: 'J',
             Title: 'Vestfold Litteraturpris - Forslag til kandidat - 2026',
-            UnofficialTitle: `Vestfold Litteraturpris - Forslag til kandidat - 2026 - ${jsonData.DialogueInstance.Informasjon_om_.Informasjon_om_.Innsender.Fornavn1} ${jsonData.DialogueInstance.Informasjon_om_.Informasjon_om_.Innsender.Etternavn1}`,
+            UnofficialTitle: `Vestfold Litteraturpris - Forslag til kandidat - 2026 - ${jsonData.DialogueInstance.Informasjon_om_.Innsender.Fornavn1} ${jsonData.DialogueInstance.Informasjon_om_.Innsender.Etternavn1}`,
             Archive: 'Saksdokument',
             CaseNumber: nodeEnv === 'production' ? '24/14031' : ''
           }
