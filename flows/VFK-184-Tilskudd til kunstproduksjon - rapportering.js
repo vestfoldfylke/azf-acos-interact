@@ -78,7 +78,7 @@ module.exports = {
                 Category: '1',
                 Format: 'pdf',
                 Status: 'F',
-                Title: 'Rapportering - Tilskuddsordning for økt inkludering 2024',
+                Title: 'Rapportering - Tilskudd til kunstproduksjon',
                 VersionFormat: 'A'
               },
               ...p360Attachments
