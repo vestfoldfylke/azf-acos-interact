@@ -23,7 +23,7 @@ module.exports = {
       mapper: (flowStatus) => { // for å opprette/oppdatere en virksomhet i P3360
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier for å opprette privatperson med fiktivt fødselsnummer
         return {
-          orgnr: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon.Organisasjonsnu.replaceAll(' ', '')
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon1.Organisasjonsnu1.replaceAll(' ', '')
         }
       }
     }
@@ -39,8 +39,8 @@ module.exports = {
           method: 'CreateCase',
           parameter: {
             CaseType: 'Sak',
-            Project: nodeEnv === 'production' ? '25-133' : '25-4',
-            Title: `Regionalt Kulturfond Vestfold - ${jsonData.Beskrivelse_av_.Om_prosjektet.Søknadskategori} - ${jsonData.Beskrivelse_av_.Om_prosjektet.Navn_på_prosjek} - ${jsonData.Informasjon_om_.Organisasjon.Organisasjonsna}`,
+            Project: nodeEnv === 'production' ? '25-176' : '25-4',
+            Title: `Regionalt Kulturfond Vestfold - ${jsonData.Beskrivelse_av_.Om_prosjektet.Søknadskategori} - ${jsonData.Beskrivelse_av_.Om_prosjektet.Navn_på_prosjek} - ${jsonData.Informasjon_om_.Organisasjon1.Organisasjonsna1}`,
             // UnofficialTitle: ,
             Status: 'B',
             JournalUnit: 'Sentralarkiv',
@@ -87,7 +87,7 @@ module.exports = {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: jsonData.Informasjon_om_.Organisasjon.Organisasjonsnu.replaceAll(' ', ''),
+                ReferenceNumber: jsonData.Informasjon_om_.Organisasjon1.Organisasjonsnu1.replaceAll(' ', ''),
                 Role: 'Avsender',
                 IsUnofficial: false
               }
@@ -135,13 +135,13 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Regionalt%20kulturfond/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Regionalt%20kulturfond/AllItems.aspx',
+            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Regionalt%20kulturfond%202026/AllItems.aspx',
+            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Regionalt%20kulturfond%202026/AllItems.aspx',
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: jsonData.Informasjon_om_.Organisasjon.Organisasjonsna, // husk å bruke internal name på kolonnen
-              Organisasjonsnummer: jsonData.Informasjon_om_.Organisasjon.Organisasjonsnu,
+              Title: jsonData.Informasjon_om_.Organisasjon1.Organisasjonsna1, // husk å bruke internal name på kolonnen
+              Organisasjonsnummer: jsonData.Informasjon_om_.Organisasjon1.Organisasjonsnu1,
               Kontaktperson_x0020_fornavn: jsonData.Informasjon_om_.Kontaktperson1.Fornavn2,
               Kontaktperson_x0020_etternavn: jsonData.Informasjon_om_.Kontaktperson1.Etternavn2,
               e_x002d_post: jsonData.Informasjon_om_.Kontaktperson1.E_post1,
@@ -165,7 +165,8 @@ module.exports = {
               Sum_x0020_inntekter: jsonData.Budsjett__finan.Sum_inntekter,
               Sum_x0020_utgifter: jsonData.Budsjett__finan.Sum_utgifter,
               Dokumentnummer_x0020_i_x0020_p36: flowStatus.archive.result.DocumentNumber,
-              Acos_x0020_RefId: flowStatus.parseJson.result.Metadata.ReferenceId.Value || 'Ingen Acos RefId'
+              Acos_x0020_RefId: flowStatus.parseJson.result.Metadata.ReferenceId.Value || 'Ingen Acos RefId',
+              Kommune: jsonData.Beskrivelse_av_.Om_prosjektet.Hvor_foregår_ak || 'Ingen kommuner valgt'
             }
           }
         ]
