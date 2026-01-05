@@ -119,6 +119,7 @@ module.exports = {
               Title: flowStatus.parseJson.result.SavedValues.Login.UserID.substring(0, 6) || 'Mangler fdato', // husk å bruke internal name på kolonnen
               Fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName,
               Etternavn: flowStatus.parseJson.result.SavedValues.Login.LastName,
+              Skole: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Velg_hvilken_sk,
               L_x00e6_refag: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Hvilket_lærefag,
               Doknr360: flowStatus.archive.result.DocumentNumber
             }
