@@ -33,7 +33,7 @@ module.exports = {
               Kontaktinformasjon: `Navn: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo.Navn} E-post: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo.E_post} Mobil: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo.Mobil_}`,
               Status: 'Avventer',
               Title: jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Tittel_pa_produksjon,
-              Teknisk: `Spesielle tekniske behov: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Er_det_andre_sp} - Våre teknikere: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Bruker_dere_vår} - Antall teknikere (dersom egne): ${jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Hvor_mange_tekn}`,
+              Teknisk: `Spesielle tekniske behov: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Er_det_andre_sp} - Ønsker å bruke Markedets teknikere: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Ønsker_dere_å_b} - Antall teknikere (dersom egne): ${jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Hvor_mange_tekn}`,
               Varighet: jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Varighet_på_der,
               Produsent: jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Produsent,
               Rigg: jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Estimert_tid_ti,
