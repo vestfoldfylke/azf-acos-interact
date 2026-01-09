@@ -47,8 +47,8 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const school = schoolInfo.find(school => school.orgNr.toString() === flowStatus.parseJson.result.SavedValues.Dataset.Skole1.Orgnr)
-        if (!school) throw new Error(`Could not find any school with orgNr: ${flowStatus.parseJson.result.SavedValues.Dataset.Skole1.Orgnr}`)
+        const school = schoolInfo.find(school => school.companyName === flowStatus.parseJson.result.SavedValues.Integration.Hent_elever__display_name_.Users.companyName)
+        if (!school) throw new Error(`Could not find any school with name: ${flowStatus.parseJson.result.SavedValues.Integration.Hent_elever__display_name_.Users.companyName}`)
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -63,7 +63,7 @@ module.exports = {
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: flowStatus.parseJson.result.SavedValues.Dataset.Skole1.Tilgangsgruppe,
+            AccessGroup: school.tilgangsgruppe,
             Category: 'Dokument inn',
             Contacts: [
               {
