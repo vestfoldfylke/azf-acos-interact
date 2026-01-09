@@ -97,7 +97,7 @@ module.exports = {
   },
 
   signOff: {
-    enabled: false
+    enabled: true
   },
 
   closeCase: {
