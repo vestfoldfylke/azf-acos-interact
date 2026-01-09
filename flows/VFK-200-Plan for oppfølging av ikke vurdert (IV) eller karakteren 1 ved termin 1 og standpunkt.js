@@ -30,7 +30,7 @@ module.exports = {
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           // ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
-          ssn: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Elev.Fødselsnummer1
+          ssn: flowStatus.parseJson.result.SavedValues.Integration.Hent_elever__display_name_.Users.ssn
         }
       }
     }
@@ -67,7 +67,7 @@ module.exports = {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Elev.Fødselsnummer1,
+                ReferenceNumber: flowStatus.parseJson.result.SavedValues.Integration.Hent_elever__display_name_.Users.ssn,
                 Role: 'Avsender',
                 IsUnofficial: true
               }
