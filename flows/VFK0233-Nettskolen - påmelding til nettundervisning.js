@@ -96,7 +96,7 @@ ArchiveData {
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: 'Elev Horten vgs',
+            AccessGroup: 'Nettskolen',
             Category: 'Dokument inn',
             Contacts: [
               {
