@@ -46,7 +46,7 @@ module.exports = {
       },
       */
       mapper: (flowStatus, base64, attachments) => {
-        const elevmappe = flowStatus.syncElevmappe.result.elevm
+        const elevmappe = flowStatus.syncElevmappe.result.elevmappe
         const jsonData = flowStatus.parseJson.result
         let accessGroup = 'Fagopplæring'
         let responsibleEnterpriseRecno = 200019 // Fagopplæring i Test
