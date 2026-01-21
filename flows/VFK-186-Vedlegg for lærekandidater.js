@@ -48,16 +48,10 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
         const jsonData = flowStatus.parseJson.result
-        let accessGroup = 'Fagopplæring'
-        let responsibleEnterpriseRecno = 200019 // Fagopplæring i Test
-        if (nodeEnv === 'production') responsibleEnterpriseRecno = 200016 // Fagopplæring i Prod
+        let skole = false
         if (jsonData.DialogueInstance.Informasjon_om_.Om_skjemaet === 'Jeg fyller ut skjemaet sammen med YFF-lærer, kontaktlærer eller rådgiver') { // Skolen skal være ansvarlig og ha tilgang
-          const school = schoolInfo.find(school => school.orgNr.toString() === jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr)
-          if (!school) throw new Error(`Could not find any school with orgnr: ${jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr}`)
-          accessGroup = school.tilgangsgruppe
-          responsibleEnterpriseRecno = jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr
+          skole = true
         }
-
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -67,12 +61,11 @@ module.exports = {
             VersionFormat: att.versionFormat
           }
         })
-        return {
+        const documentData = {
           service: 'DocumentService',
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: accessGroup,
             Category: 'Dokument inn',
             Contacts: [
               {
@@ -94,7 +87,6 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: responsibleEnterpriseRecno,
             // ResponsiblePersonEmail: '',
             Status: 'J',
             Title: 'Vedlegg for lærekandidater',
@@ -103,6 +95,18 @@ module.exports = {
             CaseNumber: elevmappe.CaseNumber
           }
         }
+        if (skole === false) {
+          documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200016' : '200019' // Fagopplæring
+          documentData.parameter.AccessGroup = 'Fagopplæring'
+        } else if (skole === true) {
+          const school = schoolInfo.find(school => school.orgNr.toString() === jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr)
+          if (!school) throw new Error(`Could not find any school with orgnr: ${jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr}`)
+          documentData.parameter.ResponsibleEnterpriseNumber = jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr
+          documentData.parameter.AccessGroup = school.tilgangsgruppe
+        } else {
+          throw new Error('Finner ikke ut om dette er fagopplæring eller en skole. Sjekk logikk')
+        }
+        return documentData
       }
     }
 
