@@ -1,5 +1,6 @@
 const description = 'Sender til elevmappe'
 const { nodeEnv } = require('../config')
+const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
     enabled: true,
@@ -46,6 +47,16 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
+        const jsonData = flowStatus.parseJson.result
+        let accessGroup = 'Fagopplæring'
+        let responsibleEnterpriseRecno = 200019 // Fagopplæring i Test
+        if (nodeEnv === 'production') responsibleEnterpriseRecno = 200016 // Fagopplæring i Prod
+        if (jsonData.DialogueInstance.Informasjon_om_.Om_skjemaet === 'Jeg fyller ut skjemaet sammen med YFF-lærer, kontaktlærer eller rådgiver') { // Skolen skal være ansvarlig og ha tilgang
+          const school = schoolInfo.find(school => school.orgNr.toString() === jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr)
+          if (!school) throw new Error(`Could not find any school with orgnr: ${jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr}`)
+          accessGroup = school.tilgangsgruppe
+          responsibleEnterpriseRecno = jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr
+        }
         const p360Attachments = attachments.map(att => {
           return {
             Base64Data: att.base64,
@@ -60,7 +71,7 @@ module.exports = {
           method: 'CreateDocument',
           parameter: {
             AccessCode: '13',
-            AccessGroup: 'Fagopplæring',
+            AccessGroup: accessGroup,
             Category: 'Dokument inn',
             Contacts: [
               {
@@ -82,7 +93,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: responsibleEnterpriseRecno,
             // ResponsiblePersonEmail: '',
             Status: 'J',
             Title: 'Vedlegg for lærlinger',
