@@ -24,7 +24,7 @@ module.exports = {
       mapper: (flowStatus) => { // for å opprette/oppdatere en virksomhet i P3360
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier for å opprette privatperson med fiktivt fødselsnummer
         return {
-          orgnr: flowStatus.parseJson.result.DialogueInstance.Halvårsrapporte.Innsender.Organisasjon.Organisasjonsnu.replaceAll(' ', '')
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Rapportering.Innsender.Organisasjon.Organisasjonsnu.replaceAll(' ', '')
         }
       }
     }
@@ -37,7 +37,7 @@ module.exports = {
 
       getCaseParameter: (flowStatus) => {
         return {
-          Title: `Søknad om tilskudd - Inkludering og redusert utenforskap - ${flowStatus.parseJson.result.DialogueInstance.Halvårsrapporte.Innsender.Organisasjon.Organisasjonsna}` // check for exisiting case with this title
+          Title: `Søknad om tilskudd - Inkludering og redusert utenforskap - ${flowStatus.parseJson.result.DialogueInstance.Rapportering.Innsender.Organisasjon.Organisasjonsna}` // check for exisiting case with this title
         }
       }
     }
@@ -64,7 +64,7 @@ module.exports = {
             Category: 'Dokument inn',
             Contacts: [
               {
-                ReferenceNumber: jsonData.Halvårsrapporte.Innsender.Organisasjon.Organisasjonsnu.replaceAll(' ', ''),
+                ReferenceNumber: jsonData.Rapportering.Innsender.Organisasjon.Organisasjonsnu.replaceAll(' ', ''),
                 Role: 'Avsender',
                 IsUnofficial: false
               }
@@ -82,7 +82,7 @@ module.exports = {
             ],
             Status: 'J',
             DocumentDate: new Date().toISOString(),
-            Title: `Rapportering 2025 - fond for inkludering og redusert utenforskap - ${jsonData.Halvårsrapporte.Bakgrunn.Navn_på_tiltake}`,
+            Title: `Rapportering 2025 - fond for inkludering og redusert utenforskap - ${jsonData.Rapportering.Bakgrunn.Navn_på_tiltake}`,
             // UnofficialTitle: '',
             Archive: 'Saksdokument',
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
@@ -116,25 +116,25 @@ module.exports = {
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: jsonData.Halvårsrapporte.Innsender.Organisasjon.Organisasjonsnu, // husk å bruke internal name på kolonnen
-              Organisasjonsnavn: jsonData.Halvårsrapporte.Innsender.Organisasjon.Organisasjonsna,
-              Navntiltakseier: jsonData.Halvårsrapporte.Bakgrunn.Navn_på_tiltake,
-              E_x002d_posttiltakseier: jsonData.Halvårsrapporte.Bakgrunn.E_post_tiltakse,
-              Navnkontaktperson: jsonData.Halvårsrapporte.Bakgrunn.Navn_på_kontakt,
-              E_x002d_postkontaktperson: jsonData.Halvårsrapporte.Bakgrunn.E_post_til_kont,
+              Title: jsonData.Rapportering.Innsender.Organisasjon.Organisasjonsnu, // husk å bruke internal name på kolonnen
+              Organisasjonsnavn: jsonData.Rapportering.Innsender.Organisasjon.Organisasjonsna,
+              Navntiltakseier: jsonData.Rapportering.Bakgrunn.Navn_på_tiltake,
+              E_x002d_posttiltakseier: jsonData.Rapportering.Bakgrunn.E_post_tiltakse,
+              Navnkontaktperson: jsonData.Rapportering.Bakgrunn.Navn_på_kontakt,
+              E_x002d_postkontaktperson: jsonData.Rapportering.Bakgrunn.E_post_til_kont,
               // Resultater: jsonData.Rapportering.Resultater.Gi_en_kort_besk6,
-              Varighet: jsonData.Halvårsrapporte.Bakgrunn.Prosjektets_var,
-              Ett_x00e5_rig_x0020__x002d__x002: jsonData.Halvårsrapporte.Ettårig___Evalu.Hvordan_har_arb, // ettårig - hvordan bidratt til å redusere,
-              Ett_x00e5_rig_x0020__x002d__x0020: jsonData.Halvårsrapporte.Ettårig___Evalu.Antall_i_målgru, // Ettårig - Antall innsatsen har nådd ut til
-              Ett_x00e5_rig_x0020__x002d__x0021: jsonData.Halvårsrapporte.Ettårig___Evalu.Skal_prosjektet, // Ettårig - implementeres i drift
-              Ett_x00e5_rig_x0020__x002d__x0022: jsonData.Halvårsrapporte.Ettårig___Evalu.Hva_er_hindring, // Ettårig - hindringer
-              Ett_x00e5_rig_x0020__x002d__x0023: jsonData.Halvårsrapporte.Ettårig___Evalu.Hvilke_erfaring, // Ettårig - erfaringer
-              Fler_x00e5_rig_x0020__x002d__x00: jsonData.Halvårsrapporte.Toårig_eller_me.Er_aktiviteter_, // Fler_x00eFlerårig - Igangsatt etter plan
-              Fler_x00e5_rig_x0020__x002d__x000: jsonData.Halvårsrapporte.Toårig_eller_me.Beskriv_kort_år, // Flerårig - årsak ikke igangsatt
-              Fler_x00e5_rig_x0020__x002d__x001: jsonData.Halvårsrapporte.Toårig_eller_me.Gi_en_kort_besk7, // Flerårig - beskrivelse av aktiviteter
-              Fler_x00e5_rig_x0020__x002d__x002: jsonData.Halvårsrapporte.Toårig_eller_me.Gi_en_kort_besk6, // Flerårig - beskrivelse av resultater
-              Er_x0020_tilskuddet_x0020_benytt: jsonData.Halvårsrapporte.Regnskap.Er_tilskuddet_b, // Er tilskuddet benyttet i henhold til søknad og budsjett
-              Hvorfor_x0020_ikke: jsonData.Halvårsrapporte.Regnskap.Forklar_hvorfor, // Hvorfor ikke
+              Varighet: jsonData.Rapportering.Bakgrunn.Prosjektets_var,
+              Ett_x00e5_rig_x0020__x002d__x002: jsonData.Rapportering.Ettårig___Evalu.Hvordan_har_arb, // ettårig - hvordan bidratt til å redusere,
+              Ett_x00e5_rig_x0020__x002d__x0020: jsonData.Rapportering.Ettårig___Evalu.Antall_i_målgru, // Ettårig - Antall innsatsen har nådd ut til
+              Ett_x00e5_rig_x0020__x002d__x0021: jsonData.Rapportering.Ettårig___Evalu.Skal_prosjektet, // Ettårig - implementeres i drift
+              Ett_x00e5_rig_x0020__x002d__x0022: jsonData.Rapportering.Ettårig___Evalu.Hva_er_hindring, // Ettårig - hindringer
+              Ett_x00e5_rig_x0020__x002d__x0023: jsonData.Rapportering.Ettårig___Evalu.Hvilke_erfaring, // Ettårig - erfaringer
+              Fler_x00e5_rig_x0020__x002d__x00: jsonData.Rapportering.Toårig_eller_me.Er_aktiviteter_, // Fler_x00eFlerårig - Igangsatt etter plan
+              Fler_x00e5_rig_x0020__x002d__x000: jsonData.Rapportering.Toårig_eller_me.Beskriv_kort_år, // Flerårig - årsak ikke igangsatt
+              Fler_x00e5_rig_x0020__x002d__x001: jsonData.Rapportering.Toårig_eller_me.Gi_en_kort_besk7, // Flerårig - beskrivelse av aktiviteter
+              Fler_x00e5_rig_x0020__x002d__x002: jsonData.Rapportering.Toårig_eller_me.Gi_en_kort_besk6, // Flerårig - beskrivelse av resultater
+              Er_x0020_tilskuddet_x0020_benytt: jsonData.Rapportering.Regnskap.Er_tilskuddet_b, // Er tilskuddet benyttet i henhold til søknad og budsjett
+              Hvorfor_x0020_ikke: jsonData.Rapportering.Regnskap.Forklar_hvorfor, // Hvorfor ikke
               Dok_x002e_nr_x002e_P360: flowStatus.archive?.result?.DocumentNumber || 'Ikke automatisk arkivert',
               Acos_x0020_RefId: flowStatus.parseJson.result.Metadata.ReferenceId.Value || 'Ingen Acos RefId'
             }
