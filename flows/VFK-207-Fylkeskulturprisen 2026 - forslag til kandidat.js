@@ -104,7 +104,7 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         return {
           company: 'Kultur',
-          department: 'Lkulturpris',
+          department: 'Kulturpris',
           description,
           type: 'Nominasjon - fylkeskulturpris', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
