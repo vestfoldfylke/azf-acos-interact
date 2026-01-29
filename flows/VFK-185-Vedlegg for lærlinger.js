@@ -87,6 +87,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
+            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Fagopplæring
             // ResponsiblePersonEmail: '',
             Status: 'J',
             Title: 'Vedlegg for lærlinger',
@@ -96,12 +97,12 @@ module.exports = {
           }
         }
         if (skole === false) {
-          documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200016' : '200019' // Fagopplæring
+          // documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200016' : '200019' // Fagopplæring
           documentData.parameter.AccessGroup = 'Fagopplæring'
         } else if (skole === true) {
           const school = schoolInfo.find(school => school.orgNr.toString() === jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr)
           if (!school) throw new Error(`Could not find any school with orgnr: ${jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr}`)
-          documentData.parameter.ResponsibleEnterpriseNumber = jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr
+          // documentData.parameter.ResponsibleEnterpriseNumber = jsonData.SavedValues.Dataset.Velg_hvilken_sk.Orgnr
           documentData.parameter.AccessGroup = school.tilgangsgruppe
         } else {
           throw new Error('Finner ikke ut om dette er fagopplæring eller en skole. Sjekk logikk')
