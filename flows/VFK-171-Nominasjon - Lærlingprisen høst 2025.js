@@ -78,10 +78,10 @@ module.exports = {
             ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring,
             // ResponsiblePersonEmail: '',
             Status: 'J',
-            Title: 'Nominasjon Lærlingprisen - Høst 2025',
-            UnofficialTitle: `Nominasjon Lærlingprisen - Høst 2025 - ${jsonData.DialogueInstance.Nominasjon.Informasjon_om_.Fornavn2} ${jsonData.DialogueInstance.Nominasjon.Informasjon_om_.Etternavn2}`,
+            Title: 'Nominasjon Lærlingprisen - Våren 2026',
+            UnofficialTitle: `Nominasjon Lærlingprisen - Våren 2026 - ${jsonData.DialogueInstance.Nominasjon.Informasjon_om_.Fornavn2} ${jsonData.DialogueInstance.Nominasjon.Informasjon_om_.Etternavn2}`,
             Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '25/13850' : '25/00091'
+            CaseNumber: nodeEnv === 'production' ? '26/03970' : '25/00091'
           }
         }
       }
