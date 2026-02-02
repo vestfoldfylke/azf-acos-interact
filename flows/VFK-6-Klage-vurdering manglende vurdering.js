@@ -92,22 +92,16 @@ module.exports = {
           }
         }
 
-        if (jsonData.DialogueInstance.Informasjon_om_klager.Gruppe5.Velg_status === 'Privatist') {
-          documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200015' : '200018' // Seksjon Sektorstøtte, inntak og eksamen
-          documentData.parameter.AccessGroup = 'Eksamen'
-        } else if (jsonData.DialogueInstance.Informasjon_om_klager.Gruppe5.Velg_status === 'Elev') {
+        if (jsonData.DialogueInstance.Informasjon_om_klager.Utfyller.Hvem_fyller_ut_ === 'Elev' || jsonData.DialogueInstance.Informasjon_om_klager.Utfyller.Hvem_fyller_ut_ === 'Foresatt') {
           const school = schoolInfo.find(school => school.orgNr.toString() === jsonData.SavedValues.Dataset.Velg_skole.Orgnr)
           if (!school) throw new Error(`Could not find any school with orgNr: ${jsonData.SavedValues.Dataset.Velg_skole.Orgnr}`)
           documentData.parameter.ResponsibleEnterpriseNumber = jsonData.SavedValues.Dataset.Velg_skole.Orgnr
           documentData.parameter.AccessGroup = school.tilgangsgruppe
-        } else if (jsonData.DialogueInstance.Informasjon_om_klager.Gruppe5.Velg_status === 'Lærling/lærekandidat/praksiskandidat') {
-          documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200016' : '200019' // Seksjon Fag og yrkesopplæring // denne er ikke verifisert
-          documentData.parameter.AccessGroup = 'Fagopplæring'
-        } else if (jsonData.DialogueInstance.Informasjon_om_klager.Gruppe5.Velg_status === 'Voksen (Kompetansebyggeren)') {
+        } else if (jsonData.DialogueInstance.Informasjon_om_klager.Utfyller.Hvem_fyller_ut_ === 'Voksen') {
           documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200037' : '200045' // Kompetansebyggeren // denne er ikke verifisert
           documentData.parameter.AccessGroup = 'Elev Kompetansebyggeren'
         } else {
-          throw new Error('Fikk ukjent verdi inn i Egendefinert1 fra skjemaets xml-fil. Trenger "Privatist", "Elev", "Lærling/lærekandidat/praksiskandidat" eller "Voksen (Kompetansebyggeren)"')
+          throw new Error('Fikk ukjent verdi inn i Utfyller fra skjemaets json-fil. Trenger "Elev", "Foresatt" eller "Voksen (Kompetansebyggeren)"')
         }
         console.log(documentData)
         return documentData
