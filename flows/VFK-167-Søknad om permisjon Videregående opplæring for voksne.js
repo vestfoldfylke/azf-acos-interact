@@ -90,7 +90,7 @@ module.exports = {
             Status: 'J',
             Title: 'Søknad om permisjon - Videregående opplæring for voksne',
             // UnofficialTitle: '',
-            Archive: 'Elevdokument',
+            Archive: 'Sensitivt elevdokument',
             CaseNumber: elevmappe.CaseNumber
           }
         }
