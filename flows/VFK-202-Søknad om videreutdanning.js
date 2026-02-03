@@ -151,7 +151,8 @@ module.exports = {
               Studiested: jsonData.Videreutdanning.Studiested || 'Studiested mangler',
               Semester: jsonData.Søker.Semester || 'Semester mangler',
               Studiepoeng: jsonData.Videreutdanning.Antall_studiepo || 'Studiepoeng mangler',
-              Ordning: jsonData.Søker.Aktuell_ordning || 'Ordning mangler'
+              Ordning: jsonData.Søker.Aktuell_ordning || 'Ordning mangler',
+              Acos_x002d_refId: flowStatus.refId || 'Mangler refId'
             }
           }
         ]
