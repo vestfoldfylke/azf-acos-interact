@@ -1,4 +1,4 @@
-const description = 'Bestille grafiske tjenester. Eier: Christian Brekke, kommunikasjon'
+const description = 'Avtale om videreutdanning'
 // const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -150,7 +150,7 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Oppllæring og tannhelse',
+          company: 'Opplæring og tannhelse',
           department: 'Kompetanse og pedagogisk utvikling',
           description,
           type: 'Avtale om videreutdanning', // Required. A short searchable type-name that distinguishes the statistic element
