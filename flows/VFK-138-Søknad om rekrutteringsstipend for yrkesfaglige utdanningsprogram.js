@@ -104,7 +104,7 @@ module.exports = {
             uploadFormAttachments: false,
             fields: {
               Title: flowStatus.parseJson.result.SavedValues.Login.UserID || 'Mangler fødselsnummer', // husk å bruke internal name på kolonnen
-              Etternavn: flowStatus.parseJson.result.SavedValues.Logi.LastName || 'Mangler etternavn',
+              Etternavn: flowStatus.parseJson.result.SavedValues.Login.LastName || 'Mangler etternavn',
               Fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || 'Mangler fornavn',
               Bostedskommune: jsonData.Informasjon_om_soker.Bostedskommune || 'Mangler bostedskommune',
               E_x002d_postadresse: jsonData.Informasjon_om_soker.Epost || 'Mangler epost',
