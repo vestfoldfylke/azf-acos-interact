@@ -107,6 +107,7 @@ module.exports = {
   closeCase: {
     enabled: false
   },
+
   sharepointList: {
     enabled: true,
     options: {
@@ -133,6 +134,7 @@ module.exports = {
       }
     }
   },
+
   statistics: {
     enabled: true,
     options: {
@@ -149,6 +151,7 @@ module.exports = {
       }
     }
   },
+
   failOnPurpose: {
     enabled: false
   }
