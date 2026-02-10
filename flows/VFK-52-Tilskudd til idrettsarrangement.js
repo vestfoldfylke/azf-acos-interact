@@ -109,7 +109,7 @@ module.exports = {
               Tildeltarranegement: jsonData.Idrettsarrangement.Beskrivelse.Har_dere_fatt_tildelt_ar,
               Beskrivelse: jsonData.Idrettsarrangement.Beskrivelse.Her_ønsker_vi_a,
               Tilskudd: jsonData._konomi.Tilskudd_til_id.Hva_soker_du_om_tilskudd,
-              Sumutgifter: jsonData._konomi.Gruppe9.Sum_utgi,
+              Sumutgifter: jsonData._konomi.Gruppe9.Sum_utgifter,
               S_x00f8_knadssum: jsonData._konomi.Soknadssum2.Soknadssum_til_fylkeskom,
               E_x002d_post: jsonData.Informasjon_om_soker.Kontaktopplysninger.E_postadresse3 || jsonData.Informasjon_om_soker.Kontaktopplysninger.E_postadresse2,
               Organisasjonsnummer: jsonData.Informasjon_om_soker.Informasjon_om_soker2.Organisasjon.Organisasjon_orgnr.replaceAll(' ', ''),
