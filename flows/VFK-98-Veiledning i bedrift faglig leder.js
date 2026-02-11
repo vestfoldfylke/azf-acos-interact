@@ -27,7 +27,7 @@ module.exports = {
       */
       mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
         return {
-          ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
+          ssn: flowStatus.parseJson.result.DialogueInstance.Larlingen.Larlingens_fodselsnummer
         }
       }
     }
