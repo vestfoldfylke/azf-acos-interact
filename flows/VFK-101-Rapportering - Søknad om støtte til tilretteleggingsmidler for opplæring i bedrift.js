@@ -96,7 +96,7 @@ module.exports = {
             Title: 'Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift',
             // UnofficialTitle: '',
             Archive: 'Sensitivt elevdokument',
-            CaseNumber: flowStatus.syncElevmappe.result.elevmappe
+            CaseNumber: flowStatus.syncElevmappe.result.elevmappe.CaseNumber
           }
         }
       }
