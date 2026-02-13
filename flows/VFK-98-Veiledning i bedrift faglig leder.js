@@ -1,4 +1,4 @@
-const description = 'Sender til elevmappe. Dette er det usignerte skjemaet som sendes til lærling for signatur'
+const description = 'Sender til elevmappe.'
 const { nodeEnv } = require('../config')
 module.exports = {
   config: {
