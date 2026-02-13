@@ -33,6 +33,18 @@ module.exports = {
     }
   },
 
+  syncPrivatePerson: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+        // Mapping av verdier fra XML-avleveringsfil fra Acos.
+        return {
+          ssn: flowStatus.parseJson.result.SavedValues.Login.UserID.replaceAll(' ', '')
+        }
+      }
+    }
+  },
+
   archive: {
     enabled: true,
     options: {
