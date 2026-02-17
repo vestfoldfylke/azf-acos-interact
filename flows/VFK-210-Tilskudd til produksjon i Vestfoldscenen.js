@@ -115,7 +115,8 @@ module.exports = {
               Totalkostnad: jsonData.Økonomi.Oppsummering.Sum_utgifter,
               Andre_x0020_inntekter: jsonData.Økonomi.Oppsummering.Andre_inntekter1,
               Lenke: jsonData.Økonomi.Lenke_til_video,
-              Dokumentnummer_x0020_i_x0020_360: flowStatus.archive.result.DocumentNumber
+              Dokumentnummer_x0020_i_x0020_360: flowStatus.archive.result.DocumentNumber,
+              Acos_x0020_refid: flowStatus.parseJson.result.Metadata.ReferenceId.Value
             }
           }
         ]
