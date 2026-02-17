@@ -116,7 +116,7 @@ module.exports = {
           method: 'CreateDocument',
           parameter: {
             AccessCode: 'U',
-            AccessGroup: 'Team Infrastruktur',
+            AccessGroup: 'Alle',
             Category: 'Dokument inn',
             Contacts: [
               {
