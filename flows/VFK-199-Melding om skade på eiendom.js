@@ -122,7 +122,7 @@ module.exports = {
               {
                 Role: 'Avsender',
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID, // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
-                IsUnofficial: true
+                IsUnofficial: false
               }
             ],
             DocumentDate: new Date().toISOString(),
