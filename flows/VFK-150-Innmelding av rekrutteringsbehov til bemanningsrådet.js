@@ -6,6 +6,7 @@ module.exports = {
     enabled: true,
     doNotRemoveBlobs: false
   },
+
   parseJson: {
     enabled: true,
     options: {
@@ -33,7 +34,16 @@ module.exports = {
               Sektor: jsonData.Informasjon_om_.Stilling.Sektor,
               Seksjon: jsonData.Informasjon_om_.Stilling.Seksjon,
               Rekrutterendeleder: jsonData.Informasjon_om_.Rekrutterende_l,
-              Stillingsbenevnelse: jsonData.Informasjon_om_.Stillingsbenevn,
+              // Stillingsbenevnelse: jsonData.Informasjon_om_.Stillingsbenevn, // Erstattet av tittel kode og kapittel
+              Stillingstittel: jsonData.Informasjon_om_.Stillingstittel,
+              Stillingskode: jsonData.Informasjon_om_.Stillingskode,
+              Kapittel: jsonData.Informasjon_om_.Kapitteltilhøri,
+              Gjennomf_x00f8_rt_x0020_kompetan: jsonData.Informasjon_om_.Er_kompetanseka,
+              Kompetansekartlegging_x003a__x00: jsonData.Informasjon_om_.Beskriv_hva_som, // hva er gjort
+              Kan_x0020_oppgavene_x0020_l_x00f: jsonData.Informasjon_om_.Kan_andre_ansat, // løses ved kompetanseheving
+              Har_x0020_andre_x0020_kapasitet_: jsonData.Informasjon_om_.Har_andre_anset, // har andre kapasitet
+              Kan_x0020_oppgavene_x0020_effekt: jsonData.Informasjon_om_.Kan_oppgavene_e, // effektiviseres eller forenkles
+              Kan_x0020_oppgavene_x0020_automa: jsonData.Informasjon_om_.Kan_oppgavene_a, // kan oppgavene automatiseres
               Stillingstype: jsonData.Informasjon_om_.Fast_midlertidi,
               Kvalifikasjonskrav: jsonData.Informasjon_om_.Kvalifikasjonsk,
               Beskrivelse: jsonData.Informasjon_om_.Beskrivelse_av_,
@@ -50,6 +60,7 @@ module.exports = {
       }
     }
   },
+
   statistics: {
     enabled: true,
     options: {
@@ -68,6 +79,7 @@ module.exports = {
       }
     }
   },
+
   failOnPurpose: {
     enabled: false
   }
