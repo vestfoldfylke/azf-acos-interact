@@ -49,7 +49,7 @@ module.exports = {
               Beskrivelse: jsonData.Informasjon_om_.Beskrivelse_av_,
               Prioritet: jsonData.Informasjon_om_.Prioritet,
               Finansiering: jsonData.Informasjon_om_.Finansiering,
-              Konskv_x002e_avikkeansettelse: jsonData.Konsekvenser_av,
+              Konskv_x002e_avikkeansettelse: jsonData.Informasjon_om_.Konsekvenser_av,
               Evt_x002e_kommentar: jsonData.Informasjon_om_.Eventuelle_komm,
               Telefon: jsonData.Informasjon_om_.Innsender.Telefon1,
               E_x002d_post0: jsonData.Informasjon_om_.Innsender.E_post
