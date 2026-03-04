@@ -71,7 +71,8 @@ module.exports = {
             Title: 'Behovsmelding - kollektiv kompetanseutvikling',
             Archive: 'Saksdokument',
             CaseNumber: nodeEnv === 'production' ? '26/04878' : '26/00025',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200017' : '200020', // Seksjon Kompetanse og pedagogisk utvikling - Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
+            // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200017' : '200020', // Seksjon Kompetanse og pedagogisk utvikling - Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
+            ResponsiblePersonEmail: 'tonje.hareide@vestfoldfylke.no',
             AccessCode: 'U',
             Paragraph: '',
             AccessGroup: 'Alle'
