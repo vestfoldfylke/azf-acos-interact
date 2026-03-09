@@ -1,4 +1,4 @@
-const description = 'Regionalt kulturfond Vestfold'
+const description = 'Tilskuddsordning økt inkludering - rapportering'
 const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -135,7 +135,7 @@ module.exports = {
           company: 'Samfunnsutvikling',
           department: 'Kultur',
           description, // Required. A description of what the statistic element represents
-          type: 'Regionalt kulturfond Vestfold', // Required. A short searchable type-name that distinguishes the statistic element
+          type: 'Tilskuddsordning økt inkludering - rapportering', // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }
