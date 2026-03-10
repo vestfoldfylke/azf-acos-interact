@@ -110,6 +110,7 @@ module.exports = {
               Title: jsonData.Prosjekt.Info_om_prosjek.Prosjekttittel,
               Kategori: jsonData.Prosjekt.Info_om_prosjek.Velg_kategori,
               Organisasjon: jsonData.Prosjekt.Informasjon_om_.Organisasjon.Organisasjonsna,
+              Organisasjonsnummer: jsonData.Prosjekt.Informasjon_om_.Organisasjon.Organisasjonsnu,
               Samarbeidspartnere: jsonData.Rapport_og_eval.Rapport.Hvem_har_dere_s,
               Gjennomf_x00f8_ring: jsonData.Rapport_og_eval.Rapport.Beskriv_kort_gj,
               Hvor: jsonData.Rapport_og_eval.Rapport.Hvor_har_tiltak,
