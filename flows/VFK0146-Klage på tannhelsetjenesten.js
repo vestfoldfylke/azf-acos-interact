@@ -37,6 +37,7 @@ module.exports = {
             Title: 'Tannbehandling',
             UnofficialTitle: `Tannbehandling - ${xmlData.Fornavn} ${xmlData.Etternavn}`,
             Status: 'B',
+            Project: '26-129',
             AccessCode: '13',
             Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
             JournalUnit: 'Sentralarkiv',
