@@ -1,6 +1,6 @@
 {
   "name": "azf-acos-interact",
-  "version": "1.5.92",
+  "version": "1.5.93",
   "description": "Handles forms from Acos",
   "scripts": {
     "start": "func start",
