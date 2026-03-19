@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@azure/msal-node": "^3.7.3",
-    "@vestfoldfylke/loglady": "^1.3.0",
+    "@vestfoldfylke/loglady": "^1.5.2",
     "@vtfk/azure-blob-client": "^0.1.6",
     "@vtfk/sharepoint-rest-auth": "^1.1.0",
     "axios": "^1.3.4",
