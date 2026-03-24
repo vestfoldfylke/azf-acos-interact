@@ -1,4 +1,4 @@
-const description = 'Tilleggsavtale om hjemmekontor'
+const description = 'Databriller'
 module.exports = {
   config: {
     enabled: true,
