@@ -32,7 +32,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: "Resolve Project Dependencies Using Npm, Build and Test"
-        shell: pwsh
+        shell: bash
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           npm ci
@@ -41,7 +41,7 @@ jobs:
           popd
       
       - name: "Resolve Production Project Dependencies Using Npm"
-        shell: pwsh
+        shell: bash
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           npm ci --omit=dev
