@@ -4,22 +4,21 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   handleProject: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
         return {
-          service: 'ProjectService',
-          method: 'CreateProject',
+          service: "ProjectService",
+          method: "CreateProject",
           parameter: {
             Title: `Prosjekttittel - ${flowStatus.parseXml.result.someData.name}`,
-            ResponsiblePersonEmail: 'ein saksbehandlar',
+            ResponsiblePersonEmail: "ein saksbehandlar",
             Contacts: [
               {
-                Role: 'Kontakt',
+                Role: "Kontakt",
                 ReferenceNumber: flowStatus.parseXml.result.someData.fnr
               }
             ]
@@ -36,9 +35,9 @@ module.exports = {
           ExternalId: flowStatus.parseXml.archiveData.guid // check for exisiting project with external ID
         }
       },
-      getProjectParameter3: (flowStatus) => {
+      getProjectParameter3: (_flowStatus) => {
         return {
-          ProjectNumber: '23-123' // archive to this project only (project number defined here) (samleprosjekt)
+          ProjectNumber: "23-123" // archive to this project only (project number defined here) (samleprosjekt)
         }
       },
       getProjectParameter4: (flowStatus) => {

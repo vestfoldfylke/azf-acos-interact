@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 // const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
@@ -8,8 +8,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   /* Felter fra Acos:
 ArchiveData {
@@ -60,7 +59,8 @@ ArchiveData {
   syncElevmappe: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr
@@ -81,27 +81,27 @@ ArchiveData {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
 
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Nettskolen',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            AccessGroup: "Nettskolen",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: xmlData.Fnr,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -109,27 +109,26 @@ ArchiveData {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Påmelding til nettundervisning',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Påmelding til nettundervisning",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200341' : '200208', // Horten vgs nettskolen
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200341" : "200208", // Horten vgs nettskolen
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Påmelding til nettundervisning',
-            UnofficialTitle: 'Påmelding til nettundervisning',
-            Archive: 'Elevdokument',
+            Status: "J",
+            Title: "Påmelding til nettundervisning",
+            UnofficialTitle: "Påmelding til nettundervisning",
+            Archive: "Elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -149,12 +148,12 @@ ArchiveData {
         const fagliste = Array.isArray(xmlData.ValgteFag.fagliste) ? xmlData.ValgteFag.fagliste : [xmlData.ValgteFag.fagliste] // Sjekker om det er mer enn ett fag i lista (altså et array). Hvis ikke lag et array med det ene elementet
         for (const fag of fagliste) {
           const sharepointElement = {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Title: xmlData.Fnr || "Mangler fnr", // husk å bruke internal name på kolonnen
               Fornavnelev: xmlData.Fornavn,
               Etternavnelev: xmlData.Etternavn,
               Fylke: xmlData.Fylke,
@@ -202,10 +201,10 @@ ArchiveData {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Nettskolen',
+          company: "Opplæring",
+          department: "Nettskolen",
           description,
-          type: 'Nettskolen - påmelding til nettundervisning', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Nettskolen - påmelding til nettundervisning", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like

@@ -1,4 +1,4 @@
-const description = 'Bruk av vei og sideareal'
+const description = "Bruk av vei og sideareal"
 // const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -42,12 +42,12 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bruk%20av%20vei%20og%20sideareal/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bruk%20av%20vei%20og%20sideareal/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bruk%20av%20vei%20og%20sideareal/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bruk%20av%20vei%20og%20sideareal/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: flowStatus.refId || 'Mangler title', // husk å bruke internal name på kolonnen
+              Title: flowStatus.refId || "Mangler title", // husk å bruke internal name på kolonnen
               Types_x00f8_ker: xmlData.TypeSoker,
               Organisasjonsnummer: xmlData.OrgNr,
               Organisasjonsnavn: xmlData.OrgNavn,
@@ -74,13 +74,13 @@ ArchiveData {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Samferdsel',
-          department: 'Seksjon veiforvaltning',
+          company: "Samferdsel",
+          department: "Seksjon veiforvaltning",
           description, // Required. A description of what the statistic element represents
-          type: 'Bruk av vei og sideareal' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Bruk av vei og sideareal" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // documentNumber:  // Optional. anything you like
         }

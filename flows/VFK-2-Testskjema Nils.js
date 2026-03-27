@@ -6,9 +6,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueInstance) => {
+      mapper: (_dialogueInstance) => {
         return {
-          async: 'streng'
+          async: "streng"
         }
       }
     }

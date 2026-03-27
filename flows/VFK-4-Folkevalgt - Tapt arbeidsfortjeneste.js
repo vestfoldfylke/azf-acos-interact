@@ -1,4 +1,4 @@
-const description = 'Tapt arbeidsfortjeneste' // Anita Jørgensen er eier
+const description = "Tapt arbeidsfortjeneste" // Anita Jørgensen er eier
 module.exports = {
   config: {
     enabled: true,
@@ -7,10 +7,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -21,13 +20,13 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance.Refusjon_av_tap
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/Tapt%20arbeidsfortjeneste/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/Tapt%20arbeidsfortjeneste/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/Tapt%20arbeidsfortjeneste/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/Tapt%20arbeidsfortjeneste/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
-              Title: flowStatus.parseJson.result.SavedValues.Login.LastName || 'Mangler etternavn', // husk å bruke internal name på kolonnen
-              Innsender_x0020_fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || 'Mangler fornavn',
+              Title: flowStatus.parseJson.result.SavedValues.Login.LastName || "Mangler etternavn", // husk å bruke internal name på kolonnen
+              Innsender_x0020_fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || "Mangler fornavn",
               Refusjonstype: jsonData.Refusjon_av_tap,
               Organisasjonsnavn: jsonData.Arbeidsgiver.Organisasjon1.Organisasjonsna1,
               Organisasjonsnummer: jsonData.Arbeidsgiver.Organisasjon1.Organisasjonsnu1,
@@ -43,13 +42,13 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Dokumentasjon og politisk støtte',
-          department: 'fylkestinget',
+          company: "Dokumentasjon og politisk støtte",
+          department: "fylkestinget",
           description, // Required. A description of what the statistic element represents
-          type: 'Tapt arbeidsfortjeneste' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Tapt arbeidsfortjeneste" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
         }
       }

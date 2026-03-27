@@ -1,5 +1,5 @@
-const description = 'Behovsmelding - kollektiv kompetanseutvikling'
-const { nodeEnv } = require('../config')
+const description = "Behovsmelding - kollektiv kompetanseutvikling"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -10,10 +10,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -21,10 +20,11 @@ module.exports = {
   syncEnterprise: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          orgnr: flowStatus.parseJson.result.DialogueInstance.Innsender_og_sa.Organisasjon.Organisasjonsnu.replaceAll(' ', '')
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Innsender_og_sa.Organisasjon.Organisasjonsnu.replaceAll(" ", "")
         }
       }
     }
@@ -34,53 +34,52 @@ module.exports = {
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
-                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Innsender_og_sa.Organisasjon.Organisasjonsnu.replaceAll(' ', ''),
-                Role: 'Avsender',
+                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Innsender_og_sa.Organisasjon.Organisasjonsnu.replaceAll(" ", ""),
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Behovsmelding - kollektiv kompetanseutvikling',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Behovsmelding - kollektiv kompetanseutvikling",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Status: 'J',
+            Status: "J",
             DocumentDate: new Date().toISOString(),
-            Title: 'Behovsmelding - kollektiv kompetanseutvikling',
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '26/04878' : '26/00025',
+            Title: "Behovsmelding - kollektiv kompetanseutvikling",
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "26/04878" : "26/00025",
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200017' : '200020', // Seksjon Kompetanse og pedagogisk utvikling - Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
-            ResponsiblePersonEmail: 'tonje.hareide@vestfoldfylke.no',
-            AccessCode: 'U',
-            Paragraph: '',
-            AccessGroup: 'Alle'
+            ResponsiblePersonEmail: "tonje.hareide@vestfoldfylke.no",
+            AccessCode: "U",
+            Paragraph: "",
+            AccessGroup: "Alle"
           }
         }
       }
     }
-
   },
   signOff: {
     enabled: false
@@ -98,15 +97,15 @@ module.exports = {
         // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/Kompetanseforkvalitet/Lists/Behovsmelding/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/Kompetanseforkvalitet/Lists/Behovsmelding/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/Kompetanseforkvalitet/Lists/Behovsmelding/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/Kompetanseforkvalitet/Lists/Behovsmelding/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
               Title: flowStatus.archive.result.DocumentNumber,
               Organisasjonsnavn: jsonData.Innsender_og_sa.Organisasjon.Organisasjonsna,
               Organisasjonsnummer: jsonData.Innsender_og_sa.Organisasjon.Organisasjonsnu,
-              Samarbeidspartner: jsonData.Innsender_og_sa.Samarbeidspartn.map(partner => `${partner.Navn_på_organia} (${partner.Kontaktperson})`).join(', '),
+              Samarbeidspartner: jsonData.Innsender_og_sa.Samarbeidspartn.map((partner) => `${partner.Navn_på_organia} (${partner.Kontaktperson})`).join(", "),
               Tiltak: jsonData.Informasjon_om_1.Hva_slags_tilta,
               M_x00e5_lgruppe: jsonData.Informasjon_om_1.Hvem_er_deltake, // Deltakere
               M_x00e5_l: jsonData.Informasjon_om_1.Hva_er_forvente,
@@ -127,10 +126,10 @@ module.exports = {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Kultur',
-          department: '',
+          company: "Kultur",
+          department: "",
           description, // Required. A description of what the statistic element represents
-          type: 'Tilskudd til idrettsarrangement og regionale idrettsanlegg', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Tilskudd til idrettsarrangement og regionale idrettsanlegg", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }

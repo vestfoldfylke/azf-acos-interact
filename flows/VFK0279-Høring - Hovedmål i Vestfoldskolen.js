@@ -1,5 +1,5 @@
-const description = 'Svar på høring – Hovedmål i Vestfoldskolen'
-const { nodeEnv } = require('../config')
+const description = "Svar på høring – Hovedmål i Vestfoldskolen"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -30,7 +30,8 @@ ArchiveData {
   syncPrivatePersonInnsender: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr
@@ -45,23 +46,23 @@ ArchiveData {
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
-                Role: 'Avsender',
+                Role: "Avsender",
                 ReferenceNumber: xmlData.Fnr,
                 IsUnofficial: false
               }
@@ -70,21 +71,21 @@ ArchiveData {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Svar på høring – Hovedmål i Vestfoldskolen',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Svar på høring – Hovedmål i Vestfoldskolen",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200017' : '200020', // Seksjon Kompetanse og pedagogisk utvikling
-            ResponsiblePersonEmail: nodeEnv === 'production' ? 'karen.anne.kjendlie@vestfoldfylke.no' : '',
-            Status: 'J',
-            AccessCode: 'U',
-            Title: 'Svar på høring – Hovedmål i Vestfoldskolen',
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '24/11859' : '24/00037'
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200017" : "200020", // Seksjon Kompetanse og pedagogisk utvikling
+            ResponsiblePersonEmail: nodeEnv === "production" ? "karen.anne.kjendlie@vestfoldfylke.no" : "",
+            Status: "J",
+            AccessCode: "U",
+            Title: "Svar på høring – Hovedmål i Vestfoldskolen",
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "24/11859" : "24/00037"
           }
         }
       }
@@ -105,13 +106,13 @@ ArchiveData {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Seksjon kompetanse og pedagogisk utvikling',
+          company: "Opplæring",
+          department: "Seksjon kompetanse og pedagogisk utvikling",
           description,
-          type: 'Svar på høring – Hovedmål i Vestfoldskolen', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Svar på høring – Hovedmål i Vestfoldskolen", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

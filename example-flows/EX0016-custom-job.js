@@ -14,16 +14,18 @@ module.exports = {
   },
   customJobLagEtternavn: {
     enabled: true,
-    runAfter: 'parseJson', // Required
-    customJob: async (jobDef, flowStatus) => { // Required and must be named customJob, be async function, and have parameters jobDef and flowStatus
+    runAfter: "parseJson", // Required
+    customJob: async (_jobDef, flowStatus) => {
+      // Required and must be named customJob, be async function, and have parameters jobDef and flowStatus
       // Her gjør du egt hva du vil altså
       return `${flowStatus.parseJson.result.fornavn}sen`
     }
   },
   customJobGjorEtternavnUpperCase: {
     enabled: true,
-    runAfter: 'customJobLagEtternavn', // Required
-    customJob: async (jobDef, flowStatus) => { // Required and must be named customJob, be async function, and have parameters jobDef and flowStatus
+    runAfter: "customJobLagEtternavn", // Required
+    customJob: async (_jobDef, flowStatus) => {
+      // Required and must be named customJob, be async function, and have parameters jobDef and flowStatus
       // Her gjør du egt hva du vil altså
       return `${flowStatus.customJobLagEtternavn.result.toUpperCase()}`
     }

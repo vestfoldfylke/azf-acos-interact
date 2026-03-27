@@ -1,4 +1,4 @@
-const description = 'Sender til Sharepoint'
+const description = "Sender til Sharepoint"
 // const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -10,10 +10,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -25,13 +24,13 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/KRIF-MarkedforMusikk-MFMprogramrd/Lists/MFM%20Alle%20programforslag/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/KRIF-MarkedforMusikk-MFMprogramrd/Lists/MFM%20Alle%20programforslag/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/KRIF-MarkedforMusikk-MFMprogramrd/Lists/MFM%20Alle%20programforslag/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/KRIF-MarkedforMusikk-MFMprogramrd/Lists/MFM%20Alle%20programforslag/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
               Kontaktinformasjon: `Navn: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo.Navn} E-post: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo.E_post} Mobil: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo.Mobil_}`,
-              Status: 'Avventer',
+              Status: "Avventer",
               Title: jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Tittel_pa_produksjon,
               Teknisk: `Spesielle tekniske behov: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Er_det_andre_sp} - Ønsker å bruke Markedets teknikere: ${jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Ønsker_dere_å_b} - Antall teknikere (dersom egne): ${jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Hvor_mange_tekn}`,
               Varighet: jsonData.Markedet_for_mu.Informasjon_om_produksjo2.Varighet_på_der,
@@ -53,14 +52,14 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'SAMU',
-          department: 'MFM',
+          company: "SAMU",
+          department: "MFM",
           description,
-          type: 'innmelding av produksjon' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "innmelding av produksjon" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           // documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like

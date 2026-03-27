@@ -1,5 +1,5 @@
-const description = 'Regionalt kulturfond Vestfold'
-const { nodeEnv } = require('../config')
+const description = "Regionalt kulturfond Vestfold"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -20,10 +19,11 @@ module.exports = {
   syncEnterprise: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette/oppdatere en virksomhet i P3360
+      mapper: (flowStatus) => {
+        // for å opprette/oppdatere en virksomhet i P3360
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier for å opprette privatperson med fiktivt fødselsnummer
         return {
-          orgnr: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon1.Organisasjonsnu1.replaceAll(' ', '')
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon1.Organisasjonsnu1.replaceAll(" ", "")
         }
       }
     }
@@ -35,31 +35,31 @@ module.exports = {
       mapper: (flowStatus) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return {
-          service: 'CaseService',
-          method: 'CreateCase',
+          service: "CaseService",
+          method: "CreateCase",
           parameter: {
-            CaseType: 'Sak',
-            Project: nodeEnv === 'production' ? '25-176' : '25-4',
+            CaseType: "Sak",
+            Project: nodeEnv === "production" ? "25-176" : "25-4",
             Title: `Regionalt Kulturfond Vestfold - ${jsonData.Beskrivelse_av_.Om_prosjektet.Søknadskategori} - ${jsonData.Beskrivelse_av_.Om_prosjektet.Navn_på_prosjek} - ${jsonData.Informasjon_om_.Organisasjon1.Organisasjonsna1}`,
             // UnofficialTitle: ,
-            Status: 'B',
-            JournalUnit: 'Sentralarkiv',
-            SubArchive: 'Sakarkiv',
+            Status: "B",
+            JournalUnit: "Sentralarkiv",
+            SubArchive: "Sakarkiv",
             ArchiveCodes: [
               {
-                ArchiveCode: '243',
-                ArchiveType: 'FELLESKLASSE PRINSIPP',
+                ArchiveCode: "243",
+                ArchiveType: "FELLESKLASSE PRINSIPP",
                 Sort: 1
               },
               {
-                ArchiveCode: 'C00',
-                ArchiveType: 'FAGKLASSE PRINSIPP',
+                ArchiveCode: "C00",
+                ArchiveType: "FAGKLASSE PRINSIPP",
                 Sort: 2
               }
             ],
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
-            ResponsiblePersonEmail: nodeEnv === 'production' ? 'yvonne.pleym@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
-            AccessGroup: 'Alle'
+            ResponsiblePersonEmail: nodeEnv === "production" ? "yvonne.pleym@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no",
+            AccessGroup: "Alle"
           }
         }
       }
@@ -71,54 +71,53 @@ module.exports = {
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
-                ReferenceNumber: jsonData.Informasjon_om_.Organisasjon1.Organisasjonsnu1.replaceAll(' ', ''),
-                Role: 'Avsender',
+                ReferenceNumber: jsonData.Informasjon_om_.Organisasjon1.Organisasjonsnu1.replaceAll(" ", ""),
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Søknad om midler fra Regionalt Kulturfond Vestfold',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Søknad om midler fra Regionalt Kulturfond Vestfold",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Status: 'J',
+            Status: "J",
             DocumentDate: new Date().toISOString(),
             Title: `Søknad om midler fra Regionalt Kulturfond Vestfold - ${jsonData.Beskrivelse_av_.Om_prosjektet.Søknadskategori} - ${jsonData.Beskrivelse_av_.Om_prosjektet.Navn_på_prosjek}`,
             // UnofficialTitle: 'Søknad om utsetting av ferskvannsfisk',
-            Archive: 'Saksdokument',
+            Archive: "Saksdokument",
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
-            ResponsiblePersonEmail: nodeEnv === 'production' ? 'yvonne.pleym@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
-            AccessCode: 'U'
+            ResponsiblePersonEmail: nodeEnv === "production" ? "yvonne.pleym@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no",
+            AccessCode: "U"
             // Paragraph: 'Offl. § 26 femte ledd',
             // AccessGroup: 'Seksjon Kulturarv'
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -135,8 +134,8 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Regionalt%20kulturfond%202026/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Regionalt%20kulturfond%202026/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Regionalt%20kulturfond%202026/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Regionalt%20kulturfond%202026/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -165,8 +164,8 @@ module.exports = {
               Sum_x0020_inntekter: jsonData.Budsjett__finan.Sum_inntekter,
               Sum_x0020_utgifter: jsonData.Budsjett__finan.Sum_utgifter,
               Dokumentnummer_x0020_i_x0020_p36: flowStatus.archive.result.DocumentNumber,
-              Acos_x0020_RefId: flowStatus.parseJson.result.Metadata.ReferenceId.Value || 'Ingen Acos RefId',
-              Kommune: jsonData.Beskrivelse_av_.Om_prosjektet.Hvor_foregår_ak || 'Ingen kommuner valgt'
+              Acos_x0020_RefId: flowStatus.parseJson.result.Metadata.ReferenceId.Value || "Ingen Acos RefId",
+              Kommune: jsonData.Beskrivelse_av_.Om_prosjektet.Hvor_foregår_ak || "Ingen kommuner valgt"
             }
           }
         ]
@@ -179,10 +178,10 @@ module.exports = {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Samfunnsutvikling',
-          department: 'Kultur',
+          company: "Samfunnsutvikling",
+          department: "Kultur",
           description, // Required. A description of what the statistic element represents
-          type: 'Regionalt kulturfond Vestfold', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Regionalt kulturfond Vestfold", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }

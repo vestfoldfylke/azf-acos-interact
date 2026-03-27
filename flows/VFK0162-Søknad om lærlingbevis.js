@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -7,8 +7,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
 
   // Synkroniser elevmappe
@@ -20,7 +19,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr
@@ -30,7 +30,8 @@ module.exports = {
   },
 
   // Arkiverer dokumentet i elevmappa
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       /*
@@ -41,26 +42,26 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '26',
-            AccessGroup: 'Fagopplæring',
-            Category: 'Dokument inn',
+            AccessCode: "26",
+            AccessGroup: "Fagopplæring",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: xmlData.Fnr,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -68,27 +69,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Søknad om lærlingbevis',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Søknad om lærlingbevis",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 26 femte ledd',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            Paragraph: "Offl. § 26 femte ledd",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Søknad om lærlingbevis',
+            Status: "J",
+            Title: "Søknad om lærlingbevis",
             // UnofficialTitle: '',
-            Archive: 'Elevdokument',
+            Archive: "Elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -143,13 +143,13 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'FAGOPPLÆRING',
+          company: "Opplæring",
+          department: "FAGOPPLÆRING",
           description,
-          type: 'Søknad om lærlingbevis', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Søknad om lærlingbevis", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

@@ -1,5 +1,5 @@
-const description = 'Søknad om tilskudd til verneverdige kulturminner'
-const { nodeEnv } = require('../config')
+const description = "Søknad om tilskudd til verneverdige kulturminner"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -13,10 +13,12 @@ module.exports = {
   syncPrivatePerson: {
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.TypeSoker === 'som privatperson'
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.TypeSoker === "som privatperson"
       },
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr
@@ -27,13 +29,15 @@ module.exports = {
   syncEnterprise: {
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.TypeSoker === 'på vegne av en organisasjon eller stiftelse'
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.TypeSoker === "på vegne av en organisasjon eller stiftelse"
       },
-      mapper: (flowStatus) => { // for å opprette/oppdatere en virksomhet i P3360
+      mapper: (flowStatus) => {
+        // for å opprette/oppdatere en virksomhet i P3360
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier for å opprette privatperson med fiktivt fødselsnummer
         return {
-          orgnr: flowStatus.parseXml.result.ArchiveData.OrgNr.replaceAll(' ', '')
+          orgnr: flowStatus.parseXml.result.ArchiveData.OrgNr.replaceAll(" ", "")
         }
       }
     }
@@ -43,99 +47,98 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         return {
-          service: 'CaseService',
-          method: 'CreateCase',
+          service: "CaseService",
+          method: "CreateCase",
           parameter: {
-            CaseType: 'Sak',
-            Project: nodeEnv === 'production' ? '25-134' : '24-1',
+            CaseType: "Sak",
+            Project: nodeEnv === "production" ? "25-134" : "24-1",
             Title: `Tilskudd til verneverdige kulturminner 2025 - ${flowStatus.parseXml.result.ArchiveData.NavnKulturminne}`,
             // UnofficialTitle: ,
-            Status: 'B',
-            JournalUnit: 'Sentralarkiv',
-            SubArchive: 'Sakarkiv',
+            Status: "B",
+            JournalUnit: "Sentralarkiv",
+            SubArchive: "Sakarkiv",
             ArchiveCodes: [
               {
-                ArchiveCode: '223',
-                ArchiveType: 'FELLESKLASSE PRINSIPP',
+                ArchiveCode: "223",
+                ArchiveType: "FELLESKLASSE PRINSIPP",
                 Sort: 1
               },
               {
-                ArchiveCode: 'C50',
-                ArchiveType: 'FAGKLASSE PRINSIPP',
+                ArchiveCode: "C50",
+                ArchiveType: "FAGKLASSE PRINSIPP",
                 Sort: 2
               }
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200022' : '200032',
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200022" : "200032",
             // ResponsiblePersonEmail: '',
-            AccessGroup: 'Alle'
+            AccessGroup: "Alle"
           }
         }
       }
     }
   },
   // Arkiverer dokumentet i 360
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const caseNumber = flowStatus.handleCase.result.CaseNumber
         let sender
-        if (flowStatus.parseXml.result.ArchiveData.TypeSoker === 'på vegne av en organisasjon eller stiftelse') {
-          sender = xmlData.OrgNr.replaceAll(' ', '')
+        if (flowStatus.parseXml.result.ArchiveData.TypeSoker === "på vegne av en organisasjon eller stiftelse") {
+          sender = xmlData.OrgNr.replaceAll(" ", "")
         } else {
           sender = xmlData.Fnr
         }
         // const caseNumber = nodeEnv === 'production' ? 'må fylles inn!' : '23/00115'
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: sender,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Søknad om tilskudd til verneverdige kulturminner',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Søknad om tilskudd til verneverdige kulturminner",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Status: 'J',
+            Status: "J",
             DocumentDate: new Date().toISOString(),
             Title: `Tilskudd til verneverdige kulturminner 2025 - ${flowStatus.parseXml.result.ArchiveData.NavnKulturminne}`,
             // UnofficialTitle: 'Søknad om utsetting av ferskvannsfisk',
-            Archive: 'Saksdokument',
+            Archive: "Saksdokument",
             CaseNumber: caseNumber,
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200022' : '200032', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200022" : "200032", // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
             // ResponsiblePersonEmail: '',
-            AccessCode: '26',
-            Paragraph: 'Offl. § 26 femte ledd',
-            AccessGroup: 'Seksjon Kulturarv'
+            AccessCode: "26",
+            Paragraph: "Offl. § 26 femte ledd",
+            AccessGroup: "Seksjon Kulturarv"
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -152,12 +155,12 @@ module.exports = {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Tilskudd%20til%20verneverdige%20kulturminner%20i%20privat%20ei/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Tilskudd%20til%20verneverdige%20kulturminner%20i%20privat%20ei/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Tilskudd%20til%20verneverdige%20kulturminner%20i%20privat%20ei/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Tilskudd%20til%20verneverdige%20kulturminner%20i%20privat%20ei/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Etternavn || 'Mangler Etternavn', // husk å bruke internal name på kolonnen
+              Title: xmlData.Etternavn || "Mangler Etternavn", // husk å bruke internal name på kolonnen
               Fornavn: xmlData.Fornavn,
               Postnummer: xmlData.Postnummer,
               Sted: xmlData.Sted,
@@ -209,10 +212,10 @@ module.exports = {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Samfunnsutvikling',
-          department: 'Kulturarv',
+          company: "Samfunnsutvikling",
+          department: "Kulturarv",
           description, // Required. A description of what the statistic element represents
-          type: 'Tilskudd til verneverdige kulturminner', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Tilskudd til verneverdige kulturminner", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }

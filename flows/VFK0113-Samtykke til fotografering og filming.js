@@ -1,4 +1,4 @@
-const description = 'Sender til Sharepoint. Samme liste som VFK0112'
+const description = "Sender til Sharepoint. Samme liste som VFK0112"
 // const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -8,8 +8,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
 
   sharepointList: {
@@ -20,8 +19,8 @@ module.exports = {
         // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            testListUrl: '',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-Bilde-ogvideoarkiv-Samtykkeskjema2021/Lists/Samtykke',
+            testListUrl: "",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-Bilde-ogvideoarkiv-Samtykkeskjema2021/Lists/Samtykke",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -44,14 +43,14 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Stab',
-          department: 'Kommunikasjon',
+          company: "Stab",
+          department: "Kommunikasjon",
           description,
-          type: 'Samtykke til fotografering og filming' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Samtykke til fotografering og filming" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           // documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like

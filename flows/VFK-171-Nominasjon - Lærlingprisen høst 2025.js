@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -20,7 +19,8 @@ module.exports = {
   syncPrivatePerson: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -39,26 +39,26 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '5',
-            AccessGroup: 'Seksjon Fag- og yrkesopplæring',
-            Category: 'Dokument inn',
+            AccessCode: "5",
+            AccessGroup: "Seksjon Fag- og yrkesopplæring",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: jsonData.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
@@ -66,27 +66,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Nominasjon Lærlingprisen',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Nominasjon Lærlingprisen",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 5',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring,
+            Paragraph: "Offl. § 5",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring,
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Nominasjon Lærlingprisen - Våren 2026',
+            Status: "J",
+            Title: "Nominasjon Lærlingprisen - Våren 2026",
             UnofficialTitle: `Nominasjon Lærlingprisen - Våren 2026 - ${jsonData.DialogueInstance.Nominasjon.Informasjon_om_.Fornavn2} ${jsonData.DialogueInstance.Nominasjon.Informasjon_om_.Etternavn2}`,
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '26/03970' : '25/00091'
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "26/03970" : "25/00091"
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -104,8 +103,8 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Nominasjon%20%20lrlingprisen/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Nominasjon%20%20lrlingprisen/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Nominasjon%20%20lrlingprisen/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Nominasjon%20%20lrlingprisen/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -130,13 +129,13 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring og tannhelse',
-          department: 'Seksjon Fag- og yrkesopplæring',
+          company: "Opplæring og tannhelse",
+          department: "Seksjon Fag- og yrkesopplæring",
           description,
-          type: 'Nominasjon - lærlingprisen', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Nominasjon - lærlingprisen", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

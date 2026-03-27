@@ -1,9 +1,9 @@
-const { dispatcher } = require('../lib/dispatcher')
-const { logger } = require('@vestfoldfylke/loglady')
+const { dispatcher } = require("../lib/dispatcher")
+const { logger } = require("@vestfoldfylke/loglady")
 
-module.exports = async function (context, req) {
+module.exports = async (_context, _req) => {
   logger.logConfig({
-    prefix: 'azf-acos-interact - Dispatcher'
+    prefix: "azf-acos-interact - Dispatcher"
   })
   try {
     const result = await dispatcher()

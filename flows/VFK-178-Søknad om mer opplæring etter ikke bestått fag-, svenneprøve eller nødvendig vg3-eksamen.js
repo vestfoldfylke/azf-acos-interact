@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -8,10 +8,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -25,7 +24,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -45,27 +45,27 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const navn = flowStatus.parseJson.result.SavedValues.Login.FirstName + ' ' + flowStatus.parseJson.result.SavedValues.Login.LastName
-        const p360Attachments = attachments.map(att => {
+        const navn = `${flowStatus.parseJson.result.SavedValues.Login.FirstName} ${flowStatus.parseJson.result.SavedValues.Login.LastName}`
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Fagopplæring',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            AccessGroup: "Fagopplæring",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -73,27 +73,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Søknad om mer opplæring',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Søknad om mer opplæring",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Søknad om mer opplæring etter ikke bestått fag-/ svenneprøve eller nødvendig vg3-eksamen',
+            Status: "J",
+            Title: "Søknad om mer opplæring etter ikke bestått fag-/ svenneprøve eller nødvendig vg3-eksamen",
             UnofficialTitle: `Søknad om mer opplæring etter ikke bestått fag-/ svenneprøve eller nødvendig vg3-eksamen - ${navn}`,
-            Archive: 'Elevdokument',
+            Archive: "Elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -111,10 +110,10 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'FAGOPPLÆRING',
+          company: "Opplæring",
+          department: "FAGOPPLÆRING",
           description,
-          type: 'Søknad om mer opplæring etter ikke bestått fag-/ svenneprøve eller nødvendig vg3-eksamen', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Søknad om mer opplæring etter ikke bestått fag-/ svenneprøve eller nødvendig vg3-eksamen", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like

@@ -1,5 +1,5 @@
-const description = 'Klage på formelle feil under privatisteksamen'
-const { nodeEnv } = require('../config')
+const description = "Klage på formelle feil under privatisteksamen"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -26,7 +25,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -35,32 +35,33 @@ module.exports = {
     }
   },
   // Arkiverer dokumentet i 360
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const navn = flowStatus.parseJson.result.SavedValues.Login.FirstName + ' ' + flowStatus.parseJson.result.SavedValues.Login.LastName
-        const p360Attachments = attachments.map(att => {
+        const navn = `${flowStatus.parseJson.result.SavedValues.Login.FirstName} ${flowStatus.parseJson.result.SavedValues.Login.LastName}`
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Eksamen',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            AccessGroup: "Eksamen",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -68,20 +69,20 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Klage på formelle feil under privatisteksamen',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Klage på formelle feil under privatisteksamen",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200015' : '200018', // Seksjon Sektorstøtte, inntak og eksamen
-            Status: 'J',
-            Title: 'Klage på formelle feil under privatisteksamen',
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200015" : "200018", // Seksjon Sektorstøtte, inntak og eksamen
+            Status: "J",
+            Title: "Klage på formelle feil under privatisteksamen",
             UnofficialTitle: `Klage på formelle feil under privatisteksamen - ${navn}`,
-            Archive: 'Sensitivt elevdokument',
+            Archive: "Sensitivt elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
@@ -104,10 +105,10 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Eksamen',
+          company: "Opplæring",
+          department: "Eksamen",
           description, // Required. A description of what the statistic element represents
-          type: 'Klage på formelle feil under privatisteksamen', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Klage på formelle feil under privatisteksamen", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
           // skole: xmlData.SkoleNavn

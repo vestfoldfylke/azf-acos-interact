@@ -1,4 +1,4 @@
-const description = 'Sender til Sharepoint'
+const description = "Sender til Sharepoint"
 // const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -8,8 +8,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
 
   sharepointList: {
@@ -20,12 +19,12 @@ module.exports = {
         // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            testListUrl: '',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Droneteam/Lists/Flylogg%20for%20drone',
+            testListUrl: "",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/SAMF-Droneteam/Lists/Flylogg%20for%20drone",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: flowStatus.refId || 'Mangler refId', // husk å bruke internal name på kolonnen
+              Title: flowStatus.refId || "Mangler refId", // husk å bruke internal name på kolonnen
               Navn: xmlData.Navn,
               Mobilnummer: xmlData.Mobilnummer,
               E_x002d_postadresse: xmlData.Epost,
@@ -56,14 +55,14 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'SMM',
-          department: 'Dronegjengen',
+          company: "SMM",
+          department: "Dronegjengen",
           description,
-          type: 'Flylogg for drone' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Flylogg for drone" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           // documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like

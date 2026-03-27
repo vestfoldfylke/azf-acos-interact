@@ -5,8 +5,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   /*
 XML file from Acos:
@@ -41,8 +40,8 @@ ArchiveData {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return {
-          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
-          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx',
+          testListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx",
+          prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx",
           searchFilter: `fields/Fodselsnummer eq '${xmlData.Fnr}'`
         }
       }
@@ -55,13 +54,14 @@ ArchiveData {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (flowStatus.sharepointGetListItem.result.length !== 1) throw new Error('Fant ikke unik match i lista når vi kjørte sharepointGetListItem, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila')
+        if (flowStatus.sharepointGetListItem.result.length !== 1)
+          throw new Error("Fant ikke unik match i lista når vi kjørte sharepointGetListItem, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila")
         const id = flowStatus.sharepointGetListItem.result[0].id
         // merk at du kan også hente ut resten av listeelementets data. For eks. kolonnenavn og verdi i flowstatus.sharepointGetListItem.result[0].fields
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx",
             testItemId: id,
             prodItemId: id,
             uploadFormPdf: true,
@@ -83,8 +83,8 @@ ArchiveData {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return {
-          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
-          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx',
+          testListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx",
+          prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx",
           searchFilter: `fields/Fornavn eq '${xmlData.Fornavn}' and fields/Etternavn eq '${xmlData.Etternavn}'`
         }
       }
@@ -96,10 +96,11 @@ ArchiveData {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        return flowStatus.sharepointGetListItem.result.map(listElement => { // det opprettes en jobb pr element i id-lista
+        return flowStatus.sharepointGetListItem.result.map((listElement) => {
+          // det opprettes en jobb pr element i id-lista
           return {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx",
             testItemId: listElement.id,
             prodItemId: listElement.id,
             uploadFormPdf: true,

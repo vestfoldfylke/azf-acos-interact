@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -25,7 +24,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
         }
@@ -34,7 +34,8 @@ module.exports = {
   },
 
   // Arkiverer dokumentet i elevmappa
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       /*
@@ -43,26 +44,26 @@ module.exports = {
       },
       */
       mapper: (flowStatus, base64, attachments) => {
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Fagopplæring',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            AccessGroup: "Fagopplæring",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -70,27 +71,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Klage på fag-, svenne- eller kompetanseprøve',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Klage på fag-, svenne- eller kompetanseprøve",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Klage på fag-, svenne- eller kompetanseprøve',
+            Status: "J",
+            Title: "Klage på fag-, svenne- eller kompetanseprøve",
             // UnofficialTitle: '',
-            Archive: 'Elevdokument',
+            Archive: "Elevdokument",
             CaseNumber: flowStatus.syncElevmappe.result.elevmappe.CaseNumber
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -107,12 +107,12 @@ module.exports = {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'FAGOPPLÆRING',
+          company: "Opplæring",
+          department: "FAGOPPLÆRING",
           description,
-          type: 'Klage på fag-, svenne- eller kompetanseprøve', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Klage på fag-, svenne- eller kompetanseprøve", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

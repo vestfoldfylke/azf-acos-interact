@@ -1,5 +1,5 @@
-const description = 'Sender til samlesak'
-const { nodeEnv } = require('../config')
+const description = "Sender til samlesak"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -7,8 +7,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
 
   /*
@@ -41,24 +40,29 @@ module.exports = {
   syncEnterprise: {
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.TypeOrg !== 'Skole' && flowStatus.parseXml.result.ArchiveData.TypeOrg !== 'Prøvenemnd'
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.TypeOrg !== "Skole" && flowStatus.parseXml.result.ArchiveData.TypeOrg !== "Prøvenemnd"
       },
-      mapper: (flowStatus) => { // for å opprette organisasjon basert på orgnummer
+      mapper: (flowStatus) => {
+        // for å opprette organisasjon basert på orgnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          orgnr: flowStatus.parseXml.result.ArchiveData.Orgnr.replaceAll(' ', '')
+          orgnr: flowStatus.parseXml.result.ArchiveData.Orgnr.replaceAll(" ", "")
         }
       }
     }
   },
-  syncPrivatePerson: { // Jobname is valid as long as it starts with "syncPrivatePerson"
+  syncPrivatePerson: {
+    // Jobname is valid as long as it starts with "syncPrivatePerson"
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Prøvenemnd'
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.TypeOrg === "Prøvenemnd"
       },
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Egendefinert1,
@@ -82,17 +86,21 @@ module.exports = {
         let accessCode
         let accessGroup
         let paragraph
-        let category = ''
-        if (flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Skole' || flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Opplæringskontor' || flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Annet') {
-          sender = xmlData.Orgnr.replaceAll(' ', '')
-          accessCode = 'U'
-          accessGroup = 'Alle'
-          paragraph = ''
+        let category = ""
+        if (
+          flowStatus.parseXml.result.ArchiveData.TypeOrg === "Skole" ||
+          flowStatus.parseXml.result.ArchiveData.TypeOrg === "Opplæringskontor" ||
+          flowStatus.parseXml.result.ArchiveData.TypeOrg === "Annet"
+        ) {
+          sender = xmlData.Orgnr.replaceAll(" ", "")
+          accessCode = "U"
+          accessGroup = "Alle"
+          paragraph = ""
         } else {
           sender = xmlData.Egendefinert1 // Prøvenemnd (sendes inn som privatperson)
-          accessCode = '26'
-          accessGroup = 'Fagopplæring'
-          paragraph = 'Offl. § 26 femte ledd'
+          accessCode = "26"
+          accessGroup = "Fagopplæring"
+          paragraph = "Offl. § 26 femte ledd"
         }
         /* // Klargjort for å endre kategori basert på type organisasjon
         if (flowStatus.parseXml.result.ArchiveData.TypeOrg === 'Skole') {
@@ -101,19 +109,19 @@ module.exports = {
           category = 'Dokument inn'
         }
           */
-        category = 'Dokument inn' // Husk å slette denne og = '' på linje 90 når koden over aktiveres!
-        const p360Attachments = attachments.map(att => {
+        category = "Dokument inn" // Husk å slette denne og = '' på linje 90 når koden over aktiveres!
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
             AccessCode: accessCode,
             AccessGroup: accessGroup,
@@ -121,7 +129,7 @@ module.exports = {
             Contacts: [
               {
                 ReferenceNumber: sender,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
@@ -129,27 +137,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
             Paragraph: paragraph,
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)',
+            Status: "J",
+            Title: "Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)",
             // UnofficialTitle: '',
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '25/08012' : '23/00127'
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "25/08012" : "23/00127"
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -167,13 +174,13 @@ module.exports = {
 
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
               Title: flowStatus.archive.result.DocumentNumber,
-              S_x00f8_ker: xmlData.Soker === '' ? xmlData.Skole : xmlData.Soker,
+              S_x00f8_ker: xmlData.Soker === "" ? xmlData.Skole : xmlData.Soker,
               Navnp_x00e5_samarbeidspartnere: xmlData.Samarbeidspartnere,
               Erdets_x00f8_ktmidlertilsammepro: xmlData.AndreFylker,
               Hvilketiltaks_x00f8_kesdetom: xmlData.HvilkeTiltak,
@@ -203,10 +210,10 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Fagopplæring',
+          company: "Opplæring",
+          department: "Fagopplæring",
           description,
-          type: 'Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like

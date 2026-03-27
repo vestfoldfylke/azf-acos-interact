@@ -4,13 +4,13 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   syncPrivatePerson: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person med fiktivt fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person med fiktivt fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier for å opprette privatperson med fiktivt fødselsnummer
         return {
           fakeSsn: true,
@@ -26,10 +26,12 @@ module.exports = {
       }
     }
   },
-  syncPrivatePersonNumber2OrWhateverYouLikeToCallIt: { // Jobname is valid as long as it starts with "syncPrivatePerson"
+  syncPrivatePersonNumber2OrWhateverYouLikeToCallIt: {
+    // Jobname is valid as long as it starts with "syncPrivatePerson"
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr,
@@ -41,7 +43,8 @@ module.exports = {
   syncPrivatePersonAgain: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person manuelt uten oppslag i Freg (Eks. utenlandske elever)
+      mapper: (flowStatus) => {
+        // for å opprette person manuelt uten oppslag i Freg (Eks. utenlandske elever)
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           manualData: true,

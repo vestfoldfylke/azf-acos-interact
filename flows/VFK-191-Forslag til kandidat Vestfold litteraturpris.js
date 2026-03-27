@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -20,7 +19,8 @@ module.exports = {
   syncPrivatePerson: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -39,26 +39,26 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '5',
-            AccessGroup: 'Fylkesbibliotek',
-            Category: 'Dokument inn',
+            AccessCode: "5",
+            AccessGroup: "Fylkesbibliotek",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: jsonData.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
@@ -66,27 +66,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Forslag til kandidat',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Forslag til kandidat",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 5',
+            Paragraph: "Offl. § 5",
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '' : '',
-            ResponsiblePersonEmail: 'steinar.engeland@vestfoldfylke.no',
-            Status: 'J',
-            Title: 'Vestfold Litteraturpris - Forslag til kandidat - 2026',
+            ResponsiblePersonEmail: "steinar.engeland@vestfoldfylke.no",
+            Status: "J",
+            Title: "Vestfold Litteraturpris - Forslag til kandidat - 2026",
             UnofficialTitle: `Vestfold Litteraturpris - Forslag til kandidat - 2026 - ${jsonData.DialogueInstance.Informasjon_om_.Kandidat.Fornavn2} ${jsonData.DialogueInstance.Informasjon_om_.Kandidat.Etternavn2}`,
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '24/14031' : ''
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "24/14031" : ""
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -104,13 +103,13 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Fylkesbiblioteket',
-          department: 'Litteraturpris',
+          company: "Fylkesbiblioteket",
+          department: "Litteraturpris",
           description,
-          type: 'Nominasjon - litteraturpris', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Nominasjon - litteraturpris", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

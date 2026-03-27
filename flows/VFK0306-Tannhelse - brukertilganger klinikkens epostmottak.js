@@ -1,4 +1,4 @@
-const description = 'Oppdaterer rad i SP liste.'
+const description = "Oppdaterer rad i SP liste."
 // const { nodeEnv } = require('../config')
 module.exports = {
   config: {
@@ -7,8 +7,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   sharepointGetListItem: {
     enabled: true,
@@ -16,8 +15,8 @@ module.exports = {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return {
-          testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Tilgangsbestillinger/AllItems.aspx',
-          prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Tilgangsbestillinger/AllItems.aspx',
+          testListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Tilgangsbestillinger/AllItems.aspx",
+          prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Tilgangsbestillinger/AllItems.aspx",
           searchFilter: `fields/guid0 eq '${xmlData.guid}'` // guid blir sendt med fra første skjema og lagret i lista. Denne raden søker vi etter her
         }
       }
@@ -28,12 +27,13 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (flowStatus.sharepointGetListItem.result.length !== 1) throw new Error('Fant ikke unik match i lista når vi kjørte sharepointGetListItem, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila')
+        if (flowStatus.sharepointGetListItem.result.length !== 1)
+          throw new Error("Fant ikke unik match i lista når vi kjørte sharepointGetListItem, sjekk searchFilter i jobben eller plukk ut korrekt id i flowStatus-fila")
         const id = flowStatus.sharepointGetListItem.result[0].id
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Tilgangsbestillinger/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Tilgangsbestillinger/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Tilgangsbestillinger/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-TAN-Tannhelse/Lists/Tilgangsbestillinger/AllItems.aspx",
             testItemId: id,
             prodItemId: id,
             uploadFormPdf: false,
@@ -50,14 +50,14 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Tannhelse',
-          department: 'Tannhelse',
+          company: "Tannhelse",
+          department: "Tannhelse",
           description,
-          type: 'Tannhelse - bestilling av tilganger - Klinikkens epostmottak' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Tannhelse - bestilling av tilganger - Klinikkens epostmottak" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           // documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like

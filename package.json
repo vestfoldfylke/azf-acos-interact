@@ -4,7 +4,9 @@
   "description": "Handles forms from Acos",
   "scripts": {
     "start": "func start",
-    "test": "standard && node --test tests/*.test.js"
+    "test": "biome check && node --test tests/*.test.js",
+    "lint": "biome check",
+    "lint:fix": "biome check --write"
   },
   "dependencies": {
     "@azure/msal-node": "^3.8.10",
@@ -18,11 +20,6 @@
     "xml2js": "^0.5.0"
   },
   "devDependencies": {
-    "standard": "^17.1.2"
-  },
-  "standard": {
-    "env": [
-      "node"
-    ]
+    "@biomejs/biome": "2.4.9"
   }
 }

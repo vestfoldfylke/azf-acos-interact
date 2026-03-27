@@ -1,5 +1,5 @@
-const description = 'Søknad om tilskudd til fagskoleutdanning'
-const { nodeEnv } = require('../config')
+const description = "Søknad om tilskudd til fagskoleutdanning"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -20,10 +19,11 @@ module.exports = {
   syncEnterprise: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          orgnr: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon3.Organisasjonsnu3.replaceAll(' ', '')
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon3.Organisasjonsnu3.replaceAll(" ", "")
         }
       }
     }
@@ -33,24 +33,24 @@ module.exports = {
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
-                Role: 'Avsender',
-                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon3.Organisasjonsnu3.replaceAll(' ', ''),
+                Role: "Avsender",
+                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon3.Organisasjonsnu3.replaceAll(" ", ""),
                 IsUnofficial: false
               }
             ],
@@ -58,20 +58,20 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Søknad om fagskolemidler',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Søknad om fagskolemidler",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200091' : '200148', // Seksjon voksenopplæring og karriereutvikling
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200091" : "200148", // Seksjon voksenopplæring og karriereutvikling
             // ResponsiblePersonEmail: nodeEnv === 'production' ? '' : '',
-            Status: 'J',
+            Status: "J",
             Title: `Søknad om fagskolemidler - ${flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Organisasjon3.Organisasjonsna2}`,
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '25/09509' : '24/00059'
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "25/09509" : "24/00059"
           }
         }
       }
@@ -94,12 +94,12 @@ module.exports = {
         const tilbudsliste = Array.isArray(jsonData.Informasjon_om_.Tilbud) ? jsonData.Informasjon_om_.Tilbud : [jsonData.Informasjon_om_.Tilbud] // Sjekker om det er mer enn ett tilbud i lista (altså et array). Hvis ikke lag et array med det ene elementet
         for (const tilbud of tilbudsliste) {
           const sharepointElement = {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-FagskoleforvaltningVFK/Lists/Tilskudd%20til%20fagskoleutdanning%202627/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-FagskoleforvaltningVFK/Lists/Tilskudd%20til%20fagskoleutdanning%202627/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-FagskoleforvaltningVFK/Lists/Tilskudd%20til%20fagskoleutdanning%202627/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-FagskoleforvaltningVFK/Lists/Tilskudd%20til%20fagskoleutdanning%202627/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
-              Title: jsonData.Informasjon_om_.Organisasjon3.Organisasjonsna2 || 'Mangler orgnavn', // husk å bruke internal name på kolonnen
+              Title: jsonData.Informasjon_om_.Organisasjon3.Organisasjonsna2 || "Mangler orgnavn", // husk å bruke internal name på kolonnen
               Omr_x00e5_de: tilbud.Fagområde,
               Tilbudstype: tilbud.Tilbudstype,
               Tilbudsnavn: tilbud.Utdanningsnavn,
@@ -117,7 +117,7 @@ module.exports = {
               Skolenummer: jsonData.Informasjon_om_.Skolenummer,
               Studiestednummer: tilbud.Studiestedsnumm,
               Tilbudskode: tilbud.DBH_F_kode,
-              NUS_x002d_kode: tilbud.NUS_kode1 || 'Manuell NUS-kode eller nytt tilbud uten NOKUT',
+              NUS_x002d_kode: tilbud.NUS_kode1 || "Manuell NUS-kode eller nytt tilbud uten NOKUT",
               NUS_x002d_kode_x0020__x0028_manu: tilbud.NUS_kode2,
               Fagomr_x00e5_de_x0020__x0028_man: tilbud.Fagområde1,
               Utdanningsnavn_x0020__x0028_manu: tilbud.Utdanningsnavn1,
@@ -136,10 +136,10 @@ module.exports = {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'OPT-Fagskoleforvaltning',
-          department: 'Seksjon voksenopplæring og karriereutvikling',
+          company: "OPT-Fagskoleforvaltning",
+          department: "Seksjon voksenopplæring og karriereutvikling",
           description, // Required. A description of what the statistic element represents
-          type: 'Søknad om tilskudd til fagskoleutdanning', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Søknad om tilskudd til fagskoleutdanning", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }

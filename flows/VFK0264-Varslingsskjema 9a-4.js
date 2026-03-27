@@ -1,8 +1,8 @@
-const description = 'Arkivering av varsling ved brud på oppll. § 9 A-4. Skal opprettes en ny sak pr skjema'
+const description = "Arkivering av varsling ved brud på oppll. § 9 A-4. Skal opprettes en ny sak pr skjema"
 // const { nodeEnv } = require('../config')
 // const { getSchoolYear } = require('../lib/flow-helpers')
-const { schoolInfo } = require('../lib/data-sources/vfk-schools')
-const { nodeEnv } = require('../config')
+const { schoolInfo } = require("../lib/data-sources/vfk-schools")
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: false,
@@ -45,7 +45,8 @@ module.exports = {
   syncPrivatePerson: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.krenketElevFnr
@@ -91,49 +92,49 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        const school = schoolInfo.find(school => xmlData.skjemaInnsenderSkole.startsWith(school.officeLocation))
+        const school = schoolInfo.find((school) => xmlData.skjemaInnsenderSkole.startsWith(school.officeLocation))
         if (!school) throw new Error(`Could not find any school with officeLocation: ${xmlData.skjemaInnsenderSkole}`)
         return {
-          service: 'CaseService',
-          method: 'CreateCase',
+          service: "CaseService",
+          method: "CreateCase",
           parameter: {
-            CaseType: '9A4-Sak',
-            Title: '§ 9A-4',
+            CaseType: "9A4-Sak",
+            Title: "§ 9A-4",
             UnofficialTitle: `§ 9A-4 - ${xmlData.krenketElevNavn}`,
-            Status: 'B',
-            AccessCode: '13',
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
+            Status: "B",
+            AccessCode: "13",
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
             // AccessGroup: school['9a4Tilgangsgruppe'], // 9a-4 tilgangsgruppe til den skolen det gjelder
-            JournalUnit: 'Sentralarkiv',
-            SubArchive: '4',
+            JournalUnit: "Sentralarkiv",
+            SubArchive: "4",
             // Project: flowStatus.handleProject.result.ProjectNumber,
             ArchiveCodes: [
-            //   {
-            //     ArchiveCode: '---',
-            //     ArchiveType: '',
-            //     Sort: 1
-            //   },
+              //   {
+              //     ArchiveCode: '---',
+              //     ArchiveType: '',
+              //     Sort: 1
+              //   },
               {
                 ArchiveCode: xmlData.krenketElevFnr,
-                ArchiveType: 'FNR',
+                ArchiveType: "FNR",
                 IsManualText: true,
                 Sort: 1
               },
               {
-                ArchiveCode: '---',
-                ArchiveType: 'FELLESKLASSE PRINSIPP',
+                ArchiveCode: "---",
+                ArchiveType: "FELLESKLASSE PRINSIPP",
                 Sort: 2
               },
               {
-                ArchiveCode: 'B36 - Vernetjeneste',
-                ArchiveType: 'FAGKLASSE PRINSIPP',
+                ArchiveCode: "B36 - Vernetjeneste",
+                ArchiveType: "FAGKLASSE PRINSIPP",
                 Sort: 3,
                 IsManualText: true
               }
             ],
             Contacts: [
               {
-                Role: 'Sakspart',
+                Role: "Sakspart",
                 ReferenceNumber: xmlData.krenketElevFnr,
                 IsUnofficial: true
               }
@@ -145,45 +146,46 @@ module.exports = {
     }
   },
   // Arkiverer dokumentet i 360
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
-      mapper: (flowStatus, base64, attachments) => {
+      mapper: (flowStatus, base64, _attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        const school = schoolInfo.find(school => flowStatus.parseXml.result.ArchiveData.skjemaInnsenderSkole.startsWith(school.officeLocation))
+        const school = schoolInfo.find((school) => flowStatus.parseXml.result.ArchiveData.skjemaInnsenderSkole.startsWith(school.officeLocation))
         if (!school) throw new Error(`Could not find any school with officeLocation: ${flowStatus.parseXml.result.ArchiveData.skjemaInnsenderSkole}`)
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           secure: true,
           parameter: {
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             UnregisteredContacts: [
               {
                 ContactName: `${xmlData.skjemaInnsenderNavn} (${xmlData.skjemaInnsenderEpost})`,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Varslingsskjema oppll. § 9A-4',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Varslingsskjema oppll. § 9A-4",
+                VersionFormat: "A"
               }
             ],
-            Status: 'J',
+            Status: "J",
             DocumentDate: new Date().toISOString(),
-            Title: 'Varslingsskjema opplæringsloven 9 A-4',
+            Title: "Varslingsskjema opplæringsloven 9 A-4",
             UnofficialTitle: `Varslingsskjema opplæringsloven 9A-4 - ${xmlData.krenketElevNavn}`,
-            Archive: nodeEnv === 'production' ? '9A4 Dokument' : '9A4-dokument', //
+            Archive: nodeEnv === "production" ? "9A4 Dokument" : "9A4-dokument", //
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             ResponsibleEnterpriseNumber: school.orgNr,
-            AccessCode: '13',
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1'
+            AccessCode: "13",
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1"
             // AccessGroup: school['9a4Tilgangsgruppe'] // Trenger ikke denne, står "Automatisk i excel?"
           }
         }
@@ -206,10 +208,10 @@ module.exports = {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'OF',
-          department: 'Pedagogisk støtte og utvikling',
+          company: "OF",
+          department: "Pedagogisk støtte og utvikling",
           description,
-          type: 'Varsling ved brudd på oppll. § 9a-4', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Varsling ved brudd på oppll. § 9a-4", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           skole: xmlData.skjemaInnsenderSkole
         }

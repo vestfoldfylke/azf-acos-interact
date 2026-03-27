@@ -1,5 +1,5 @@
-const description = 'Fylkeskulturprisen 2026'
-const { nodeEnv } = require('../config')
+const description = "Fylkeskulturprisen 2026"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -20,7 +19,8 @@ module.exports = {
   syncPrivatePerson: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -39,26 +39,26 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '5',
-            AccessGroup: 'Seksjon Kultur',
-            Category: 'Dokument inn',
+            AccessCode: "5",
+            AccessGroup: "Seksjon Kultur",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: jsonData.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
@@ -66,27 +66,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Forslag til kandidat',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Forslag til kandidat",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 5',
-            ResponsiblePersonEmail: nodeEnv === 'production' ? 'yvonne.pleym@vestfoldfylke.no' : '',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
-            Status: 'J',
-            Title: 'Fylkeskulturprisen Vestfold 2026 - Forslag til kandidat',
+            Paragraph: "Offl. § 5",
+            ResponsiblePersonEmail: nodeEnv === "production" ? "yvonne.pleym@vestfoldfylke.no" : "",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200025" : "200031", // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
+            Status: "J",
+            Title: "Fylkeskulturprisen Vestfold 2026 - Forslag til kandidat",
             UnofficialTitle: `Fylkeskulturprisen Vestfold 2026 - Forslag til kandidat - ${jsonData.DialogueInstance.Informasjon_om_.Kandidat.Fornavn2} ${jsonData.DialogueInstance.Informasjon_om_.Kandidat.Etternavn2}`,
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '26/03695' : '26/00010'
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "26/03695" : "26/00010"
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -103,13 +102,13 @@ module.exports = {
       mapper: (flowStatus) => {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         return {
-          company: 'Kultur',
-          department: 'Kulturpris',
+          company: "Kultur",
+          department: "Kulturpris",
           description,
-          type: 'Nominasjon - fylkeskulturpris', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Nominasjon - fylkeskulturpris", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }
