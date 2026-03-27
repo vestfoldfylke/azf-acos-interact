@@ -7,19 +7,19 @@
     "test": "standard && jest --verbose"
   },
   "dependencies": {
-    "@azure/msal-node": "^3.7.3",
-    "@vestfoldfylke/loglady": "^1.5.2",
-    "@vtfk/azure-blob-client": "^0.1.6",
+    "@azure/msal-node": "^3.8.10",
+    "@vestfoldfylke/loglady": "^1.5.3",
+    "@vtfk/azure-blob-client": "^0.1.7",
     "@vtfk/sharepoint-rest-auth": "^1.1.0",
-    "axios": "^1.3.4",
-    "dotenv": "^16.3.1",
-    "file-system-cache": "^2.4.4",
+    "axios": "^1.13.6",
+    "dotenv": "^16.6.1",
+    "file-system-cache": "^2.4.7",
     "node-cache": "^5.1.2",
     "xml2js": "^0.5.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "jest": "^30.2.0",
+    "jest": "^30.3.0",
     "standard": "^17.1.2"
   },
   "jest": {
