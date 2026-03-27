@@ -4,7 +4,7 @@ const { mapFlowFile } = require("../lib/dispatcher")
 const { readdirSync } = require("node:fs")
 
 describe("Checking flowfile", () => {
-  const schemaNames = readdirSync("./flows").map((filename) => mapFlowFile(filename))
+  const schemaNames = readdirSync("./flows").map((filename) => mapFlowFile(filename)).filter((flow) => flow.filename.endsWith(".js"))
   for (const flow of schemaNames) {
     it(`${flow.filename} has config and parseXml or parseJson is enabled`, () => {
       const file = require(flow.filepath)
