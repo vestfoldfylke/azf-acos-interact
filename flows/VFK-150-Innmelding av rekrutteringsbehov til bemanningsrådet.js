@@ -1,4 +1,4 @@
-const description = 'Innmelding av rekrutteringsbehov til bemanningsrådet'
+const description = "Innmelding av rekrutteringsbehov til bemanningsrådet"
 // const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -10,10 +10,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -25,8 +24,8 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam-HR-Bemanningsrd/Lists/Rekruttering%20bemanningsrd/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam-HR-Bemanningsrd/Lists/Rekruttering%20bemanningsrd/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam-HR-Bemanningsrd/Lists/Rekruttering%20bemanningsrd/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam-HR-Bemanningsrd/Lists/Rekruttering%20bemanningsrd/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -63,14 +62,14 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Organisasjon',
-          department: 'HR',
+          company: "Organisasjon",
+          department: "HR",
           description,
-          type: 'Innmelding av rekrutteringsbehov til bemanningsrådet' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Innmelding av rekrutteringsbehov til bemanningsrådet" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           // documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like

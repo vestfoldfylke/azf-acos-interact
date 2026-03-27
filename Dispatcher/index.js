@@ -1,13 +1,13 @@
-const { dispatcher } = require('../lib/dispatcher')
-const { logger } = require('@vestfoldfylke/loglady')
+const { dispatcher } = require("../lib/dispatcher")
+const { logger } = require("@vestfoldfylke/loglady")
 
-module.exports = async function (context, myTimer) {
+module.exports = async (_context, _myTimer) => {
   logger.logConfig({
-    prefix: 'azf-acos-interact - Dispatcher'
+    prefix: "azf-acos-interact - Dispatcher"
   })
   try {
     await dispatcher()
   } catch (error) {
-    logger.errorException(error, 'timertrigger failed')
+    logger.errorException(error, "timertrigger failed")
   }
 }

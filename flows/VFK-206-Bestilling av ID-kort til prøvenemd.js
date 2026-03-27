@@ -1,4 +1,4 @@
-const description = 'Fylkeskulturprisen 2026'
+const description = "Fylkeskulturprisen 2026"
 // const { nodeEnv } = require('../config')
 module.exports = {
   config: {
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -24,8 +23,8 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Prøvenemnd
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Bestille%20IDkort%20prvenemnd/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Bestille%20IDkort%20prvenemnd/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Bestille%20IDkort%20prvenemnd/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Bestille%20IDkort%20prvenemnd/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -34,8 +33,8 @@ module.exports = {
               Adresse: jsonData.Adresse1,
               Postnummer: jsonData.Postnummer1,
               Sted: jsonData.Poststed1,
-              Telefon: jsonData.Telefon1 || 'Telefon mangler',
-              E_x002d_post: jsonData.E_post || 'E-post mangler',
+              Telefon: jsonData.Telefon1 || "Telefon mangler",
+              E_x002d_post: jsonData.E_post || "E-post mangler",
               L_x00e6_refag: jsonData.Hvilket_lærefag
             }
           }
@@ -51,10 +50,10 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'FAGOPPLÆRING',
+          company: "Opplæring",
+          department: "FAGOPPLÆRING",
           description,
-          type: 'Bestilling av ID-kort til prøvenemd', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Bestilling av ID-kort til prøvenemd", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like

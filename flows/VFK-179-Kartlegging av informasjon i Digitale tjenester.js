@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -24,8 +23,8 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/KommunikasjonsstausDT/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/KommunikasjonsstausDT/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/KommunikasjonsstausDT/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/KommunikasjonsstausDT/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {

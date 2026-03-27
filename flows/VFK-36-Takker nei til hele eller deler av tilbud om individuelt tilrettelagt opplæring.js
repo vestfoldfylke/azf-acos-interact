@@ -1,6 +1,6 @@
-const description = 'Sender til elevmappe'
+const description = "Sender til elevmappe"
 // const { nodeEnv } = require('../config')
-const { schoolInfo } = require('../lib/data-sources/vfk-schools')
+const { schoolInfo } = require("../lib/data-sources/vfk-schools")
 module.exports = {
   config: {
     enabled: true,
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -25,7 +24,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -44,28 +44,28 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const school = schoolInfo.find(school => school.orgNr.toString() === jsonData.SavedValues.Dataset.Skole.Orgnr)
+        const school = schoolInfo.find((school) => school.orgNr.toString() === jsonData.SavedValues.Dataset.Skole.Orgnr)
         if (!school) throw new Error(`Could not find any school with orgnr: ${jsonData.SavedValues.Dataset.Skole.Orgnr}`)
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
+            AccessCode: "13",
             AccessGroup: school.tilgangsgruppe,
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: jsonData.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -73,27 +73,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Takker nei til hele eller deler av tilbud om individuelt tilrettelagt opplæring',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Takker nei til hele eller deler av tilbud om individuelt tilrettelagt opplæring",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
             ResponsibleEnterpriseNumber: jsonData.SavedValues.Dataset.Skole.Orgnr,
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Takker nei til hele eller deler av tilbud om individuelt tilrettelagt opplæring',
+            Status: "J",
+            Title: "Takker nei til hele eller deler av tilbud om individuelt tilrettelagt opplæring",
             UnofficialTitle: `Takker nei til hele eller deler av tilbud om individuelt tilrettelagt opplæring - ${flowStatus.parseJson.result.SavedValues.Login.FirstName} ${flowStatus.parseJson.result.SavedValues.Login.LastName}`,
-            Archive: 'Sensitivt elevdokument',
+            Archive: "Sensitivt elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -111,12 +110,12 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: '',
+          company: "Opplæring",
+          department: "",
           description,
-          type: 'Takker nei til hele eller deler av tilbud om individuelt tilrettelagt opplæring', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Takker nei til hele eller deler av tilbud om individuelt tilrettelagt opplæring", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

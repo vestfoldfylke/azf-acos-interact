@@ -1,4 +1,4 @@
-const description = 'SMM - Bestilling av grunnerverv'
+const description = "SMM - Bestilling av grunnerverv"
 module.exports = {
   config: {
     enabled: true,
@@ -8,10 +8,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -21,11 +20,11 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance.Bestilling
-        if (!jsonData.Om_prosjektet.Prosjektnummer_for_timef) throw new Error('Prosjektnummer har ikke kommet med fra JSON')
+        if (!jsonData.Om_prosjektet.Prosjektnummer_for_timef) throw new Error("Prosjektnummer har ikke kommet med fra JSON")
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bestilling%20av%20grunnerverv/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bestilling%20av%20grunnerverv/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bestilling%20av%20grunnerverv/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/SAMF-Samferdselsektorteam/Lists/Bestilling%20av%20grunnerverv/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
@@ -65,13 +64,13 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Samferdsel',
-          department: '',
+          company: "Samferdsel",
+          department: "",
           description,
-          type: 'Bestilling av grunnerverv' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Bestilling av grunnerverv" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
         }
       }

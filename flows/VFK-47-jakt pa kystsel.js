@@ -1,5 +1,5 @@
-const description = 'Jakt på kystsel'
-const { nodeEnv } = require('../config')
+const description = "Jakt på kystsel"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -10,10 +10,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -21,7 +20,8 @@ module.exports = {
   syncPrivatePerson: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -31,60 +31,59 @@ module.exports = {
   },
 
   // Arkiverer dokumentet i 360
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
-        const caseNumber = nodeEnv === 'production' ? '25/17433' : '24/00001'
-        const p360Attachments = attachments.map(att => {
+        const caseNumber = nodeEnv === "production" ? "25/17433" : "24/00001"
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Jakt på kystsel',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Jakt på kystsel",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Status: 'J',
+            Status: "J",
             DocumentDate: new Date().toISOString(),
-            Title: 'Jakt på kystsel 2026',
+            Title: "Jakt på kystsel 2026",
             // UnofficialTitle: 'Jakt på kystsel 2024',
-            Archive: 'Saksdokument',
+            Archive: "Saksdokument",
             CaseNumber: caseNumber,
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
-            ResponsiblePersonEmail: 'lasse.asmyhr@vestfoldfylke.no',
-            AccessCode: 'U',
-            Paragraph: '',
-            AccessGroup: 'Alle'
+            ResponsiblePersonEmail: "lasse.asmyhr@vestfoldfylke.no",
+            AccessCode: "U",
+            Paragraph: "",
+            AccessGroup: "Alle"
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -101,10 +100,10 @@ module.exports = {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Samfunnsutvikling',
-          department: 'Klima og miljø',
+          company: "Samfunnsutvikling",
+          department: "Klima og miljø",
           description, // Required. A description of what the statistic element represents
-          type: 'Jakt på kystsel', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Jakt på kystsel", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }

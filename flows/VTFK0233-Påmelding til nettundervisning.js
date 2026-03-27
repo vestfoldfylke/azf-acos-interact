@@ -1,4 +1,4 @@
-const description = 'Arkivering av testdokument og opprettelse av et listeelement i SP.'
+const description = "Arkivering av testdokument og opprettelse av et listeelement i SP."
 
 module.exports = {
   config: {
@@ -7,15 +7,15 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
 
   // Synkroniser elevmappe
   syncElevmappe: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr
@@ -25,32 +25,32 @@ module.exports = {
   },
 
   // Arkiverer dokumentet i 360 (Her: elevmappa)
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const { nodeEnv, robotEmail } = require('../config')
+        const { nodeEnv, robotEmail } = require("../config")
         return {
-          system: 'acos',
-          template: 'elevdocument-default',
+          system: "acos",
+          template: "elevdocument-default",
           parameter: {
             organizationNumber: xmlData.AnsVirksomhet,
             documentDate: new Date().toISOString(),
             caseNumber: elevmappe.CaseNumber,
             studentName: `${xmlData.Fornavn} ${xmlData.Etternavn}`,
-            responsibleEmail: nodeEnv === 'production' ? xmlData.AnsEpost : robotEmail,
+            responsibleEmail: nodeEnv === "production" ? xmlData.AnsEpost : robotEmail,
             accessGroup: xmlData.Tilgangsgruppe,
             studentSsn: xmlData.Fnr,
             base64,
-            documentTitle: 'Påmelding til nettundervisning',
+            documentTitle: "Påmelding til nettundervisning",
             attachments
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -70,13 +70,13 @@ module.exports = {
         const fagliste = Array.isArray(xmlData.ValgteFag.fagliste) ? xmlData.ValgteFag.fagliste : [xmlData.ValgteFag.fagliste] // Sjekker om det er mer enn ett fag i lista (altså et array). Hvis ikke lag et array med det ene elementet
         for (const fag of fagliste) {
           const sharepointElement = {
-            siteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            path: 'sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            listId: '76d4a6be-73f1-4c6a-baeb-feadb2b2decc',
+            siteId: "0a4121ce-7384-474c-afff-ee20f48bff5e",
+            path: "sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx",
+            listId: "76d4a6be-73f1-4c6a-baeb-feadb2b2decc",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Title: xmlData.Fnr || "Mangler fnr", // husk å bruke internal name på kolonnen
               Fornavnelev: xmlData.Fornavn,
               Etternavnelev: xmlData.Etternavn,
               Fylke: xmlData.Fylke,
@@ -121,10 +121,10 @@ module.exports = {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'OF',
-          department: 'Nettskolen',
+          company: "OF",
+          department: "Nettskolen",
           description, // Required. A description of what the statistic element represents
-          type: 'Nettskolen påmelding nettundervisning', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Nettskolen påmelding nettundervisning", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber, // Optional. anything you like
           Fylke: xmlData.Fylke,

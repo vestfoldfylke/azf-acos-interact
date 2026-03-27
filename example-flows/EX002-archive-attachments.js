@@ -1,4 +1,4 @@
-const { nodeEnv } = require('../config')
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true
@@ -10,7 +10,8 @@ module.exports = {
   syncElevmappe: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr,
@@ -21,32 +22,33 @@ module.exports = {
   },
 
   // Arkiverer dokumentet i 360 (Her: elevmappa)
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const caseNumber = flowStatus.handleCase.result.CaseNumber
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '26',
-            AccessGroup: 'Fagopplæring',
-            Category: 'Dokument inn',
+            AccessCode: "26",
+            AccessGroup: "Fagopplæring",
+            Category: "Dokument inn",
             Contacts: [
               {
-                ReferenceNumber: xmlData.orgNr.replaceAll(' ', ''),
-                Role: 'Avsender',
+                ReferenceNumber: xmlData.orgNr.replaceAll(" ", ""),
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -54,19 +56,19 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
                 Title: `Søknad ny lærebedrift ${xmlData.bedriftsnavn}`,
-                VersionFormat: 'A'
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 26 femte ledd',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
-            Status: 'J',
+            Paragraph: "Offl. § 26 femte ledd",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            Status: "J",
             Title: `Søknad ny lærebedrift ${xmlData.bedriftsnavn}`,
-            Archive: 'Saksdokument',
+            Archive: "Saksdokument",
             CaseNumber: caseNumber
           }
         }

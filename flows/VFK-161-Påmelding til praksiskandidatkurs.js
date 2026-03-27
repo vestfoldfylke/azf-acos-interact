@@ -1,4 +1,4 @@
-const description = 'Påmelding til praksiskandidatkurs'
+const description = "Påmelding til praksiskandidatkurs"
 // const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -24,8 +23,8 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/Pmeldingtilpraksiskandidatkurs/Lists/Pmelding%20til%20praksiskandidatkurs/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/Pmeldingtilpraksiskandidatkurs/Lists/Pmelding%20til%20praksiskandidatkurs/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/Pmeldingtilpraksiskandidatkurs/Lists/Pmelding%20til%20praksiskandidatkurs/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/Pmeldingtilpraksiskandidatkurs/Lists/Pmelding%20til%20praksiskandidatkurs/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -35,8 +34,8 @@ module.exports = {
               Adresse: jsonData.SavedValues.Login.Address,
               Postnummer: jsonData.SavedValues.Login.PostalCode,
               Poststed: jsonData.SavedValues.Login.PostalArea,
-              Telefon: jsonData.SavedValues.Login.Telephone || 'Telefon mangler',
-              E_x002d_post: jsonData.SavedValues.Login.Email || 'E-post mangler',
+              Telefon: jsonData.SavedValues.Login.Telephone || "Telefon mangler",
+              E_x002d_post: jsonData.SavedValues.Login.Email || "E-post mangler",
               Arbeidssted: jsonData.DialogueInstance.P\u00E5melding.Informasjon_om_.Navn_p\u00E5_arbeids,
               Arbeidssituasjon: jsonData.DialogueInstance.P\u00E5melding.Informasjon_om_.N\u00E5v\u00E6rende_arbei,
               Praksistimer: jsonData.DialogueInstance.P\u00E5melding.Informasjon_om_.Antall_relevant,
@@ -51,14 +50,14 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring og tannhelse',
-          department: 'Kompetansebyggeren',
+          company: "Opplæring og tannhelse",
+          department: "Kompetansebyggeren",
           description,
-          type: 'Påmelding til praksiskandidatkurs' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Påmelding til praksiskandidatkurs" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           // documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like

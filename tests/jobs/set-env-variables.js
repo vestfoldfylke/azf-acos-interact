@@ -1,4 +1,4 @@
-const { Values } = require('../../local.settings.json')
+const { Values } = require("../../local.settings.json")
 
 const setEnv = () => {
   // Load in local settings to env

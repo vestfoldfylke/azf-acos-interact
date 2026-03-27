@@ -1,5 +1,5 @@
-const description = 'Melding om skade på kjøretøy Skal opprettes en ny sak pr skjema'
-const { nodeEnv } = require('../config')
+const description = "Melding om skade på kjøretøy Skal opprettes en ny sak pr skjema"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -10,10 +10,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -21,7 +20,8 @@ module.exports = {
   syncPrivatePerson: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -36,36 +36,36 @@ module.exports = {
       mapper: (flowStatus) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance.Melde_skade_på_
         return {
-          service: 'CaseService',
-          method: 'CreateCase',
+          service: "CaseService",
+          method: "CreateCase",
           parameter: {
-            CaseType: 'Sak',
+            CaseType: "Sak",
             Title: `Melding om skade på kjøretøy - ${jsonData.Informasjon_om_skaden.Pa_hvilken_fylkesvei_skj}`,
             // UnofficialTitle: ,
-            Status: 'B',
-            AccessCode: 'U',
+            Status: "B",
+            AccessCode: "U",
             // Paragraph: '',
-            JournalUnit: 'Sentralarkiv',
+            JournalUnit: "Sentralarkiv",
             ArchiveCodes: [
               {
-                ArchiveCode: '271',
-                ArchiveType: 'FELLESKLASSE PRINSIPP',
+                ArchiveCode: "271",
+                ArchiveType: "FELLESKLASSE PRINSIPP",
                 Sort: 1
               },
               {
-                ArchiveCode: 'Q13',
-                ArchiveType: 'FAGKLASSE PRINSIPP',
+                ArchiveCode: "Q13",
+                ArchiveType: "FAGKLASSE PRINSIPP",
                 Sort: 2
               }
             ],
             Contacts: [
               {
-                Role: 'Sakspart',
+                Role: "Sakspart",
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
                 IsUnofficial: false
               }
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200094' : '200150' // Team infrastruktur
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200094" : "200150" // Team infrastruktur
           }
         }
       }
@@ -77,26 +77,26 @@ module.exports = {
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance.Melde_skade_på_
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '26',
-            Paragraph: 'Offl. § 26 femte ledd',
-            AccessGroup: 'Team Infrastruktur',
-            Category: 'Dokument inn',
+            AccessCode: "26",
+            Paragraph: "Offl. § 26 femte ledd",
+            AccessGroup: "Team Infrastruktur",
+            Category: "Dokument inn",
             Contacts: [
               {
-                Role: 'Avsender',
+                Role: "Avsender",
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID, // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
                 IsUnofficial: true
               }
@@ -105,18 +105,18 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Melding om skade på kjøretøy',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Melding om skade på kjøretøy",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200094' : '200150', // Team infrastruktur
-            Status: 'J',
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200094" : "200150", // Team infrastruktur
+            Status: "J",
             Title: `Melding om skade på kjøretøy - ${jsonData.Informasjon_om_skaden.Pa_hvilken_fylkesvei_skj}`,
-            Archive: 'Saksdokument',
+            Archive: "Saksdokument",
             CaseNumber: flowStatus.handleCase.result.CaseNumber
           }
         }
@@ -139,8 +139,8 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-DRI-Skaderoghenvendelser/Lists/Melding%20om%20skade%20p%20kjrety/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/SAMF-DRI-Skaderoghenvendelser/Lists/Melding%20om%20skade%20p%20kjrety/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/SAMF-DRI-Skaderoghenvendelser/Lists/Melding%20om%20skade%20p%20kjrety/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/SAMF-DRI-Skaderoghenvendelser/Lists/Melding%20om%20skade%20p%20kjrety/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -168,10 +168,10 @@ module.exports = {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Samferdsel',
-          department: 'Team infrastruktur',
+          company: "Samferdsel",
+          department: "Team infrastruktur",
           description, // Required. A description of what the statistic element represents
-          type: 'Skade på kjøretøy', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Skade på kjøretøy", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber, // Optional. anything you like
           road: flowStatus.parseJson.result.DialogueInstance.Melde_skade_på_.Informasjon_om_skaden.Pa_hvilken_fylkesvei_skj

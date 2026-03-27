@@ -1,6 +1,6 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
-const { getSchoolYear } = require('../lib/flow-helpers')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
+const { getSchoolYear } = require("../lib/flow-helpers")
 module.exports = {
   config: {
     enabled: true,
@@ -10,10 +10,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -27,7 +26,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.DialogueInstance.Kandidaten.Soknaden_gjelder2.Fodselsnummer2
@@ -39,16 +39,18 @@ module.exports = {
   syncEnterprise: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette organisasjon basert på orgnummer
+      mapper: (flowStatus) => {
+        // for å opprette organisasjon basert på orgnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          orgnr: flowStatus.parseJson.result.DialogueInstance.Larebedriften.Larebedrift__samarbeidso.Organisasjon.Organisasjon_orgnr.replaceAll(' ', '')
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Larebedriften.Larebedrift__samarbeidso.Organisasjon.Organisasjon_orgnr.replaceAll(" ", "")
         }
       }
     }
   },
 
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       /*
@@ -58,26 +60,26 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Fagopplæring',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            AccessGroup: "Fagopplæring",
+            Category: "Dokument inn",
             Contacts: [
               {
-                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Larebedriften.Larebedrift__samarbeidso.Organisasjon.Organisasjon_orgnr.replaceAll(' ', ''),
-                Role: 'Avsender',
+                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Larebedriften.Larebedrift__samarbeidso.Organisasjon.Organisasjon_orgnr.replaceAll(" ", ""),
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
@@ -85,21 +87,21 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
-            Status: 'J',
+            Status: "J",
             Title: `Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift - ${getSchoolYear()}`,
             // UnofficialTitle: '',
-            Archive: 'Sensitivt elevdokument',
+            Archive: "Sensitivt elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
@@ -120,16 +122,18 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
-        let programomrade = ''
-        if (jsonData.Belop.Informasjon6.Har_det_vært_gj === 'Nei') programomrade = jsonData.Belop.Informasjon6.Hvilket_programomrade_so
+        let programomrade = ""
+        if (jsonData.Belop.Informasjon6.Har_det_vært_gj === "Nei") programomrade = jsonData.Belop.Informasjon6.Hvilket_programomrade_so
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20sttte%20til%20tilretteleggingsmidler%20for%20oppl/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20sttte%20til%20tilretteleggingsmidler%20for%20oppl/AllItems.aspx',
+            testListUrl:
+              "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20sttte%20til%20tilretteleggingsmidler%20for%20oppl/AllItems.aspx",
+            prodListUrl:
+              "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Sknad%20om%20sttte%20til%20tilretteleggingsmidler%20for%20oppl/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: flowStatus.archive.result.DocumentNumber || 'Mangler dokumentnummer', // husk å bruke internal name på kolonnen
+              Title: flowStatus.archive.result.DocumentNumber || "Mangler dokumentnummer", // husk å bruke internal name på kolonnen
               L_x00e6_rebedrift_x0020__x002f__: jsonData.Larebedriften.Larebedrift__samarbeidso.Organisasjon.Organisasjon_orgnavn,
               Kontaktperson: jsonData.Larebedriften.Larebedrift__samarbeidso.Kontaktperson_i_bedrifte,
               Navn_x0020_p_x00e5__x0020_medlem: jsonData.Larebedriften.Larebedrift__samarbeidso.Organisasjon1.Navn_på_medlems,
@@ -156,12 +160,12 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Fag- og yrkesopplæring',
+          company: "Opplæring",
+          department: "Fag- og yrkesopplæring",
           description,
           type: `Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift - ${getSchoolYear()}`, // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

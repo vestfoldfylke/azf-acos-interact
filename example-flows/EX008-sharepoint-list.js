@@ -4,8 +4,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
 
   // Fyller en eksisterende SP-liste med data fra Acos-skjema. Ett element i lista returnert fra mapper-funksjonen blir en rad i SP-lista, dvs at ett innsendt skjema blir en rad i SP-lista.
@@ -14,15 +13,15 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
+        if (!xmlData.Postnr) throw new Error("Postnr har ikke kommet med fra XML") // validation example
         return [
           {
-            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
+            testListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx",
+            prodListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Title: xmlData.Fnr || "Mangler fnr", // husk å bruke internal name på kolonnen
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
               Adresse: xmlData.Adresse,
@@ -48,15 +47,15 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
+        if (!xmlData.Postnr) throw new Error("Postnr har ikke kommet med fra XML") // validation example
         return [
           {
-            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
+            testListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx",
+            prodListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Title: xmlData.Fnr || "Mangler fnr", // husk å bruke internal name på kolonnen
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
               Adresse: xmlData.Adresse,
@@ -73,12 +72,12 @@ module.exports = {
             }
           },
           {
-            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
+            testListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx",
+            prodListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Title: xmlData.Fnr || "Mangler fnr", // husk å bruke internal name på kolonnen
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
               Adresse: xmlData.Adresse,
@@ -101,16 +100,16 @@ module.exports = {
         const fagliste = Array.isArray(xmlData.ValgteFag.fagliste) ? xmlData.ValgteFag.fagliste : [xmlData.ValgteFag.fagliste] // Sjekker om det er mer enn ett fag i lista (altså et array). Hvis ikke lag et array med det ene elementet
         for (const fag of fagliste) {
           const sharepointElement = {
-            testSiteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            testPath: 'sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            testListId: '76d4a6be-73f1-4c6a-baeb-feadb2b2decc',
-            prodSiteId: '0a4121ce-7384-474c-afff-ee20f48bff5e',
-            prodPath: 'sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            prodListId: '76d4a6be-73f1-4c6a-baeb-feadb2b2decc',
+            testSiteId: "0a4121ce-7384-474c-afff-ee20f48bff5e",
+            testPath: "sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx",
+            testListId: "76d4a6be-73f1-4c6a-baeb-feadb2b2decc",
+            prodSiteId: "0a4121ce-7384-474c-afff-ee20f48bff5e",
+            prodPath: "sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx",
+            prodListId: "76d4a6be-73f1-4c6a-baeb-feadb2b2decc",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Title: xmlData.Fnr || "Mangler fnr", // husk å bruke internal name på kolonnen
               Fornavnelev: xmlData.Fornavn,
               Etternavnelev: xmlData.Etternavn,
               Fylke: xmlData.Fylke,
@@ -138,16 +137,16 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
+        if (!xmlData.Postnr) throw new Error("Postnr har ikke kommet med fra XML") // validation example
         return [
           // Først lager vi en rad i lista
           {
-            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
+            testListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx",
+            prodListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Title: xmlData.Fnr || "Mangler fnr", // husk å bruke internal name på kolonnen
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
               Adresse: xmlData.Adresse,
@@ -157,13 +156,13 @@ module.exports = {
           },
           // Og så en rad til i den samme lista
           {
-            testListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx',
-            prodListUrl: 'https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx',
+            testListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/Test%20%20Pmelding%20nettundervisning%20vgs/AllItems.aspx",
+            prodListUrl: "https://vtfk.sharepoint.com/sites/BDK-Jrgensteste-team/Lists/ACOS%20test%20%20Bestilling%20av%20dokumentasjon%20for%20privati/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
-              EnKolonneSomIkkeErPåElementetViLaInnOVer: 'Kanskje dette elementet skulle ha annen data enn den over f.eks', // De to radene vi legger inn trenger altså ikke ha de samme kolonnenen, bare å slå seg løs :D
+              Title: xmlData.Fnr || "Mangler fnr", // husk å bruke internal name på kolonnen
+              EnKolonneSomIkkeErPåElementetViLaInnOVer: "Kanskje dette elementet skulle ha annen data enn den over f.eks", // De to radene vi legger inn trenger altså ikke ha de samme kolonnenen, bare å slå seg løs :D
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
               Adresse: xmlData.Adresse,

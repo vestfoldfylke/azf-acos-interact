@@ -1,5 +1,5 @@
-const description = 'Sender til samlesak'
-const { nodeEnv } = require('../config')
+const description = "Sender til samlesak"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -20,25 +19,30 @@ module.exports = {
   syncEnterprise: {
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseJson.result.DialogueInstance.Kontaktpersoner.Soker.Hvem_er_søker_ === 'Opplæringskontor'
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseJson.result.DialogueInstance.Kontaktpersoner.Soker.Hvem_er_søker_ === "Opplæringskontor"
       },
-      mapper: (flowStatus) => { // for å opprette organisasjon basert på orgnummer
+      mapper: (flowStatus) => {
+        // for å opprette organisasjon basert på orgnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          orgnr: flowStatus.parseJson.result.DialogueInstance.Kontaktpersoner.Soker.Organisasjon1.Organisasjonsnu.replaceAll(' ', '')
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Kontaktpersoner.Soker.Organisasjon1.Organisasjonsnu.replaceAll(" ", "")
         }
       }
     }
   },
 
-  syncPrivatePerson: { // Jobname is valid as long as it starts with "syncPrivatePerson"
+  syncPrivatePerson: {
+    // Jobname is valid as long as it starts with "syncPrivatePerson"
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseJson.result.DialogueInstance.Kontaktpersoner.Soker.Hvem_er_søker_ === 'Prøvenemnd'
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseJson.result.DialogueInstance.Kontaktpersoner.Soker.Hvem_er_søker_ === "Prøvenemnd"
       },
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.DialogueInstance.Kontaktpersoner.Informasjon_om_soker.Fodselsnummer,
@@ -62,42 +66,42 @@ module.exports = {
         let accessCode
         let accessGroup
         let paragraph
-        if (jsonData.Soker.Hvem_er_søker_ === 'Prøvenemnd') {
+        if (jsonData.Soker.Hvem_er_søker_ === "Prøvenemnd") {
           sender = jsonData.Informasjon_om_soker.Fodselsnummer
-          accessCode = '26'
-          accessGroup = 'Fagopplæring'
-          paragraph = 'Offl. § 26 femte ledd'
-        } else if (jsonData.Soker.Hvem_er_søker_ === 'Skole') {
-          sender = flowStatus.parseJson.result.SavedValues.Dataset.Skole2.Orgnr.replaceAll(' ', '')
-          accessCode = 'U'
-          accessGroup = 'Alle'
-          paragraph = ''
+          accessCode = "26"
+          accessGroup = "Fagopplæring"
+          paragraph = "Offl. § 26 femte ledd"
+        } else if (jsonData.Soker.Hvem_er_søker_ === "Skole") {
+          sender = flowStatus.parseJson.result.SavedValues.Dataset.Skole2.Orgnr.replaceAll(" ", "")
+          accessCode = "U"
+          accessGroup = "Alle"
+          paragraph = ""
         } else {
-          sender = jsonData.Soker.Organisasjon1.Organisasjonsnu.replaceAll(' ', '')
-          accessCode = 'U'
-          accessGroup = 'Alle'
-          paragraph = ''
+          sender = jsonData.Soker.Organisasjon1.Organisasjonsnu.replaceAll(" ", "")
+          accessCode = "U"
+          accessGroup = "Alle"
+          paragraph = ""
         }
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
             AccessCode: accessCode,
             AccessGroup: accessGroup,
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: sender,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
@@ -105,27 +109,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Rapportering - Lokal kompetanseutvikling for fag- og yrkesopplæring (DEKOMP-Y)',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Rapportering - Lokal kompetanseutvikling for fag- og yrkesopplæring (DEKOMP-Y)",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
             Paragraph: paragraph,
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Rapportering - Lokal kompetanseutvikling for fag- og yrkesopplæring (DEKOMP-Y)',
+            Status: "J",
+            Title: "Rapportering - Lokal kompetanseutvikling for fag- og yrkesopplæring (DEKOMP-Y)",
             // UnofficialTitle: '',
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '24/00158' : '23/00128'
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "24/00158" : "23/00128"
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -142,12 +145,14 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Rapportering%20%20lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Rapportering%20%20lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx',
+            testListUrl:
+              "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Rapportering%20%20lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx",
+            prodListUrl:
+              "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Rapportering%20%20lokal%20kompetanseutvikling%20DEKOMPY/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: flowStatus.archive?.result?.DocumentNumber || 'Dokumentnummer mangler', // husk å bruke internal name på kolonnen
+              Title: flowStatus.archive?.result?.DocumentNumber || "Dokumentnummer mangler", // husk å bruke internal name på kolonnen
               Navn_x0020_p_x00e5__x0020_skole_: jsonData.Kontaktpersoner.Soker.Organisasjon1.Organisasjonsna || jsonData.Kontaktpersoner.Soker.Skole2 || jsonData.Kontaktpersoner.Navn_pa_provenemnd_,
               Navn_x0020_p_x00e5__x0020_samarb: jsonData.Kontaktpersoner.Soker.Navn_pa_samarbeidspartne,
               Gjennomf_x00f8_ringsperiode: jsonData.Kontaktpersoner.Soker.Gjennomforingsperiode,
@@ -181,10 +186,10 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Fagopplæring',
+          company: "Opplæring",
+          department: "Fagopplæring",
           description,
-          type: 'Rapportering - Lokal kompetanseutvikling for fag- og yrkesopplæring (DEKOMP-Y)', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Rapportering - Lokal kompetanseutvikling for fag- og yrkesopplæring (DEKOMP-Y)", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like

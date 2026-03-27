@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 // const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
@@ -10,10 +10,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -25,7 +24,8 @@ module.exports = {
       condition: (flowStatus) => { // use this if you only need to archive some of the forms.
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -43,9 +43,10 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         let fnr
-        if (flowStatus.parseJson.result.DialogueInstance.Informasjon_om_elev.Informasjon_om_utfyller.Jeg_fyller_ut === 'på vegne av meg selv (jeg er elev)') {
+        if (flowStatus.parseJson.result.DialogueInstance.Informasjon_om_elev.Informasjon_om_utfyller.Jeg_fyller_ut === "på vegne av meg selv (jeg er elev)") {
           fnr = flowStatus.parseJson.result.DialogueInstance.Informasjon_om_elev.Informasjon_om_utfyller.Fodselsnummer
         } else {
           fnr = flowStatus.parseJson.result.DialogueInstance.Informasjon_om_elev.Informasjon_om_eleven.Fodselsnummer2
@@ -68,26 +69,26 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Nettskolen',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            AccessGroup: "Nettskolen",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -95,27 +96,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Påmelding til nettundervisning',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Påmelding til nettundervisning",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200341' : '200208', // Horten vgs nettskolen
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200341" : "200208", // Horten vgs nettskolen
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Påmelding til nettundervisning',
-            UnofficialTitle: 'Påmelding til nettundervisning',
-            Archive: 'Elevdokument',
+            Status: "J",
+            Title: "Påmelding til nettundervisning",
+            UnofficialTitle: "Påmelding til nettundervisning",
+            Archive: "Elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -132,14 +132,14 @@ module.exports = {
       mapper: (flowStatus) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         let utfyllerErElev
-        if (jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Jeg_fyller_ut === 'på vegne av meg selv (jeg er elev)') {
+        if (jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Jeg_fyller_ut === "på vegne av meg selv (jeg er elev)") {
           utfyllerErElev = true
         } else {
           utfyllerErElev = false
         }
         let vgs
-        if (jsonData.Informasjon_om_elev.Bakgrunnsinform.I_hvilket_fylke_bor_elev === 'Vestfold') {
-          if (jsonData.Informasjon_om_elev.Bakgrunnsinform.Hvilken_skole_gar_eleven === 'Annen skole (for eks. OT)') {
+        if (jsonData.Informasjon_om_elev.Bakgrunnsinform.I_hvilket_fylke_bor_elev === "Vestfold") {
+          if (jsonData.Informasjon_om_elev.Bakgrunnsinform.Hvilken_skole_gar_eleven === "Annen skole (for eks. OT)") {
             vgs = jsonData.Informasjon_om_elev.Bakgrunnsinform.Skolenavn
           } else {
             vgs = jsonData.Informasjon_om_elev.Bakgrunnsinform.Hvilken_skole_gar_eleven2
@@ -149,12 +149,12 @@ module.exports = {
         }
         const sharepointElements = []
         const fagString = jsonData.Fag.Fag.Velg_fag
-        const fagliste = fagString.split(',').map(fag => fag.trim())
+        const fagliste = fagString.split(",").map((fag) => fag.trim())
         // const fagliste = Array.isArray(xmlData.ValgteFag.fagliste) ? xmlData.ValgteFag.fagliste : [xmlData.ValgteFag.fagliste] // Sjekker om det er mer enn ett fag i lista (altså et array). Hvis ikke lag et array med det ene elementet
         for (const fag of fagliste) {
           const sharepointElement = {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/HORV-Nettskolenadm/Lists/Paameldingnettundervisning1/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -165,7 +165,9 @@ module.exports = {
               Skole: vgs,
               Elevensmobilnr_x002e_: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Mobilnummer : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Mobiltelefonnr,
               Elevensadresse: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Adresse : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Adresse2,
-              Elevenspostnr_x002e_: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Postnummer_sted_postnr : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Postnr_sted_postnr,
+              Elevenspostnr_x002e_: utfyllerErElev
+                ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Postnummer_sted_postnr
+                : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Postnr_sted_postnr,
               Elevenspoststed: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Postnummer_sted_poststed : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Postnr_sted_poststed,
               Elevense_x002d_post: utfyllerErElev ? jsonData.Informasjon_om_elev.Informasjon_om_utfyller.E_postadresse : jsonData.Informasjon_om_elev.Informasjon_om_eleven.Epost,
               Utfyltav: jsonData.Informasjon_om_elev.Informasjon_om_utfyller.Jeg_fyller_ut,
@@ -206,10 +208,10 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Nettskolen',
+          company: "Opplæring",
+          department: "Nettskolen",
           description,
-          type: 'Nettskolen - påmelding til nettundervisning', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Nettskolen - påmelding til nettundervisning", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like

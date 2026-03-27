@@ -1,6 +1,6 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
-const { schoolInfo } = require('../lib/data-sources/vfk-schools')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
+const { schoolInfo } = require("../lib/data-sources/vfk-schools")
 module.exports = {
   config: {
     enabled: true,
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -25,7 +24,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -34,37 +34,38 @@ module.exports = {
     }
   },
 
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
         let eksamenskontoret
-        if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === 'Jeg trenger kompetansebevis med fag jeg har tatt som privatist før høsten 2021') {
+        if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === "Jeg trenger kompetansebevis med fag jeg har tatt som privatist før høsten 2021") {
           eksamenskontoret = true
-        } else if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === 'Jeg trenger vitnemål for autorisasjon som helsepersonell') {
+        } else if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === "Jeg trenger vitnemål for autorisasjon som helsepersonell") {
           eksamenskontoret = true
         } else eksamenskontoret = false
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         const documentData = {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: jsonData.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -72,39 +73,38 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Bestilling av dokumentasjon for privatister',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Bestilling av dokumentasjon for privatister",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            Status: 'J',
-            Title: 'Bestilling av dokumentasjon for privatister',
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            Status: "J",
+            Title: "Bestilling av dokumentasjon for privatister",
             // UnofficialTitle: '',
-            Archive: 'Elevdokument',
+            Archive: "Elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
 
         if (eksamenskontoret === true) {
-          documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === 'production' ? '200015' : '200018' // Seksjon Sektorstøtte, inntak og eksamen
-          documentData.parameter.AccessGroup = 'Eksamen'
+          documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === "production" ? "200015" : "200018" // Seksjon Sektorstøtte, inntak og eksamen
+          documentData.parameter.AccessGroup = "Eksamen"
         } else if (eksamenskontoret === false) {
-          const school = schoolInfo.find(school => school.orgNr.toString() === jsonData.SavedValues.Dataset.Hvilken_skole_gar_eller_.Orgnr)
+          const school = schoolInfo.find((school) => school.orgNr.toString() === jsonData.SavedValues.Dataset.Hvilken_skole_gar_eller_.Orgnr)
           if (!school) throw new Error(`Could not find any school with orgnr: ${jsonData.SavedValues.Dataset.Hvilken_skole_gar_eller_.Orgnr}`)
           documentData.parameter.ResponsibleEnterpriseNumber = jsonData.SavedValues.Dataset.Hvilken_skole_gar_eller_.Orgnr
           documentData.parameter.AccessGroup = school.tilgangsgruppe
         } else {
-          throw new Error('Finner ikke ut om dette er eksamenskontoret eller en skole. Sjekk logikk')
+          throw new Error("Finner ikke ut om dette er eksamenskontoret eller en skole. Sjekk logikk")
         }
         // console.log(documentData)
         return documentData
       }
     }
-
   },
 
   signOff: {
@@ -118,12 +118,13 @@ module.exports = {
   sharepointList: {
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
         const jsonData = flowStatus.parseJson.result
         let eksamenskontoret
-        if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === 'Jeg trenger kompetansebevis med fag jeg har tatt som privatist før høsten 2021') {
+        if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === "Jeg trenger kompetansebevis med fag jeg har tatt som privatist før høsten 2021") {
           eksamenskontoret = true
-        } else if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === 'Jeg trenger vitnemål for autorisasjon som helsepersonell') {
+        } else if (jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3 === "Jeg trenger vitnemål for autorisasjon som helsepersonell") {
           eksamenskontoret = true
         } else eksamenskontoret = false
         return eksamenskontoret // === true // de som skal til skolene skal ikke i lista
@@ -133,8 +134,8 @@ module.exports = {
         // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-UT-Fylkesadministrasjonutdanning-Eksamen-mottakdigitaleskjemaer/Lists/Privatistdokumentasjon/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-UT-Fylkesadministrasjonutdanning-Eksamen-mottakdigitaleskjemaer/Lists/Privatistdokumentasjon/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-UT-Fylkesadministrasjonutdanning-Eksamen-mottakdigitaleskjemaer/Lists/Privatistdokumentasjon/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-UT-Fylkesadministrasjonutdanning-Eksamen-mottakdigitaleskjemaer/Lists/Privatistdokumentasjon/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -169,13 +170,13 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Eksamen',
+          company: "Opplæring",
+          department: "Eksamen",
           description,
-          type: 'Bestilling av dokumentasjon for privatister', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Bestilling av dokumentasjon for privatister", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

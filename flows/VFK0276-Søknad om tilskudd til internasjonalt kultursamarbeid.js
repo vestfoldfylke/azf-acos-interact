@@ -1,5 +1,5 @@
-const description = 'Søknad om tilskudd til internasjonalt kultursamarbeid'
-const { nodeEnv } = require('../config')
+const description = "Søknad om tilskudd til internasjonalt kultursamarbeid"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -34,10 +34,12 @@ ArchiveData {
   syncPrivatePersonInnsender: {
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.typeSoker === 'Privatperson'
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.typeSoker === "Privatperson"
       },
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.fnr
@@ -48,13 +50,15 @@ ArchiveData {
   syncEnterprise: {
     enabled: true,
     options: {
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.typeSoker === 'Organisasjon'
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.typeSoker === "Organisasjon"
       },
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          orgnr: flowStatus.parseXml.result.ArchiveData.orgNr.replaceAll(' ', '')
+          orgnr: flowStatus.parseXml.result.ArchiveData.orgNr.replaceAll(" ", "")
         }
       }
     }
@@ -65,24 +69,24 @@ ArchiveData {
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
-                Role: 'Avsender',
-                ReferenceNumber: xmlData.typeSoker === 'Privatperson' ? xmlData.fnr : xmlData.orgNr.replaceAll(' ', ''), // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
+                Role: "Avsender",
+                ReferenceNumber: xmlData.typeSoker === "Privatperson" ? xmlData.fnr : xmlData.orgNr.replaceAll(" ", ""), // Hvis privatperson skal FNR benyttes, hvis ikke skal orgnr brukes
                 IsUnofficial: false
               }
             ],
@@ -90,23 +94,23 @@ ArchiveData {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Søknad om tilskudd til internasjonalt kultursamarbeid',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Søknad om tilskudd til internasjonalt kultursamarbeid",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '' : '200031', // Seksjon kultur
-            ResponsiblePersonEmail: nodeEnv === 'production' ? 'natashap@vestfoldfylke.no' : '',
-            Status: 'J',
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "" : "200031", // Seksjon kultur
+            ResponsiblePersonEmail: nodeEnv === "production" ? "natashap@vestfoldfylke.no" : "",
+            Status: "J",
             Title: `Søknad om tilskudd til internasjonalt kultursamarbeid - ${xmlData.navnPaProsjekt}`,
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '25/08624' : '24/00034',
-            AccessCode: xmlData.typeSoker === 'Privatperson' ? '26' : '',
-            Paragraph: xmlData.typeSoker === 'Privatperson' ? 'Offl. § 26 femte ledd' : '',
-            AccessGroup: xmlData.typeSoker === 'Privatperson' ? 'Seksjon Kultur' : 'Alle' // Tilgangsgruppe for privatpersoner er Kultur, for organisasjoner er det Alle
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "25/08624" : "24/00034",
+            AccessCode: xmlData.typeSoker === "Privatperson" ? "26" : "",
+            Paragraph: xmlData.typeSoker === "Privatperson" ? "Offl. § 26 femte ledd" : "",
+            AccessGroup: xmlData.typeSoker === "Privatperson" ? "Seksjon Kultur" : "Alle" // Tilgangsgruppe for privatpersoner er Kultur, for organisasjoner er det Alle
           }
         }
       }
@@ -127,12 +131,12 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Sknad%20om%20tilskudd%20til%20internasjonalt%20kultursamarbe/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Sknad%20om%20tilskudd%20til%20internasjonalt%20kultursamarbe/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Sknad%20om%20tilskudd%20til%20internasjonalt%20kultursamarbe/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Sknad%20om%20tilskudd%20til%20internasjonalt%20kultursamarbe/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.navnPaProsjekt || 'Mangler title', // husk å bruke internal name på kolonnen
+              Title: xmlData.navnPaProsjekt || "Mangler title", // husk å bruke internal name på kolonnen
               S_x00f8_ker: xmlData.soker,
               Kort_x0020_oppsummering: xmlData.kortOppsummering,
               Kort_x0020_beskrivelse_x0020_av_: xmlData.kortBeskrivelseAvSoker,
@@ -156,10 +160,10 @@ ArchiveData {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Samfunnsutvikling',
-          department: 'Seksjon kultur',
+          company: "Samfunnsutvikling",
+          department: "Seksjon kultur",
           description, // Required. A description of what the statistic element represents
-          type: 'Søknad om tilskudd til internasjonalt kultursamarbeid', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Søknad om tilskudd til internasjonalt kultursamarbeid", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive.result.DocumentNumber // Optional. anything you like
         }

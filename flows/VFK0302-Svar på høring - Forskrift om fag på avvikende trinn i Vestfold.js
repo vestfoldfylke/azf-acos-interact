@@ -1,5 +1,5 @@
-const description = 'Svar på høring - Lokal forskrift - Fag på avvikende trinn'
-const { nodeEnv } = require('../config')
+const description = "Svar på høring - Lokal forskrift - Fag på avvikende trinn"
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
@@ -31,7 +31,8 @@ ArchiveData {
   syncPrivatePersonInnsender: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr
@@ -46,23 +47,23 @@ ArchiveData {
     options: {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
-                Role: 'Avsender',
+                Role: "Avsender",
                 ReferenceNumber: xmlData.Fnr,
                 IsUnofficial: false
               }
@@ -71,21 +72,21 @@ ArchiveData {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Høringssvar',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Høringssvar",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
-            ResponsiblePersonEmail: nodeEnv === 'production' ? 'kristina.rabe@vestfoldfylke.no' : '',
-            Status: 'J',
-            AccessCode: 'U',
-            Title: 'Svar på høring - Lokal forskrift - Fag på avvikende trinn',
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '24/17555' : '24/00077'
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            ResponsiblePersonEmail: nodeEnv === "production" ? "kristina.rabe@vestfoldfylke.no" : "",
+            Status: "J",
+            AccessCode: "U",
+            Title: "Svar på høring - Lokal forskrift - Fag på avvikende trinn",
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "24/17555" : "24/00077"
           }
         }
       }
@@ -106,15 +107,15 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Svar%20p%20hring%20%20Forskrift%20om%20fag%20p%20avvikende%20trinn%20i/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Svar%20p%20hring%20%20Forskrift%20om%20fag%20p%20avvikende%20trinn%20i/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Svar%20p%20hring%20%20Forskrift%20om%20fag%20p%20avvikende%20trinn%20i/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Svar%20p%20hring%20%20Forskrift%20om%20fag%20p%20avvikende%20trinn%20i/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
               Title: flowStatus.archive.result.DocumentNumber, // husk å bruke internal name på kolonnen
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
-              Hvisvirksomhet: xmlData.Virksomhet || 'Privatperson',
+              Hvisvirksomhet: xmlData.Virksomhet || "Privatperson",
               Innspilltilendringeneikapittel2_: xmlData.InnspillKap5,
               Innspilltilendringeneikapittel3_: xmlData.InnspillKap6,
               Innspilltilendringeneikapittel4_: xmlData.InnspillKap7,
@@ -133,13 +134,13 @@ ArchiveData {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Seksjon Sektorstøtte, inntak og eksamen',
+          company: "Opplæring",
+          department: "Seksjon Sektorstøtte, inntak og eksamen",
           description,
-          type: 'Svar på høring - Forskrift om inntak til videregående opplæring og formidling til læreplass i Vestfold', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Svar på høring - Forskrift om inntak til videregående opplæring og formidling til læreplass i Vestfold", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

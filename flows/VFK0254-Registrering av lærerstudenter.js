@@ -1,4 +1,4 @@
-const description = 'Registrering av praksis for lærerstudenter'
+const description = "Registrering av praksis for lærerstudenter"
 module.exports = {
   config: {
     enabled: true,
@@ -6,8 +6,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   /*
 XML file from Acos:
@@ -33,15 +32,15 @@ ArchiveData {
     options: {
       mapper: (flowStatus) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
-        if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML')
+        if (!xmlData.Postnr) throw new Error("Postnr har ikke kommet med fra XML")
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/dev-test/Lists/Studentinformasjon%20test%20VFK0254/AllItems.aspx',
-            prodListUrl: 'Husk å legg inn!',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/dev-test/Lists/Studentinformasjon%20test%20VFK0254/AllItems.aspx",
+            prodListUrl: "Husk å legg inn!",
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
-              Title: xmlData.Fnr || 'Mangler fnr', // husk å bruke internal name på kolonnen
+              Title: xmlData.Fnr || "Mangler fnr", // husk å bruke internal name på kolonnen
               Fornavn: xmlData.Fornavn,
               Etternavn: xmlData.Etternavn,
               Adresse: xmlData.Adresse,
@@ -68,10 +67,10 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'OF',
-          department: 'SKOLE',
+          company: "OF",
+          department: "SKOLE",
           description,
-          type: 'Registrering av lærerstudenter', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Registrering av lærerstudenter", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           Fag: xmlData.Fag,
           Skole: xmlData.Skole

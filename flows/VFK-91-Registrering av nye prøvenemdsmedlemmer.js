@@ -1,5 +1,5 @@
-const description = 'Sender til samlesak'
-const { nodeEnv } = require('../config')
+const description = "Sender til samlesak"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -9,18 +9,19 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
 
-  syncPrivatePerson: { // Jobname is valid as long as it starts with "syncPrivatePerson"
+  syncPrivatePerson: {
+    // Jobname is valid as long as it starts with "syncPrivatePerson"
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
@@ -30,7 +31,8 @@ module.exports = {
   },
 
   // Arkiverer dokumentet i samlesak
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       /*
@@ -39,28 +41,28 @@ module.exports = {
       },
       */
       mapper: (flowStatus, base64, attachments) => {
-        const dateList = (new Date().toISOString()).split('-')
+        const dateList = new Date().toISOString().split("-")
         const year = `${dateList[0]}`
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '26',
-            AccessGroup: 'Fagopplæring',
-            Category: 'Dokument inn',
+            AccessCode: "26",
+            AccessGroup: "Fagopplæring",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -68,22 +70,22 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Registrering av nye prøvenemndsmedlemmer',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Registrering av nye prøvenemndsmedlemmer",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 26 femte ledd',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            Paragraph: "Offl. § 26 femte ledd",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Registrering av nye prøvenemndsmedlemmer',
+            Status: "J",
+            Title: "Registrering av nye prøvenemndsmedlemmer",
             UnofficialTitle: `Registrering av nye prøvenemndsmedlemmer - ${year} - ${flowStatus.syncPrivatePerson.result.privatePerson.firstName} ${flowStatus.syncPrivatePerson.result.privatePerson.lastName}`,
-            Archive: 'Saksdokument',
-            CaseNumber: nodeEnv === 'production' ? '24/00017' : '23/00131'
+            Archive: "Saksdokument",
+            CaseNumber: nodeEnv === "production" ? "24/00017" : "23/00131"
           }
         }
       }
@@ -104,12 +106,12 @@ module.exports = {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'FAGOPPLÆRING',
+          company: "Opplæring",
+          department: "FAGOPPLÆRING",
           description,
-          type: 'Registrering av nye prøverådsmedlemmer', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Registrering av nye prøverådsmedlemmer", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'ikke arkivert' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "ikke arkivert" // Optional. anything you like
         }
       }
     }

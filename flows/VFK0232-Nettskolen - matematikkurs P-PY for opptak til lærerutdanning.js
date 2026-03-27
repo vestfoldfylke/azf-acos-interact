@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 // const { schoolInfo } = require('../lib/data-sources/vfk-schools')
 module.exports = {
   config: {
@@ -8,8 +8,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   /* Felter fra Acos:
   ArchiveData {
@@ -44,7 +43,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr
@@ -65,30 +65,30 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         // const school = schoolInfo.find(school => school.orgNr.toString() === xmlData.SkoleOrgNr)
         // if (!school) throw new Error(`Could not find any school with orgNr: ${xmlData.SkoleOrgNr}`)
-        const dateList = (new Date().toISOString()).split('-')
+        const dateList = new Date().toISOString().split("-")
         const year = `${dateList[0]}`
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Nettskolen',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            AccessGroup: "Nettskolen",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: xmlData.Fnr,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -96,27 +96,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Samtykke - Nettskolen',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Samtykke - Nettskolen",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200341' : '200208', // Horten vgs nettskolen
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200341" : "200208", // Horten vgs nettskolen
             // ResponsiblePersonEmail: '',
-            Status: 'J',
+            Status: "J",
             Title: `Søknad til matematikkurs for opptak til lærerutdanning ${year}`,
             UnofficialTitle: `Søknad til matematikkurs for opptak til lærerutdanning ${year} - ${xmlData.Fornavn} ${xmlData.Etternavn}`,
-            Archive: 'Elevdokument',
+            Archive: "Elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -136,12 +135,12 @@ module.exports = {
         const fagliste = Array.isArray(xmlData.ValgteFag.fagliste) ? xmlData.ValgteFag.fagliste : [xmlData.ValgteFag.fagliste] // Sjekker om det er mer enn ett fag i lista (altså et array). Hvis ikke lag et array med det ene elementet
         for (const fag of fagliste) {
           const sharepointElement = {
-            testListUrl: '',
-            prodListUrl: '',
+            testListUrl: "",
+            prodListUrl: "",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: xmlData.Etternavn || 'Mangler etternavn', // husk å bruke internal name på kolonnen
+              Title: xmlData.Etternavn || "Mangler etternavn", // husk å bruke internal name på kolonnen
               Fornavns_x00f8_ker: xmlData.Fornavn,
               Adresse: xmlData.Adresse,
               Postnummerogsted: xmlData.PostnrSted,
@@ -168,10 +167,10 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Nettskolen',
+          company: "Opplæring",
+          department: "Nettskolen",
           description,
-          type: 'Nettskolen - Søknad til matematikkurs for opptak til lærerutdanning', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Nettskolen - Søknad til matematikkurs for opptak til lærerutdanning", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like

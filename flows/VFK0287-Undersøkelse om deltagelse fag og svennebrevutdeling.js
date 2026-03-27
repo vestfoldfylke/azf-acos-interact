@@ -1,4 +1,4 @@
-const description = 'Undersøkelse om deltagelse fag og svennebrevutdeling'
+const description = "Undersøkelse om deltagelse fag og svennebrevutdeling"
 // const { nodeEnv } = require('../config')
 module.exports = {
   config: {
@@ -7,8 +7,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   /*
   xml fil fra Acos:
@@ -34,8 +33,10 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Underskelse%20om%20deltagelse%20p%20fag%20og%20svennebrevutdel/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Underskelse%20om%20deltagelse%20p%20fag%20og%20svennebrevutdel/AllItems.aspx',
+            testListUrl:
+              "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Underskelse%20om%20deltagelse%20p%20fag%20og%20svennebrevutdel/AllItems.aspx",
+            prodListUrl:
+              "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Underskelse%20om%20deltagelse%20p%20fag%20og%20svennebrevutdel/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -57,14 +58,14 @@ ArchiveData {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Fagopplæring',
+          company: "Opplæring",
+          department: "Fagopplæring",
           description,
-          type: 'Undersøkelse om deltagelse fag og svennebrevutdeling 2024' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Undersøkelse om deltagelse fag og svennebrevutdeling 2024" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv
         }

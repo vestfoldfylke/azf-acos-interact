@@ -1,4 +1,4 @@
-const description = 'Bestillingsskjema til reise for prøvenemnder'
+const description = "Bestillingsskjema til reise for prøvenemnder"
 // const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -10,10 +10,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -25,12 +24,12 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Reise%20for%20prvenemnder/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Reise%20for%20prvenemnder/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Reise%20for%20prvenemnder/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Reise%20for%20prvenemnder/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: jsonData.Kontaktopplysninger2.Etternavn_2 || 'Mangler etternavn', // husk å bruke internal name på kolonnen
+              Title: jsonData.Kontaktopplysninger2.Etternavn_2 || "Mangler etternavn", // husk å bruke internal name på kolonnen
               Fornavn: jsonData.Kontaktopplysninger2.Fornavn_2,
               F_x00f8_dselsdato: jsonData.Kontaktopplysninger2.Fodselsdato_2,
               Adresse: jsonData.Kontaktopplysninger2.Adresse_,
@@ -85,13 +84,13 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Fagopplæring',
+          company: "Opplæring",
+          department: "Fagopplæring",
           description,
-          type: 'Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // documentNumber:  // Optional. anything you like
         }

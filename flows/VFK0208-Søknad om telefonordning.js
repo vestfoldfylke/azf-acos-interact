@@ -1,4 +1,4 @@
-const description = 'Søknad om telefonavtale'
+const description = "Søknad om telefonavtale"
 module.exports = {
   config: {
     enabled: true,
@@ -6,8 +6,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   /*
 XML file from Acos:
@@ -38,7 +37,8 @@ ArchiveData {
   syncEmployee: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette person med fiktivt fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person med fiktivt fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier for å opprette privatperson med fiktivt fødselsnummer
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr,
@@ -52,47 +52,47 @@ ArchiveData {
     options: {
       getCaseParameter: (flowStatus) => {
         return {
-          Title: 'Avtale om telefonordning', // check for exisiting case with this title
+          Title: "Avtale om telefonordning", // check for exisiting case with this title
           ArchiveCode: flowStatus.parseXml.result.ArchiveData.Fnr
         }
       },
       mapper: (flowStatus) => {
         return {
-          service: 'CaseService',
-          method: 'CreateCase',
+          service: "CaseService",
+          method: "CreateCase",
           parameter: {
-            CaseType: 'Personal',
+            CaseType: "Personal",
             // Project: '20-15',
-            Title: 'Avtale om telefonordning',
+            Title: "Avtale om telefonordning",
             UnofficialTitle: `Avtale om telefonordning - ${flowStatus.parseXml.result.ArchiveData.Fornavn} ${flowStatus.parseXml.result.ArchiveData.Etternavn}`,
-            Status: 'A',
-            AccessCode: '26',
-            Paragraph: 'Offl. § 26 femte ledd',
-            JournalUnit: 'Sentralarkiv',
-            SubArchive: 'Personal',
+            Status: "A",
+            AccessCode: "26",
+            Paragraph: "Offl. § 26 femte ledd",
+            JournalUnit: "Sentralarkiv",
+            SubArchive: "Personal",
             ArchiveCodes: [
               {
-                ArchiveCode: '542',
-                ArchiveType: 'FELLESKLASSE PRINSIPP',
+                ArchiveCode: "542",
+                ArchiveType: "FELLESKLASSE PRINSIPP",
                 Sort: 2
               },
               {
                 ArchiveCode: flowStatus.parseXml.result.ArchiveData.Fnr,
-                ArchiveType: 'FNR',
+                ArchiveType: "FNR",
                 Sort: 1,
                 IsManualText: true
               }
             ],
             Contacts: [
               {
-                Role: 'Sakspart',
+                Role: "Sakspart",
                 ReferenceNumber: flowStatus.parseXml.result.ArchiveData.Fnr,
                 IsUnofficial: true
               }
             ],
             ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno,
             ResponsiblePersonEmail: flowStatus.syncEmployee.result.archiveManager.email,
-            AccessGroup: '' // Automatisk
+            AccessGroup: "" // Automatisk
           }
         }
       }
@@ -104,26 +104,26 @@ ArchiveData {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const caseNumber = flowStatus.handleCase.result.CaseNumber
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '26',
+            AccessCode: "26",
             // AccessGroup: '', Automatisk tilgangsgruppe
-            Category: 'Dokument inn',
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: xmlData.Fnr,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
               /*,
@@ -136,27 +136,27 @@ ArchiveData {
             UnregisteredContacts: [
               {
                 ContactName: xmlData.GodkjentAv,
-                Role: 'Saksbehandler'
+                Role: "Saksbehandler"
               }
             ],
             DocumentDate: new Date().toISOString(),
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Avtale om telefonordning',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Avtale om telefonordning",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 26 femte ledd',
+            Paragraph: "Offl. § 26 femte ledd",
             ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno,
             ResponsiblePersonEmail: flowStatus.syncEmployee.result.archiveManager.email,
-            Status: 'J',
-            Title: 'Avtale om telefonordning',
-            Archive: 'Personaldokument',
+            Status: "J",
+            Title: "Avtale om telefonordning",
+            Archive: "Personaldokument",
             CaseNumber: caseNumber
           }
         }
@@ -166,7 +166,8 @@ ArchiveData {
   signOff: {
     enabled: true
   },
-  closeCase: { // handleCase må kjøres for å kunne kjøre closeCase
+  closeCase: {
+    // handleCase må kjøres for å kunne kjøre closeCase
     enabled: true
   },
 
@@ -177,8 +178,8 @@ ArchiveData {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx',
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-tjenesteutvikling-sandbox/Lists/TestSoknadomtelefonordning/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Organisasjon-HR-begrensetinnsyn/Lists/Soknadomtelefonordning/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
@@ -202,10 +203,10 @@ ArchiveData {
       mapper: (flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'HR',
-          department: '',
+          company: "HR",
+          department: "",
           description,
-          type: 'Søknad om telefonordning',
+          type: "Søknad om telefonordning",
           // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           responsibleEnterprise: flowStatus.syncEmployee.result.responsibleEnterprise.shortName

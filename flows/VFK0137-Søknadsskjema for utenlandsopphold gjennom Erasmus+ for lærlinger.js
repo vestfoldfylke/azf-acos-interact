@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -7,8 +7,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
 
   // Synkroniser elevmappe
@@ -20,7 +19,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseXml.result.ArchiveData.Fnr
@@ -30,7 +30,8 @@ module.exports = {
   },
 
   // Arkiverer dokumentet i elevmappa
-  archive: { // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       /*
@@ -41,26 +42,26 @@ module.exports = {
       mapper: (flowStatus, base64, attachments) => {
         const xmlData = flowStatus.parseXml.result.ArchiveData
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Erasmus+',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            AccessGroup: "Erasmus+",
+            Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: xmlData.Fnr,
-                Role: 'Avsender',
+                Role: "Avsender",
                 IsUnofficial: true
               }
             ],
@@ -68,27 +69,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Søknad om utenlandsopphold gjennom Erasmus+ for lærlinger',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Søknad om utenlandsopphold gjennom Erasmus+ for lærlinger",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200017' : '200020', // Seksjon Kompetanse og pedagogisk utvikling
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200017" : "200020", // Seksjon Kompetanse og pedagogisk utvikling
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Søknad om utenlandsopphold gjennom Erasmus+ for lærlinger',
+            Status: "J",
+            Title: "Søknad om utenlandsopphold gjennom Erasmus+ for lærlinger",
             // UnofficialTitle: '',
-            Archive: 'Elevdokument',
+            Archive: "Elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -107,8 +107,8 @@ module.exports = {
         // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
         return [
           {
-            testListUrl: '',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Internasjonalisering/Lists/ErasmusSoknad',
+            testListUrl: "",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Internasjonalisering/Lists/ErasmusSoknad",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
@@ -142,7 +142,6 @@ module.exports = {
               Oppl_x00e6_ringskontor: xmlData.OpplKontor,
               Tidligereskolegang: xmlData.Skole,
               Tidligerearbeidserfaring: xmlData.Reserve1
-
             }
           }
         ]
@@ -157,13 +156,13 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Seksjon kompetanse og pedagogisk utvikling',
+          company: "Opplæring",
+          department: "Seksjon kompetanse og pedagogisk utvikling",
           description,
-          type: 'Søknad om utenlandsopphold gjennom Erasmus+ for lærlinger', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Søknad om utenlandsopphold gjennom Erasmus+ for lærlinger", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || 'tilArkiv er false' // Optional. anything you like
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }

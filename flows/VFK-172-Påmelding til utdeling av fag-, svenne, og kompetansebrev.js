@@ -1,4 +1,4 @@
-const description = 'Påmelding til utdeling av fag-, svenne- og kompetansebrev' // Katarina
+const description = "Påmelding til utdeling av fag-, svenne- og kompetansebrev" // Katarina
 module.exports = {
   config: {
     enabled: true,
@@ -7,10 +7,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -21,13 +20,15 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
-            testListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Pmelding%20til%20utdeling%20av%20fag%20svenne%20og%20kompetansebrev/AllItems.aspx',
-            prodListUrl: 'https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Pmelding%20til%20utdeling%20av%20fag%20svenne%20og%20kompetansebrev/AllItems.aspx',
+            testListUrl:
+              "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Pmelding%20til%20utdeling%20av%20fag%20svenne%20og%20kompetansebrev/AllItems.aspx",
+            prodListUrl:
+              "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring-Listerfag-ogyrkesopplring/Lists/Pmelding%20til%20utdeling%20av%20fag%20svenne%20og%20kompetansebrev/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
-              Title: flowStatus.parseJson.result.SavedValues.Login.LastName || 'Mangler etternavn', // husk å bruke internal name på kolonnen
-              Fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || 'Mangler fornavn',
+              Title: flowStatus.parseJson.result.SavedValues.Login.LastName || "Mangler etternavn", // husk å bruke internal name på kolonnen
+              Fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || "Mangler fornavn",
               Telefon: jsonData.Velkommen_til_u.Deltaker.Telefon1,
               Epost: jsonData.Velkommen_til_u.Deltaker.E_post,
               L_x00e6_refag: jsonData.Velkommen_til_u.Deltaker.Lærefag,
@@ -42,13 +43,13 @@ module.exports = {
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
+      mapper: (_flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring og tannhelse',
-          department: 'fag- og yrkesopplæring',
+          company: "Opplæring og tannhelse",
+          department: "fag- og yrkesopplæring",
           description, // Required. A description of what the statistic element represents
-          type: 'Påmelding til utdeling av fag-, svenne- og kompetansebrev' // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Påmelding til utdeling av fag-, svenne- og kompetansebrev" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
         }
       }

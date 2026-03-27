@@ -1,5 +1,5 @@
-const description = 'Sender til elevmappe'
-const { nodeEnv } = require('../config')
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
@@ -9,10 +9,9 @@ module.exports = {
   parseJson: {
     enabled: true,
     options: {
-      mapper: (dialogueData) => {
+      mapper: (_dialogueData) => {
         // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
-        return {
-        }
+        return {}
       }
     }
   },
@@ -25,7 +24,8 @@ module.exports = {
         return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
       },
       */
-      mapper: (flowStatus) => { // for å opprette person basert på fødselsnummer
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
         return {
           ssn: flowStatus.parseJson.result.DialogueInstance.Kandidaten.Kandidatens_fodselsnumme
         }
@@ -36,10 +36,11 @@ module.exports = {
   syncEnterprise: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => { // for å opprette organisasjon basert på orgnummer
+      mapper: (flowStatus) => {
+        // for å opprette organisasjon basert på orgnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          orgnr: flowStatus.parseJson.result.DialogueInstance.Soker.Organisasjon.Organisasjon_orgnr.replaceAll(' ', '')
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Soker.Organisasjon.Organisasjon_orgnr.replaceAll(" ", "")
         }
       }
     }
@@ -54,26 +55,26 @@ module.exports = {
       },
       */
       mapper: (flowStatus, base64, attachments) => {
-        const p360Attachments = attachments.map(att => {
+        const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
             Format: att.format,
-            Status: 'F',
+            Status: "F",
             Title: att.title,
             VersionFormat: att.versionFormat
           }
         })
         return {
-          service: 'DocumentService',
-          method: 'CreateDocument',
+          service: "DocumentService",
+          method: "CreateDocument",
           parameter: {
-            AccessCode: '13',
-            AccessGroup: 'Fagopplæring',
-            Category: 'Dokument inn',
+            AccessCode: "13",
+            AccessGroup: "Fagopplæring",
+            Category: "Dokument inn",
             Contacts: [
               {
-                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Soker.Organisasjon.Organisasjon_orgnr.replaceAll(' ', ''),
-                Role: 'Avsender',
+                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Soker.Organisasjon.Organisasjon_orgnr.replaceAll(" ", ""),
+                Role: "Avsender",
                 IsUnofficial: false
               }
             ],
@@ -81,27 +82,26 @@ module.exports = {
             Files: [
               {
                 Base64Data: base64,
-                Category: '1',
-                Format: 'pdf',
-                Status: 'F',
-                Title: 'Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift',
-                VersionFormat: 'A'
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift",
+                VersionFormat: "A"
               },
               ...p360Attachments
             ],
-            Paragraph: 'Offl. § 13 jf. fvl. § 13 (1) nr.1',
-            ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
-            Status: 'J',
-            Title: 'Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift',
+            Status: "J",
+            Title: "Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift",
             // UnofficialTitle: '',
-            Archive: 'Sensitivt elevdokument',
+            Archive: "Sensitivt elevdokument",
             CaseNumber: flowStatus.syncElevmappe.result.elevmappe.CaseNumber
           }
         }
       }
     }
-
   },
 
   signOff: {
@@ -119,10 +119,10 @@ module.exports = {
         // const xmlData = flowStatus.parseXml.result.ArchiveData
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
-          company: 'Opplæring',
-          department: 'Fagopplæring',
+          company: "Opplæring",
+          department: "Fagopplæring",
           description,
-          type: 'Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift', // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           documentNumber: flowStatus.archive?.result?.DocumentNumber // || 'tilArkiv er false' // Optional. anything you like
         }

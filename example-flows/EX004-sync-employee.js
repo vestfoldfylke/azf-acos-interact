@@ -4,8 +4,7 @@ module.exports = {
   },
   parseXml: {
     enabled: true,
-    options: {
-    }
+    options: {}
   },
   syncEmployee: {
     enabled: true,
