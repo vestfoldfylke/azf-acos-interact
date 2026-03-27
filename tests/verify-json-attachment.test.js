@@ -1,7 +1,9 @@
+const assert = require('node:assert')
+const { describe, it } = require('node:test')
 const { verifyJsonAttachments } = require('../lib/verify-json-attachments')
 
 describe('VerifyJsonAttachmnets works as expected when', () => {
-  test('Both lists contain the same attachments', () => {
+  it('Both lists contain the same attachments', () => {
     const jsonAttachments = [
       { FileName: 'file1', FileExtension: 'pdf' },
       { FileName: 'file2', FileExtension: 'png' }
@@ -11,9 +13,9 @@ describe('VerifyJsonAttachmnets works as expected when', () => {
       { name: 'file2.png', type: 'V' },
       { name: 'Skjema.pdf', type: 'H' }
     ]
-    expect(verifyJsonAttachments(jsonAttachments, blobAttachments)).toBe(true)
+    assert.strictEqual(verifyJsonAttachments(jsonAttachments, blobAttachments), true)
   })
-  test('Both lists contain the same attachments but blobs have running number', () => {
+  it('Both lists contain the same attachments but blobs have running number', () => {
     const jsonAttachments = [
       { FileName: 'file1', FileExtension: 'pdf' },
       { FileName: 'file2', FileExtension: 'png' },
@@ -25,9 +27,9 @@ describe('VerifyJsonAttachmnets works as expected when', () => {
       { name: 'file2_2.png', type: 'V' },
       { name: 'Skjema.pdf', type: 'H' }
     ]
-    expect(verifyJsonAttachments(jsonAttachments, blobAttachments)).toBe(true)
+    assert.strictEqual(verifyJsonAttachments(jsonAttachments, blobAttachments), true)
   })
-  test('Both lists contain the same attachments but blobs have running number AND we have to seeemingly similar files, but extension is upper/lowercase', () => {
+  it('Both lists contain the same attachments but blobs have running number AND we have to seeemingly similar files, but extension is upper/lowercase', () => {
     const jsonAttachments = [
       { FileName: 'file1', FileExtension: 'pdf' },
       { FileName: 'file2', FileExtension: 'png' },
@@ -43,9 +45,9 @@ describe('VerifyJsonAttachmnets works as expected when', () => {
       { name: 'file2_2.DocX', type: 'V' },
       { name: 'Skjema.pdf', type: 'H' }
     ]
-    expect(verifyJsonAttachments(jsonAttachments, blobAttachments)).toBe(true)
+    assert.strictEqual(verifyJsonAttachments(jsonAttachments, blobAttachments), true)
   })
-  test('JsonAttachment is missing one attachment', () => {
+  it('JsonAttachment is missing one attachment', () => {
     const jsonAttachments = [
       { FileName: 'file1', FileExtension: 'pdf' },
       { FileName: 'file2', FileExtension: 'png' }
@@ -56,9 +58,9 @@ describe('VerifyJsonAttachmnets works as expected when', () => {
       { name: 'file2_2.png', type: 'V' },
       { name: 'Skjema.pdf', type: 'H' }
     ]
-    expect(() => verifyJsonAttachments(jsonAttachments, blobAttachments)).toThrow()
+    assert.throws(() => verifyJsonAttachments(jsonAttachments, blobAttachments))
   })
-  test('BlobAttachment is missing one attachment', () => {
+  it('BlobAttachment is missing one attachment', () => {
     const jsonAttachments = [
       { FileName: 'file1', FileExtension: 'pdf' },
       { FileName: 'file2', FileExtension: 'png' },
@@ -72,9 +74,9 @@ describe('VerifyJsonAttachmnets works as expected when', () => {
       { name: 'file2_2.png', type: 'V' },
       { name: 'Skjema.pdf', type: 'H' }
     ]
-    expect(() => verifyJsonAttachments(jsonAttachments, blobAttachments)).toThrow()
+    assert.throws(() => verifyJsonAttachments(jsonAttachments, blobAttachments))
   })
-  test('JsonAttahchment extension does not match blobAttahcment extension in casing', () => {
+  it('JsonAttahchment extension does not match blobAttahcment extension in casing', () => {
     const jsonAttachments = [
       { FileName: 'file1', FileExtension: 'pdf' },
       { FileName: 'file2', FileExtension: 'png' },
@@ -86,9 +88,9 @@ describe('VerifyJsonAttachmnets works as expected when', () => {
       { name: 'file3.png', type: 'V' },
       { name: 'Skjema.pdf', type: 'H' }
     ]
-    expect(() => verifyJsonAttachments(jsonAttachments, blobAttachments)).toThrow()
+    assert.throws(() => verifyJsonAttachments(jsonAttachments, blobAttachments))
   })
-  test('JsonAttahchment extension does not match blobAttahcment extension in casing', () => {
+  it('JsonAttahchment extension does not match blobAttahcment extension in casing', () => {
     const jsonAttachments = [
       { FileName: 'file2_1', FileExtension: 'pdf' },
       { FileName: 'file2', FileExtension: 'pdf' }
@@ -97,6 +99,6 @@ describe('VerifyJsonAttachmnets works as expected when', () => {
       { name: 'file2.pdf', type: 'V' },
       { name: 'Skjema.pdf', type: 'H' }
     ]
-    expect(() => verifyJsonAttachments(jsonAttachments, blobAttachments)).toThrow()
+    assert.throws(() => verifyJsonAttachments(jsonAttachments, blobAttachments))
   })
 })
