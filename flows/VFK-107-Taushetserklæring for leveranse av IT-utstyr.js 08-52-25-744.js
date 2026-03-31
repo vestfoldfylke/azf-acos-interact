@@ -6,7 +6,7 @@ module.exports = {
     doNotRemoveBlobs: false
   },
 
-   parseJson: {
+  parseJson: {
     enabled: true,
     options: {
       mapper: (_dialogueData) => {
@@ -16,7 +16,7 @@ module.exports = {
     }
   },
 
-   syncPrivatePerson: {
+  syncPrivatePerson: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
