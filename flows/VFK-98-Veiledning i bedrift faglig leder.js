@@ -33,14 +33,14 @@ module.exports = {
     }
   },
 
-  syncPrivatePerson: {
+  syncEnterprise: {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
-        // for å opprette person basert på fødselsnummer
+        // for å opprette organisasjon basert på orgnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          ssn: flowStatus.parseJson.result.SavedValues.Login.UserID.replaceAll(" ", "")
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Innsender_av_sk.Organisasjon.Organisasjonsnu.replaceAll(" ", "")
         }
       }
     }
@@ -73,7 +73,7 @@ module.exports = {
             Category: "Dokument inn",
             Contacts: [
               {
-                ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
+                ReferenceNumber: flowStatus.parseJson.result.DialogueInstance.Innsender_av_sk.Organisasjon.Organisasjonsnu.replaceAll(" ", ""),
                 Role: "Avsender",
                 IsUnofficial: true
               }
@@ -85,7 +85,7 @@ module.exports = {
                 Category: "1",
                 Format: "pdf",
                 Status: "F",
-                Title: `Veiledning i bedrift - ${flowStatus.parseJson.result.DialogueInstance.Larlingen.Navn_pa_faglig_leder}`,
+                Title: "Veiledning i bedrift",
                 VersionFormat: "A"
               },
               ...p360Attachments
@@ -94,8 +94,8 @@ module.exports = {
             ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: "J",
-            Title: `Veiledning i bedrift - ${flowStatus.parseJson.result.DialogueInstance.Larlingen.Navn_pa_faglig_leder}`, // Navn på faglig leder
-            // UnofficialTitle: '',
+            Title: "Veiledning i bedrift",
+            UnofficialTitle: `Veiledning i bedrift - ${flowStatus.parseJson.result.DialogueInstance.Larlingen.Larlingens_fornavn} ${flowStatus.parseJson.result.DialogueInstance.Larlingen.Larlingens_etternavn}`,
             Archive: "Elevdokument",
             CaseNumber: flowStatus.syncElevmappe.result.elevmappe.CaseNumber
           }
