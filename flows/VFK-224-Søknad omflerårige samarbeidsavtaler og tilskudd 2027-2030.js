@@ -30,64 +30,6 @@ module.exports = {
     }
   },
 
-  handleCase: {
-    enabled: true,
-    options: {
-      mapper: (flowStatus) => {
-        const jsonData = flowStatus.parseJson.result.DialogueInstance
-        let fag
-        let responsibleEmail
-        if (jsonData.Søknad.Kategori__fagområde.Velg_fagområde === "Idrett / friluftsliv") {
-          fag = "Idrett og friluftsliv"
-          responsibleEmail = nodeEnv === "production" ? "baard.andresen@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no"
-        } else if (jsonData.Søknad.Kategori__fagområde.Velg_fagområde === "Kunst / kultur") {
-          fag = "Kultur"
-          responsibleEmail = nodeEnv === "production" ? "yvonne.pleym@vestfoldfylke.no" : "stine.m.hauge@vestfoldfylke.no"
-        } else if (jsonData.Søknad.Kategori__fagområde.Velg_fagområde === "Kulturarv") {
-          fag = "Kulturarv"
-          responsibleEmail = nodeEnv === "production" ? "eira.bjorvik@vestfoldfylke.no" : "nils.thvedt@vestfoldfylke.no"
-        } else {
-          throw new Error("Ukjent fagområde")
-        }
-        return {
-          service: "CaseService",
-          method: "CreateCase",
-          parameter: {
-            CaseType: "Sak",
-            Project: nodeEnv === "production" ? "26-135" : "26-8",
-            Title: `Flerårige samarbeidsavtaler - ${fag}`,
-            // UnofficialTitle: ,
-            Status: "B",
-            JournalUnit: "Sentralarkiv",
-            SubArchive: "Sakarkiv",
-            ArchiveCodes: [
-              {
-                ArchiveCode: "---",
-                ArchiveType: "FELLESKLASSE PRINSIPP",
-                Sort: 1
-              },
-              {
-                ArchiveCode: "C00",
-                ArchiveType: "FAGKLASSE PRINSIPP",
-                Sort: 2
-              },
-              {
-                ArchiveCode: "&10",
-                ArchiveType: "TILLEGGSKODE PRINSIPP",
-                Sort: 3,
-                IsManualText: true
-              }
-            ],
-            // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
-            ResponsiblePersonEmail: responsibleEmail,
-            AccessGroup: "Alle"
-          }
-        }
-      }
-    }
-  },
-
-  // Arkiverer dokumentet i 360
   archive: {
     enabled: true,
     options: {
@@ -95,15 +37,19 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         let fag
         let responsibleEmail
+        let casenumber
         if (jsonData.Søknad.Kategori__fagområde.Velg_fagområde === "Idrett / friluftsliv") {
           fag = "Idrett og friluftsliv"
           responsibleEmail = nodeEnv === "production" ? "baard.andresen@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no"
+          casenumber = nodeEnv === "production" ? "26/08208" : "26/00074"
         } else if (jsonData.Søknad.Kategori__fagområde.Velg_fagområde === "Kunst / kultur") {
           fag = "Kultur"
           responsibleEmail = nodeEnv === "production" ? "yvonne.pleym@vestfoldfylke.no" : "stine.m.hauge@vestfoldfylke.no"
+          casenumber = nodeEnv === "production" ? "26/08209" : "26/00074"
         } else if (jsonData.Søknad.Kategori__fagområde.Velg_fagområde === "Kulturarv") {
           fag = "Kulturarv"
           responsibleEmail = nodeEnv === "production" ? "eira.bjorvik@vestfoldfylke.no" : "nils.thvedt@vestfoldfylke.no"
+          casenumber = nodeEnv === "production" ? "26/08206" : "26/00074"
         } else {
           throw new Error("Ukjent fagområde")
         }
@@ -145,7 +91,7 @@ module.exports = {
             Title: `Søknad om flerårig samarbeidsavtale - ${fag}`,
             // UnofficialTitle: '',
             Archive: "Saksdokument",
-            CaseNumber: flowStatus.handleCase.result.CaseNumber,
+            CaseNumber: casenumber,
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
             ResponsiblePersonEmail: responsibleEmail,
             AccessCode: "U"
