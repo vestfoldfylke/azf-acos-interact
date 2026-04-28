@@ -1,0 +1,138 @@
+const description = "Sender til elevmappe"
+const { nodeEnv } = require("../config")
+module.exports = {
+  config: {
+    enabled: true,
+    doNotRemoveBlobs: false
+  },
+
+  parseJson: {
+    enabled: true,
+    options: {
+      mapper: (_dialogueData) => {
+        // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
+        return {}
+      }
+    }
+  },
+
+  syncElevmappe: {
+    enabled: true,
+    options: {
+      /*
+      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
+      },
+      */
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
+        return {
+          ssn: flowStatus.parseJson.result.DialogueInstance.Kandidaten.Informasjon_om_kandidate.Fødselsnummer_
+        }
+      }
+    }
+  },
+
+  syncEnterprise: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        // for å opprette organisasjon basert på orgnummer
+        // Mapping av verdier fra XML-avleveringsfil fra Acos.
+        return {
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Lærebedrift_.Bedriftsinformasjon.Organisasjon3.Organisasjonsnummer.replaceAll(" ", "")
+        }
+      }
+    }
+  },
+
+  // Arkiverer dokumentet i elevmappa
+  archive: {
+    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
+    enabled: true,
+    options: {
+      /*
+      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
+        return flowStatus.parseXml.result.ArchiveData.TilArkiv === 'true'
+      },
+      */
+      mapper: (flowStatus, base64, attachments) => {
+        const jsonData = flowStatus.parseJson.result.DialogueInstance
+        const p360Attachments = attachments.map((att) => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: "F",
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
+        return {
+          service: "DocumentService",
+          method: "CreateDocument",
+          parameter: {
+            AccessCode: "13",
+            AccessGroup: "Fagopplæring",
+            Category: "Dokument inn",
+            Contacts: [
+              {
+                ReferenceNumber: jsonData.Lærebedrift_.Bedriftsinformasjon.Organisasjon3.Organisasjonsnummer.replaceAll(" ", ""),
+                Role: "Avsender",
+                IsUnofficial: false
+              }
+            ],
+            DocumentDate: new Date().toISOString(),
+            Files: [
+              {
+                Base64Data: base64,
+                Category: "1",
+                Format: "pdf",
+                Status: "F",
+                Title: "Søknad om kontrakt",
+                VersionFormat: "A"
+              },
+              ...p360Attachments
+            ],
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            // ResponsiblePersonEmail: '',
+            Status: "J",
+            Title: 'Søknad om kontrakt for fagbrev på jobb',
+            UnofficialTitle: `Søknad om kontrakt for fagbrev på jobb - ${jsonData.Kandidaten.Informasjon_om_kandidate.Fornavn_} ${jsonData.Kandidaten.Informasjon_om_kandidate.Etternavn_1}`,
+            Archive: "Elevdokument",
+            CaseNumber: flowStatus.syncElevmappe.result.elevmappe.CaseNumber
+          }
+        }
+      }
+    }
+  },
+
+  signOff: {
+    enabled: false
+  },
+
+  closeCase: {
+    enabled: false
+  },
+
+  statistics: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
+        return {
+          company: "Opplæring",
+          department: "FAGOPPLÆRING",
+          description,
+          type: "Søknad om kontrakt for fagbrev på jobb", // Required. A short searchable type-name that distinguishes the statistic element
+          // optional fields:
+          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
+        }
+      }
+    }
+  },
+
+  failOnPurpose: {
+    enabled: false
+  }
+}
