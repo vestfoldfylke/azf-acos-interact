@@ -97,7 +97,7 @@ module.exports = {
             ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
             // ResponsiblePersonEmail: '',
             Status: "J",
-            Title: 'Søknad om kontrakt for fagbrev på jobb',
+            Title: "Søknad om kontrakt for fagbrev på jobb",
             UnofficialTitle: `Søknad om kontrakt for fagbrev på jobb - ${jsonData.Kandidaten.Informasjon_om_kandidate.Fornavn_} ${jsonData.Kandidaten.Informasjon_om_kandidate.Etternavn_1}`,
             Archive: "Elevdokument",
             CaseNumber: flowStatus.syncElevmappe.result.elevmappe.CaseNumber
