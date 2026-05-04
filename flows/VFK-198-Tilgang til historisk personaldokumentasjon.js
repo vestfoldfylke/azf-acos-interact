@@ -32,7 +32,7 @@ module.exports = {
               Title: flowStatus.parseJson.result.SavedValues.Login.LastName,
               Innsender_x0020_fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || "Navn mangler",
               Innsender_x0020_e_x002d_post: flowStatus.parseJson.result.SavedValues.Login.Email || "E-post mangler",
-              Innsender_x0020_tittel: flowStatus.parseJson.result.SavedValues.Login.AzureAD.JobTitle || "Tittel mangler",
+              Innsender_x0020_tittel: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.jobTitle || "Tittel mangler",
               Innsender_x0020_virksomhet: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.companyName || "Virksomhet mangler",
               Innsender_x0020_seksjon: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.department || "Seksjon mangler",
               Hvem_x0020_skal_x0020_ha_x0020_t: jsonData.Tilgang_til_his.Hvem_skal_ha_ti,
