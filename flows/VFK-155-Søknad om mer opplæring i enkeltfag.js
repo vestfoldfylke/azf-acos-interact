@@ -6,6 +6,7 @@ module.exports = {
     enabled: true,
     doNotRemoveBlobs: false
   },
+
   parseJson: {
     enabled: true,
     options: {
@@ -29,7 +30,7 @@ module.exports = {
         // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
-          ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
+          ssn: flowStatus.parseJson.result.DialogueInstance.Informasjon_om_.Privatperson.Fødselsnummer__11.replaceAll(" ", "")
         }
       }
     }
@@ -46,7 +47,7 @@ module.exports = {
       },
       */
       mapper: (flowStatus, base64, attachments) => {
-        const jsonData = flowStatus.parseJson.result.SavedValues
+        const jsonData = flowStatus.parseJson.result.DialogueInstance
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
         const school = schoolInfo.find((school) => school.orgNr.toString() === flowStatus.parseJson.result.SavedValues.Dataset.Skole.Orgnr)
         if (!school) throw new Error(`Could not find any school with orgNr: ${flowStatus.parseJson.result.SavedValues.Dataset.Skole.Orgnr}`)
@@ -68,7 +69,7 @@ module.exports = {
             Category: "Dokument inn",
             Contacts: [
               {
-                ReferenceNumber: jsonData.Login.UserID,
+                ReferenceNumber: jsonData.Informasjon_om_.Privatperson.Fødselsnummer__11.replaceAll(" ", ""),
                 Role: "Avsender",
                 IsUnofficial: true
               }
@@ -117,25 +118,25 @@ module.exports = {
         if (fagliste.length === 0) throw new Error("Ingen fag i JSON filen")
         for (const row of fagliste) {
           const sharepointFagElement = {
-            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/Meropplring-KPU-internutvikling/Lists/Pmelding%20til%20opplring%20i%20enkeltfag/AllItems.aspx",
-            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/Meropplring-KPU-internutvikling/Lists/Pmelding%20til%20opplring%20i%20enkeltfag/AllItems.aspx",
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/Meropplring/Lists/Pamelding%20til%20opplring%20i%20enkeltfag/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/Meropplring/Lists/Pamelding%20til%20opplring%20i%20enkeltfag/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
               Title: jsonData.Informasjon_om_.Privatperson.Etternavn1,
-              Fornavn: jsonData.Informasjon_om_.Privatperson.Fornavn1,
-              Skole: jsonData.Påmelding.Skole,
-              Gj_x00f8_r_x0020_i_x0020_dag: jsonData.Bakgrunnsinform.Dagens_status.Hva_gjør_du_i_d,
-              S_x00f8_kt_x0020_inntak_x0020_ti: jsonData.Bakgrunnsinform.Har_du_søkt_inn,
-              S_x00f8_kt_x0020_hva: jsonData.Bakgrunnsinform.Hva_har_du_søkt,
-              Fylt_x0020_ut_x0020_sammen_x0020: jsonData.Bakgrunnsinform.Hvem_har_fylt_u,
-              Stilling: jsonData.Bakgrunnsinform.Stilling__rådgi,
-              P_x00e5_melding_x0020_fag: row.Hvilket_fag_øns,
-              Typeikkebest_x00e5_tt: row.Type_ikke_bestå,
-              Kveldstid: jsonData.Påmelding.Informasjon.Kan_du_følge_op,
-              Nettundervisning: jsonData.Påmelding.Informasjon.Er_nettundervis,
-              AvleggeNUS: jsonData.Bakgrunnsinform.Skal_du_avlegge,
-              Dokumentnummeri360: flowStatus.archive.result.DocumentNumber || "Ikke arkivert"
+              field_1: jsonData.Informasjon_om_.Privatperson.Fornavn1,
+              field_2: jsonData.Påmelding.Informasjon.Skole,
+              field_3: jsonData.Bakgrunnsinform.Hva_gjør_du_i_d,
+              field_8: jsonData.Bakgrunnsinform.Har_du_søkt_inn,
+              field_9: jsonData.Bakgrunnsinform.Hva_har_du_søkt,
+              field_4: jsonData.Informasjon_om_.Hvem_har_fylt_u1,
+              field_5: jsonData.Informasjon_om_.Stilling__rådgi1,
+              field_6: row.Hvilket_fag_øns,
+              field_7: row.Type_ikke_bestå,
+              field_10: jsonData.Påmelding.Informasjon.Kan_du_følge_op,
+              field_11: jsonData.Påmelding.Informasjon.Er_nettundervis,
+              field_13: jsonData.Bakgrunnsinform.Skal_du_avlegge,
+              field_12: flowStatus.archive.result.DocumentNumber || "Ikke arkivert"
             }
           }
           sharepointElements.push(sharepointFagElement)
@@ -144,6 +145,7 @@ module.exports = {
       }
     }
   },
+
   statistics: {
     enabled: true,
     options: {
