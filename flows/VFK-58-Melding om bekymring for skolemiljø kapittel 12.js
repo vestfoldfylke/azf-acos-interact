@@ -127,6 +127,7 @@ module.exports = {
             Title: `Melding om bekymring for skolemiljø kapittel 12 - ${flowStatus.parseJson.result.SavedValues.Dataset.Hvilke_skole_2.Skole} - ${utfordring} skolemiljø`,
             // UnofficialTitle: `Varslingsskjema opplæringsloven 9A-4 - ${xmlData.krenketElevNavn}`,
             Archive: "12-4 dokument",
+            SubArchive: "Elev",
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
             ResponsibleEnterpriseNumber: jsonData.SavedValues.Dataset.Hvilke_skole_2.Orgnr,
             AccessCode: "13",
