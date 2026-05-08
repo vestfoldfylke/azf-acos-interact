@@ -1,5 +1,5 @@
 const description = "Melding om opplæringsbehov for barn og unge i barnevernsinstitusjoner"
-const { nodeEnv } = require('../config')
+const { nodeEnv } = require("../config")
 
 module.exports = {
   config: {
