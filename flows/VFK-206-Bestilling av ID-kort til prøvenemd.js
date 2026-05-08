@@ -1,4 +1,4 @@
-const description = "Fylkeskulturprisen 2026"
+const description = "Bestilling av ID kort til prøvenemd"
 // const { nodeEnv } = require('../config')
 module.exports = {
   config: {
