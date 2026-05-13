@@ -16,6 +16,17 @@ module.exports = {
     }
   },
 
+  syncPrivatePerson: {
+    enabled: true,
+    options: {
+      mapper: (flowStatus) => {
+        return {
+          ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
+        }
+      }
+    }
+  },
+
   // Synkroniser elevmappe
   syncElevmappe: {
     enabled: true,
