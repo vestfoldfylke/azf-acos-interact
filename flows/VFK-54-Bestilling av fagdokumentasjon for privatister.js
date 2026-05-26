@@ -147,7 +147,7 @@ module.exports = {
               Mobilnummer: jsonData.DialogueInstance.Kontaktopplysninger2.Personinformasj.Mobilnummer,
               E_x002d_postadresse: jsonData.DialogueInstance.Kontaktopplysninger2.Personinformasj.E_postadresse,
               Typedokumentasjon: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_slags_dokumentasjon_3,
-              Typeautorisasjon: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_trenger_du_,
+              // Typeautorisasjon: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Hva_trenger_du_,
               Eksamenssted: null,
               Fag: jsonData.DialogueInstance.Hva_slags_dokumentasjon_2.Skriv_inn_hvilke_t__fag2,
               _x00d8_nsketmottak: null,
