@@ -16,7 +16,7 @@ module.exports = {
       }
     }
   },
-  
+
   // Synkroniser elevmappe
   syncElevmappe: {
     enabled: true,
@@ -95,7 +95,6 @@ module.exports = {
       }
     }
   },
-
 
   statistics: {
     enabled: true,
