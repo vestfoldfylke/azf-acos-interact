@@ -73,12 +73,12 @@ module.exports = {
             Title: `Tilskuddsordning for kulturell og kreativ næring - ${jsonData.Om_prosjektet.Hva_er_navnet_på}`,
             // UnofficialTitle: 'Tilskuddsordning for kulturell og kreativ næring',
             Archive: "Saksdokument",
-            CaseNumber: nodeEnv === 'production' ? '26/05130' : '26/00092',
+            CaseNumber: nodeEnv === "production" ? "26/05130" : "26/00092",
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
             ResponsiblePersonEmail: nodeEnv === "production" ? "anna.b.jorgensen@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no",
             AccessCode: "U",
             // Paragraph: 'Offl. § 26 femte ledd',
-            AccessGroup: 'Alle'
+            AccessGroup: "Alle"
           }
         }
       }
@@ -98,7 +98,9 @@ module.exports = {
     options: {
       mapper: (flowStatus) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
-        const bagatellmessigStotte = jsonData.Gjennomførbarhet_og.Hvilke_t__år_ ? `${jsonData.Gjennomførbarhet_og.Hvilke_t__år_} (${jsonData.Gjennomførbarhet_og.Sum__samlet_beløp_})` : jsonData.Gjennomførbarhet_og.Har_dere_mottatt
+        const bagatellmessigStotte = jsonData.Gjennomførbarhet_og.Hvilke_t__år_
+          ? `${jsonData.Gjennomførbarhet_og.Hvilke_t__år_} (${jsonData.Gjennomførbarhet_og.Sum__samlet_beløp_})`
+          : jsonData.Gjennomførbarhet_og.Har_dere_mottatt
         return [
           {
             testListUrl: "https://vestfoldfylke.sharepoint.com/sites/KreativNring/Lists/Sknader%20%20tilskuddsordning%20for%20kulturell%20og%20kreativ%20nring/AllItems.aspx",
