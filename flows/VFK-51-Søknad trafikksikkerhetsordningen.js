@@ -52,32 +52,32 @@ module.exports = {
         const municipalityCaseNumbers = [
           {
             name: "Færder kommune",
-            caseNo: "25/10645",
+            caseNo: "26/09790",
             testCaseNo: "24/00050"
           },
           {
             name: "Tønsberg kommune",
-            caseNo: "25/10646",
+            caseNo: "26/09791",
             testCaseNo: "24/00050"
           },
           {
             name: "Sandefjord kommune",
-            caseNo: "25/10647",
+            caseNo: "26/09792",
             testCaseNo: "24/00050"
           },
           {
             name: "Larvik kommune",
-            caseNo: "25/10648",
+            caseNo: "26/09793",
             testCaseNo: "24/00050"
           },
           {
             name: "Horten kommune",
-            caseNo: "25/10649",
+            caseNo: "26/09794",
             testCaseNo: "24/00050"
           },
           {
             name: "Holmestrand kommune",
-            caseNo: "25/10650",
+            caseNo: "26/09795",
             testCaseNo: "24/00050"
           }
         ]
@@ -115,7 +115,7 @@ module.exports = {
                 Category: "1",
                 Format: "pdf",
                 Status: "F",
-                Title: "Søknad om midler til trafikksikkerhetsordningen 2026",
+                Title: "Søknad om midler til trafikksikkerhetsordningen 2027",
                 VersionFormat: "A"
               },
               ...p360Attachments
@@ -124,7 +124,7 @@ module.exports = {
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200015' : '200018', // Seksjon Sektorstøtte, inntak og eksamen
             ResponsiblePersonEmail: nodeEnv === "production" ? "henriette.auensen@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no",
             Status: "J",
-            Title: `Søknad om midler til trafikksikkerhetsordningen 2026 - ${title}`,
+            Title: `Søknad om midler til trafikksikkerhetsordningen 2027 - ${title}`,
             // UnofficialTitle: `Søknad om godkjenning av tidligere bestått videregående opplæring i Norge eller utlandet - ${xmlData.Fornavn} ${xmlData.Etternavn}`,
             Archive: "Saksdokument",
             CaseNumber: nodeEnv === "production" ? municipality.caseNo : municipality.testCaseNo
