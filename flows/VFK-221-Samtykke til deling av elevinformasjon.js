@@ -1,4 +1,5 @@
 const description = "Samtykke til deling av elevinformasjon"
+const { schoolInfo } = require("../lib/data-sources/vfk-schools")
 module.exports = {
   config: {
     enabled: true,
@@ -43,12 +44,13 @@ module.exports = {
       },
       */
       mapper: (flowStatus, base64, attachments) => {
+        const jsonData = flowStatus.parseJson.result
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
         const samtykke =
           flowStatus.parseJson.result.DialogueInstance.Samtykke_til_deling.Tillatelse.Vi_trenger_ditt === "Jeg ønsker å gi samtykke til deling" ? "Samtykke gitt" : "Samtykke ikke gitt/trukket"
         const navn = `${flowStatus.parseJson.result.SavedValues.Login.FirstName} ${flowStatus.parseJson.result.SavedValues.Login.LastName}`
-        const school = schoolInfo.find((school) => school.orgNr.toString() === jsonData.SavedValues.Dataset.Skole1.Orgnr)
-        if (!school) throw new Error(`Could not find any school with orgNr: ${jsonData.SavedValues.Dataset.Skole1.Orgnr}`)
+        const school = schoolInfo.find((school) => school.orgNr.toString() === jsonData.SavedValues.Dataset.Ny_skole.Orgnr)
+        if (!school) throw new Error(`Could not find any school with orgNr: ${jsonData.SavedValues.Dataset.Ny_skole.Orgnr}`)
         const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
@@ -85,7 +87,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
-            ResponsibleEnterpriseNumber: jsonData.SavedValues.Dataset.Skole1.Orgnr,
+            ResponsibleEnterpriseNumber: jsonData.SavedValues.Dataset.Ny_skole.Orgnr,
             // ResponsiblePersonEmail: '',
             Status: "J",
             Title: `Samtykke til deling av elevopplysninger - ${samtykke}`,
