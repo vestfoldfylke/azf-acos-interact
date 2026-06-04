@@ -44,7 +44,8 @@ module.exports = {
       */
       mapper: (flowStatus, base64, attachments) => {
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
-        const samtykke = flowStatus.parseJson.result.DialogueInstance.Samtykke_til_deling.Tillatelse.Vi_trenger_ditt === "Jeg ønsker å gi samtykke til deling" ? "Samtykke gitt" : "Samtykke ikke gitt/trukket"
+        const samtykke =
+          flowStatus.parseJson.result.DialogueInstance.Samtykke_til_deling.Tillatelse.Vi_trenger_ditt === "Jeg ønsker å gi samtykke til deling" ? "Samtykke gitt" : "Samtykke ikke gitt/trukket"
         const navn = `${flowStatus.parseJson.result.SavedValues.Login.FirstName} ${flowStatus.parseJson.result.SavedValues.Login.LastName}`
         const school = schoolInfo.find((school) => school.orgNr.toString() === jsonData.SavedValues.Dataset.Skole1.Orgnr)
         if (!school) throw new Error(`Could not find any school with orgNr: ${jsonData.SavedValues.Dataset.Skole1.Orgnr}`)
