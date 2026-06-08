@@ -9,51 +9,14 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "."
-  NODE_VERSION: "22.x"
-
 jobs:
-  call-security:
-    uses: vestfoldfylke/shared/.github/workflows/npm-security.yml@main
+  deploy-az-app-service-node:
+    uses: vestfoldfylke/shared/.github/workflows/deploy-az-app-service-node.yml@main
     with:
-      audit_severity: "high" # required to be set. Can be one of (null, info, low, moderate, high, critical, none)
-      node_version: 22 # this one is optional and defaults to 22 if not set
-
-  build-and-deploy:
-    runs-on: self-hosted
-    steps:
-      - name: "Checkout GitHub Action"
-        uses: actions/checkout@v6
-
-      - name: Setup Node ${{ env.NODE_VERSION }} Environment
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: "Resolve Project Dependencies Using Npm, Build and Test"
-        shell: bash
-        run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          npm ci
-          npm run build --if-present
-          npm run test --if-present
-          popd
-      
-      - name: "Resolve Production Project Dependencies Using Npm"
-        shell: bash
-        run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          npm ci --omit=dev
-          popd
-
-      - name: "Run Azure Functions Action"
-        uses: Azure/functions-action@v1
-        id: fa
-        with:
-          app-name: 'vfkdlzacosacosfunc'
-          slot-name: 'Production'
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }}
+      azure_appname: "vfkdlzacosacosfunc" # required
+      azure_functionapp_package_path: "." # required
+      audit_severity: "high" # this one is optional and defaults to "moderate" if not set. Can be one of (null, info, low, moderate, high, critical, none)
+    secrets:
+      azure_publishprofile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }} # required
 
 
