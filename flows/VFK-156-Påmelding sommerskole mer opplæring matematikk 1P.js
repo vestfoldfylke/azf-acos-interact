@@ -119,9 +119,9 @@ module.exports = {
             fields: {
               Title: jsonData.Informasjon_om_.Privatperson.Etternavn1,
               Fornavn: jsonData.Informasjon_om_.Privatperson.Fornavn1,
-              Skole: jsonData.Påmelding.Bakgrunnsinform.Skole,
-              Fylt_x0020_ut_x0020_sammen_x0020: jsonData.Påmelding.Bakgrunnsinform.Hvem_fyller_du_,
-              Fagl_x00e6_rer: jsonData.Påmelding.Bakgrunnsinform.Hvem_er_var_fag,
+              Skole: jsonData.Bakgrunnsinform1.Hvilken_skole_går,
+              Fylt_x0020_ut_x0020_sammen_x0020: jsonData.Bakgrunnsinform1.Hvem_fyller_du_1,
+              Fagl_x00e6_rer: jsonData.Bakgrunnsinform1.Hvem_er_var,
               Dokumentnummeri360: flowStatus.archive.result.DocumentNumber
             }
           }
