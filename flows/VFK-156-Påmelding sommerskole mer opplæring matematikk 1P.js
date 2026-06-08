@@ -5,6 +5,7 @@ module.exports = {
     enabled: true,
     doNotRemoveBlobs: false
   },
+  
   parseJson: {
     enabled: true,
     options: {
