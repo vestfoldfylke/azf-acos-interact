@@ -83,7 +83,7 @@ module.exports = {
           method: "CreateDocument",
           parameter: {
             AccessCode: "13",
-            AccessGroup: "Nettskolen",
+            AccessGroup: "Elev - Nettskolen",
             Category: "Dokument inn",
             Contacts: [
               {
