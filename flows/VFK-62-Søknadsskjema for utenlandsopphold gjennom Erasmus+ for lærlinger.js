@@ -16,7 +16,7 @@ module.exports = {
     }
   },
 
-   // Synkroniser elevmappe
+  // Synkroniser elevmappe
   syncElevmappe: {
     enabled: true,
     options: {
