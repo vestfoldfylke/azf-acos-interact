@@ -49,5 +49,9 @@ module.exports = {
   },
   nodeEnv: process.env.NODE_ENV ?? "dev",
   robotEmail: process.env.ROBOT_EMAIL ?? "robot@robot.com",
-  roomServiceTeamsWebhook: process.env.ROOMSERVICE_TEAMS_WEBHOOK_URL ?? "teams.com"
+  roomServiceTeamsWebhook: process.env.ROOMSERVICE_TEAMS_WEBHOOK_URL ?? "teams.com",
+  pureservice: {
+    apiUrl: process.env.PURESERVICE_API_URL ?? "url to pureservice api endpoint",
+    apiKey: process.env.PURESERVICE_API_KEY ?? "apiKey"
+  }
 }
