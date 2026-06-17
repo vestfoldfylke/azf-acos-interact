@@ -62,7 +62,7 @@ module.exports = {
           method: "CreateDocument",
           parameter: {
             AccessCode: "13",
-            AccessGroup: "Seksjon Kompetanse og pedagogisk utvikling",
+            AccessGroup: "Elev PU",
             Category: "Dokument inn",
             Contacts: [
               {
