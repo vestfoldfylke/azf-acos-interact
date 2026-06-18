@@ -92,7 +92,10 @@ module.exports = {
           }
         }
 
-        if (jsonData.DialogueInstance.Informasjon_om_klager.Utfyller.Hvem_fyller_ut_ === "Elev" || jsonData.DialogueInstance.Informasjon_om_klager.Utfyller.Hvem_fyller_ut_ === "Foresatt (må ha samtykke for å klage på vegne av elev over 15 år)") {
+        if (
+          jsonData.DialogueInstance.Informasjon_om_klager.Utfyller.Hvem_fyller_ut_ === "Elev" ||
+          jsonData.DialogueInstance.Informasjon_om_klager.Utfyller.Hvem_fyller_ut_ === "Foresatt (må ha samtykke for å klage på vegne av elev over 15 år)"
+        ) {
           const school = schoolInfo.find((school) => school.orgNr.toString() === jsonData.SavedValues.Dataset.Velg_skole.Orgnr)
           if (!school) throw new Error(`Could not find any school with orgNr: ${jsonData.SavedValues.Dataset.Velg_skole.Orgnr}`)
           documentData.parameter.ResponsibleEnterpriseNumber = jsonData.SavedValues.Dataset.Velg_skole.Orgnr
