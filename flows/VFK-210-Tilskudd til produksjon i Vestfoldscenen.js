@@ -68,7 +68,7 @@ module.exports = {
             ],
             Status: "J",
             DocumentDate: new Date().toISOString(),
-            Title: "Søknad om tilskudd til produksjon i Vestfoldscenen",
+            Title: `Søknad om tilskudd til produksjon i Vestfoldscenen - ${flowStatus.parseJson.result.DialogueInstance.Beskrivelse.Prosjektbeskriv.Søknadskategori}`,
             Archive: "Saksdokument",
             CaseNumber: nodeEnv === "production" ? "26/05205" : "26/00030",
             ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200025" : "200031", // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
@@ -103,6 +103,7 @@ module.exports = {
               Title: jsonData.Informasjon_om_.Organisasjon1.Organisasjon.Organisasjonsna,
               Kontaktperson: `${jsonData.Informasjon_om_.Organisasjon1.Kontaktperson} (${jsonData.Informasjon_om_.Organisasjon1.E_post1})`,
               Prosjektnavn: jsonData.Beskrivelse.Prosjektbeskriv.Navn_på_prosjek,
+              Kategori: jsonData.Beskrivelse.Prosjektbeskriv.Søknadskategori,
               Prosjektbeskrivelse: jsonData.Beskrivelse.Prosjektbeskriv.Kort_beskrivels,
               Samarbeidspartnere: jsonData.Beskrivelse.Prosjektbeskriv.Samarbeidspartn,
               Prosjektperiode_x0020_fra: jsonData.Beskrivelse.Prosjektbeskriv.Ønsket_spillepe,
