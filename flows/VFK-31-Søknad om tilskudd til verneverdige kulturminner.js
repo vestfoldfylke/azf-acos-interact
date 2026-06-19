@@ -4,7 +4,7 @@ const { nodeEnv } = require("../config")
 module.exports = {
   config: {
     enabled: true,
-    doNotRemoveBlobs: true
+    doNotRemoveBlobs: false
   },
 
   parseJson: {
@@ -141,8 +141,8 @@ module.exports = {
             CaseNumber: caseNumber,
             ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200022" : "200032", // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
             // ResponsiblePersonEmail: '',
-            AccessCode: "26",
-            Paragraph: "Offl. § 26 femte ledd",
+            AccessCode: "U",
+            // Paragraph: "Offl. § 26 femte ledd",
             AccessGroup: "Seksjon Kulturarv"
           }
         }
