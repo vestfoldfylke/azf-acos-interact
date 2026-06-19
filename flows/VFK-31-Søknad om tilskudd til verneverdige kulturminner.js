@@ -6,8 +6,15 @@ module.exports = {
     enabled: true,
     doNotRemoveBlobs: false
   },
-  parseXml: {
-    enabled: true
+
+  parseJson: {
+    enabled: true,
+    options: {
+      mapper: (_dialogueData) => {
+        // if (!dialogueData.Testskjema_for_?.Gruppa_øverst?.Fornavn) throw new Error('Missing Gruppa_øverst.Fornavn mangler i JSON filen')
+        return {}
+      }
+    }
   },
 
   syncPrivatePerson: {

@@ -1,5 +1,5 @@
-const description = "Sender til elevmappe"
-const { nodeEnv } = require("../config")
+const description = "Samtykke til at foresatte kan klage på vegne av elev"
+const { schoolInfo } = require("../lib/data-sources/vfk-schools")
 module.exports = {
   config: {
     enabled: true,
@@ -16,7 +16,6 @@ module.exports = {
     }
   },
 
-  // Synkroniser elevmappe
   syncElevmappe: {
     enabled: true,
     options: {
@@ -37,7 +36,6 @@ module.exports = {
 
   // Arkiverer dokumentet i elevmappa
   archive: {
-    // archive må kjøres for å kunne kjøre signOff (noe annet gir ikke mening)
     enabled: true,
     options: {
       /*
@@ -46,8 +44,15 @@ module.exports = {
       },
       */
       mapper: (flowStatus, base64, attachments) => {
-        const jsonData = flowStatus.parseJson.result.SavedValues
+        const jsonData = flowStatus.parseJson.result
         const elevmappe = flowStatus.syncElevmappe.result.elevmappe
+        const samtykke =
+          flowStatus.parseJson.result.DialogueInstance.Samtykke_til_deling.Tillatelse.Vi_trenger_ditt === "Jeg ønsker å gi samtykke til at mine foresatte kan klage på vegne av meg"
+            ? "Samtykke gitt"
+            : "Samtykke trukket"
+        const navn = `${flowStatus.parseJson.result.SavedValues.Login.FirstName} ${flowStatus.parseJson.result.SavedValues.Login.LastName}`
+        const school = schoolInfo.find((school) => school.orgNr.toString() === jsonData.SavedValues.Dataset.Ny_skole.Orgnr)
+        if (!school) throw new Error(`Could not find any school with orgNr: ${jsonData.SavedValues.Dataset.Ny_skole.Orgnr}`)
         const p360Attachments = attachments.map((att) => {
           return {
             Base64Data: att.base64,
@@ -62,11 +67,11 @@ module.exports = {
           method: "CreateDocument",
           parameter: {
             AccessCode: "13",
-            AccessGroup: "Elev PU",
+            AccessGroup: school.tilgangsgruppe,
             Category: "Dokument inn",
             Contacts: [
               {
-                ReferenceNumber: jsonData.Login.UserID,
+                ReferenceNumber: flowStatus.parseJson.result.SavedValues.Login.UserID,
                 Role: "Avsender",
                 IsUnofficial: true
               }
@@ -78,17 +83,17 @@ module.exports = {
                 Category: "1",
                 Format: "pdf",
                 Status: "F",
-                Title: "Påmelding til sommerskole - Mer opplæring i matematikk 1P",
+                Title: "Samtykke til å klage på vegne av eleven",
                 VersionFormat: "A"
               },
               ...p360Attachments
             ],
             Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200017" : "200020", // Seksjon Kompetanse og pedagogisk utvikling
+            ResponsibleEnterpriseNumber: jsonData.SavedValues.Dataset.Ny_skole.Orgnr,
             // ResponsiblePersonEmail: '',
             Status: "J",
-            Title: "Påmelding til sommerskole - Mer opplæring i matematikk 1P",
-            // UnofficialTitle: '',
+            Title: `Samtykke til å klage på vegne av eleven - ${samtykke}`,
+            UnofficialTitle: `Samtykke til å klage på vegne av eleven - ${samtykke} - ${navn}`,
             Archive: "Elevdokument",
             CaseNumber: elevmappe.CaseNumber
           }
@@ -98,59 +103,26 @@ module.exports = {
   },
 
   signOff: {
-    enabled: false
+    enabled: true
   },
 
   closeCase: {
     enabled: false
   },
 
-  sharepointList: {
-    enabled: true,
-    options: {
-      mapper: (flowStatus) => {
-        const jsonData = flowStatus.parseJson.result.DialogueInstance
-        // if (!xmlData.Postnr) throw new Error('Postnr har ikke kommet med fra XML') // validation example
-        return [
-          {
-            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/Meropplring-KPU-internutvikling/Lists/Sommerskole%20%20mer%20opplring/AllItems.aspx",
-            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/Meropplring-KPU-internutvikling/Lists/Sommerskole%20%20mer%20opplring/AllItems.aspx",
-            uploadFormPdf: true,
-            uploadFormAttachments: true,
-            fields: {
-              Title: jsonData.Informasjon_om_.Privatperson.Etternavn1,
-              Fornavn: jsonData.Informasjon_om_.Privatperson.Fornavn1,
-              Skole: jsonData.Informasjon_om_.Bakgrunnsinform1.Hvilken_skole_går,
-              Fylt_x0020_ut_x0020_sammen_x0020: jsonData.Informasjon_om_.Bakgrunnsinform1.Hvem_fyller_du_1,
-              Fagl_x00e6_rer: jsonData.Informasjon_om_.Bakgrunnsinform1.Hvem_er_var,
-              Dokumentnummeri360: flowStatus.archive.result.DocumentNumber
-            }
-          }
-        ]
-      }
-    }
-  },
-
   statistics: {
     enabled: true,
     options: {
-      mapper: (flowStatus) => {
-        // const xmlData = flowStatus.parseXml.result.ArchiveData
+      mapper: (_flowStatus) => {
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier
         return {
           company: "Opplæring og tannhelse",
-          department: "Seksjon kompetanse og pedagogisk utvikling",
-          description,
-          type: "Påmelding til sommerskole mer opplæring matematikk 1P", // Required. A short searchable type-name that distinguishes the statistic element
+          department: "Kompetanse og pedagogisk utvikling",
+          description, // Required. A description of what the statistic element represents
+          type: "Samtykke til at foresatte kan klage på vegne av elev" // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
-          // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
-          documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
         }
       }
     }
-  },
-
-  failOnPurpose: {
-    enabled: false
   }
 }
