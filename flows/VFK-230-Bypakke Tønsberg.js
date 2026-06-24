@@ -1,10 +1,11 @@
 const { logger } = require("@vestfoldfylke/loglady")
+const { pureservice } = require("../config")
 const { createTicket } = require("../lib/pureservice/call-create-ticket")
 
 const getAdditionalData = (sender) => {
   /*
    * NOTE: Navn, Telefon and E_post from the schema is used for fetching/creating user in Pureservice.
-   * Remove these and the rest (if any) will be sent along as AdditionalData to Pureservice
+   * Remove these, then the rest (if any) will be sent along as AdditionalData to Pureservice
    */
   const additionalData = JSON.parse(JSON.stringify(sender))
   delete additionalData.Navn
@@ -61,7 +62,7 @@ module.exports = {
             Description: body.Skriv_sp\u00F8rsm\u00E5let,
             PriorityName: "Normal", // NOTE: Dette er saksprioritet - Avtales med PUS-generalene hva som skal brukes her. Stort sett er nok dette "Normal"
             RequestTypeId: 1, // NOTE: Dette er alltid 1 for saksopprettelse
-            SourceName: "E-post", // NOTE: Dette er sakskilden (Direkte, E-post, Telefon, etc.) - Avtales med PUS-generalene hva som skal brukes her. Stort sett er nok dette "Skjema"
+            SourceName: pureservice.defaultSource, // NOTE: Dette er sakskilden (Direkte, E-post, Selvbetjening, Telefon, Utstyrsportalen etc.) - Avtales med PUS-generalene hva som skal brukes her. Stort sett ønsker de "Selvbetjening" for saker opprettet fra ACOS skjemaer, da skal denne stå til pureservice.defaultSource
             StatusName: "Under arbeid", // NOTE: Dette er saksstatus - Avtales med PUS-generalene hva som skal brukes her. Stort sett er nok dette "Under arbeid"
             Subject: body.Henvendelsen_gjelder,
             TicketTypeName: "Forespørsel" // NOTE: Dette er sakstype - Avtales med PUS-generalene hva som skal brukes her. Kan være forskjellig fra skjema til skjema, spørs på assigned department. Stort sett er nok dette "Forespørsel"

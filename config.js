@@ -52,6 +52,7 @@ module.exports = {
   roomServiceTeamsWebhook: process.env.ROOMSERVICE_TEAMS_WEBHOOK_URL ?? "teams.com",
   pureservice: {
     apiUrl: process.env.PURESERVICE_API_URL ?? "url to pureservice api endpoint",
-    apiKey: process.env.PURESERVICE_API_KEY ?? "apiKey"
+    apiKey: process.env.PURESERVICE_API_KEY ?? "apiKey",
+    defaultSource: "Selvbetjening"
   }
 }
