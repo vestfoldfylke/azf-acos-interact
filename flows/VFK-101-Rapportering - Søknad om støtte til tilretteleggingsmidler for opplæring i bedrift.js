@@ -91,7 +91,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis
             // ResponsiblePersonEmail: '',
             Status: "J",
             Title: "Rapportering - Søknad om støtte til tilretteleggingsmidler for opplæring i bedrift",

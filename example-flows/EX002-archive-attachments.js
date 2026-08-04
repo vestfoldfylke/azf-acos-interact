@@ -65,7 +65,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: "Offl. § 26 femte ledd",
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis
             Status: "J",
             Title: `Søknad ny lærebedrift ${xmlData.bedriftsnavn}`,
             Archive: "Saksdokument",

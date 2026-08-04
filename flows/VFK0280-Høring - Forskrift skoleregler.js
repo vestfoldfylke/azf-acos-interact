@@ -79,7 +79,7 @@ ArchiveData {
               },
               ...p360Attachments
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200017" : "200020", // Seksjon Kompetanse og pedagogisk utvikling
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262217" : "200736", // Seksjon skoleutvikling og eksamen
             ResponsiblePersonEmail: nodeEnv === "production" ? "karen.anne.kjendlie@vestfoldfylke.no" : "",
             Status: "J",
             AccessCode: "U",

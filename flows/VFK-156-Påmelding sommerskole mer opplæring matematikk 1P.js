@@ -84,7 +84,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200017" : "200020", // Seksjon Kompetanse og pedagogisk utvikling
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262217" : "200736", // Seksjon skoleutvikling og eksamen
             // ResponsiblePersonEmail: '',
             Status: "J",
             Title: "Påmelding til sommerskole - Mer opplæring i matematikk 1P",

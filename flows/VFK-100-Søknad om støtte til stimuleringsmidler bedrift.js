@@ -95,7 +95,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis
             // ResponsiblePersonEmail: '',
             Status: "J",
             Title: `Søknad om støtte til stimuleringsmidler bedrift - ${jsonData.Innsender_av_s\u00F8.L\u00E6rebedrift__Sa.Organisasjon4.Organisasjonsna}`,

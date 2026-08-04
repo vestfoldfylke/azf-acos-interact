@@ -74,7 +74,7 @@ ArchiveData {
                 IsUnofficial: false
               }
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis
             ResponsiblePersonEmail: nodeEnv === "production" ? "kristina.rabe@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no",
             AccessGroup: "" // Automatisk
           }
@@ -126,7 +126,7 @@ ArchiveData {
             Title: "Søknad om midlertidig godkjenning som samarbeidsorgan for lærebedrift",
             Archive: "Saksdokument",
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis
             ResponsiblePersonEmail: nodeEnv === "production" ? "kristina.rabe@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no",
             AccessCode: "U"
           }

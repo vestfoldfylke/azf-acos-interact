@@ -93,7 +93,7 @@ module.exports = {
                 IsUnofficial: true
               }
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200017" : "200020" // Seksjon Kompetanse og pedagogisk utvikling
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262217" : "200736" // Seksjon Kompetanse og pedagogisk utvikling
           }
         }
       }
@@ -144,7 +144,7 @@ module.exports = {
             UnofficialTitle: `${tittel} - ${elevNavn}`,
             Archive: "Sensitivt elevdokument",
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200017" : "200020", // Seksjon Kompetanse og pedagogisk utvikling
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262217" : "200736", // Seksjon skoleutvikling og eksamen
             AccessCode: "13",
             Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
             AccessGroup: "Opplæring barnevernsinstitusjon"

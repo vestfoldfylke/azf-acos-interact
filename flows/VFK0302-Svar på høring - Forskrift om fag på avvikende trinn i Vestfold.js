@@ -80,7 +80,7 @@ ArchiveData {
               },
               ...p360Attachments
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis
             ResponsiblePersonEmail: nodeEnv === "production" ? "kristina.rabe@vestfoldfylke.no" : "",
             Status: "J",
             AccessCode: "U",

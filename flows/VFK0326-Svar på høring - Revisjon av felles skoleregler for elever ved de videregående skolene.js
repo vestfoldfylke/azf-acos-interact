@@ -96,7 +96,7 @@ ArchiveData {
               },
               ...p360Attachments
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200017" : "200020", // Seksjon Kompetanse og pedagogisk utvikling - Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262217" : "200736", // Seksjon skoleutvikling og eksamen - Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
             ResponsiblePersonEmail: nodeEnv === "production" ? "karen.anne.kjendlie@vestfoldfylke.no" : "",
             Status: "J",
             AccessCode: "U",

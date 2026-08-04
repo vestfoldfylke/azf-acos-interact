@@ -45,7 +45,7 @@ module.exports = {
           method: "CreateProject",
           parameter: {
             Title: flowStatus.parseJson.result.DialogueInstance.Soknad.Opplysninger_om_samarbei.Organisasjon.Organisasjon_orgnavn,
-            ResponsiblePersonRecno: nodeEnv === "production" ? "200016" : "200019" // Seks
+            ResponsiblePersonRecno: nodeEnv === "production" ? "262220" : "200733" // Seks
             /* Contacts: [
               {
                 ReferenceNumber: nodeEnv === 'production' ? '200016' : '200019', // Seksjon Fag- og yrkesopplæring,
@@ -92,7 +92,7 @@ module.exports = {
                 IsUnofficial: false
               }
             ],
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis
             // ResponsiblePersonEmail: nodeEnv === 'production' ? 'jan.erik.rismyhr@vestfoldfylke.no' : 'jorn.roger.skaugen@vestfoldfylke.no',
             AccessGroup: "Alle"
           }
@@ -146,7 +146,7 @@ module.exports = {
             Title: "Godkjenning av samarbeidsorgan",
             Archive: "Saksdokument",
             CaseNumber: flowStatus.handleCase.result.CaseNumber,
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019" // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733" // Seksjon Fag- og yrkesopplæring
           }
         }
       }

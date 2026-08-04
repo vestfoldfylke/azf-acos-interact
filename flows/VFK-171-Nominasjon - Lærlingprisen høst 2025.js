@@ -75,7 +75,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: "Offl. § 5",
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring,
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis,
             // ResponsiblePersonEmail: '',
             Status: "J",
             Title: "Nominasjon Lærlingprisen - Våren 2026",

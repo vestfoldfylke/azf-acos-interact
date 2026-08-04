@@ -96,7 +96,7 @@ module.exports = {
           documentData.parameter.ResponsibleEnterpriseNumber = xmlData.SkoleOrgNr
           documentData.parameter.AccessGroup = school.tilgangsgruppe
         } else if (xmlData.Egendefinert1 === "Lærling/lærekandidat/praksiskandidat") {
-          documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === "production" ? "200016" : "200019" // Seksjon Fag og yrkesopplæring // denne er ikke verifisert
+          documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === "production" ? "262220" : "200733" // Seksjon Fag og yrkesopplæring // denne er ikke verifisert
           documentData.parameter.AccessGroup = "Fagopplæring"
         } else if (xmlData.Egendefinert1 === "Voksen (Kompetansebyggeren)") {
           documentData.parameter.ResponsibleEnterpriseRecno = nodeEnv === "production" ? "200037" : "200045" // Kompetansebyggeren // denne er ikke verifisert

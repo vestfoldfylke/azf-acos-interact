@@ -146,7 +146,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: paragraph,
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200016" : "200019", // Seksjon Fag- og yrkesopplæring
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis
             // ResponsiblePersonEmail: '',
             Status: "J",
             Title: "Lokal kompetanseutvikling for fag- og yrkesopplæringen (DEKOMP-Y)",
