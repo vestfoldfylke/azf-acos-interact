@@ -150,8 +150,9 @@ module.exports = {
               Title: `${flowStatus.parseJson.result.SavedValues.Login.FirstName} ${flowStatus.parseJson.result.SavedValues.Login.LastName}`,
               Virksomhet: jsonData.Virksomhet || "Navn e-post",
               Enhet: jsonData.Enhet || "Arbeidssted mangler",
-              Dokumentnummer_x0020_i_x0020_P36: flowStatus.archive.result.DocumentNumber || "Mangler dokumentnummer"
-              // Acos_x002d_refId: flowStatus.refId || "Mangler refId"
+              Dokumentnummer_x0020_i_x0020_P36: flowStatus.archive.result.DocumentNumber || "Mangler dokumentnummer",
+              Leder: flowStatus.syncEmployee.result.archiveManager.name || "Mangler leder e-post",
+              AcosrefId: flowStatus.refId || "Mangler refId"
             }
           }
         ]
