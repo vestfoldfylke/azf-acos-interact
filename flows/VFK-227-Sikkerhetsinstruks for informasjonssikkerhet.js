@@ -43,8 +43,8 @@ module.exports = {
             Title: "Sikkerhetsinstruks for informasjonssikkerhet",
             UnofficialTitle: `Sikkerhetsinstruks for informasjonssikkerhet - ${flowStatus.parseJson.result.SavedValues.Login.FirstName} ${flowStatus.parseJson.result.SavedValues.Login.LastName}`,
             Status: "B",
-            AccessCode: "26",
-            Paragraph: "Offl. § 26 tredje ledd",
+            AccessCode: "U",
+            // Paragraph: "Offl. § 26 tredje ledd",
             JournalUnit: "Sentralarkiv",
             SubArchive: "Personal",
             ArchiveCodes: [
@@ -64,7 +64,7 @@ module.exports = {
               {
                 Role: "Sakspart",
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.extension_0fe49c4c681d427aa4cad2252aba12f5_employeeNumber,
-                IsUnofficial: true
+                IsUnofficial: false
               }
             ],
             ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno,
@@ -94,14 +94,14 @@ module.exports = {
           service: "DocumentService",
           method: "CreateDocument",
           parameter: {
-            AccessCode: "26",
+            AccessCode: "U",
             // AccessGroup: '', Automatisk tilgangsgruppe
             Category: "Dokument inn",
             Contacts: [
               {
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.extension_0fe49c4c681d427aa4cad2252aba12f5_employeeNumber,
                 Role: "Avsender",
-                IsUnofficial: true
+                IsUnofficial: false
               }
               /*,
               {
@@ -122,7 +122,7 @@ module.exports = {
               },
               ...p360Attachments
             ],
-            Paragraph: "Offl. § 26 tredje ledd",
+            // Paragraph: "Offl. § 26 tredje ledd",
             ResponsibleEnterpriseRecno: flowStatus.syncEmployee.result.responsibleEnterprise.recno,
             ResponsiblePersonEmail: flowStatus.syncEmployee.result.archiveManager.email,
             Status: "J",
