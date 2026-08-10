@@ -104,7 +104,7 @@ module.exports = {
   archive: {
     enabled: true,
     options: {
-      mapper: (flowStatus, base64, _attachments) => {
+      mapper: (flowStatus, base64, attachments) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         const p360Attachments = attachments.map((att) => {
           return {
