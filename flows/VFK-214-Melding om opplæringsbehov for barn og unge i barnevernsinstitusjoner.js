@@ -106,6 +106,15 @@ module.exports = {
     options: {
       mapper: (flowStatus, base64, _attachments) => {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
+        const p360Attachments = attachments.map((att) => {
+          return {
+            Base64Data: att.base64,
+            Format: att.format,
+            Status: "F",
+            Title: att.title,
+            VersionFormat: att.versionFormat
+          }
+        })
         let tittel = ""
         let elevNavn = ""
         if (jsonData.Melding_om_flyt.Selections2 === "Flytte til institusjon") {
@@ -136,7 +145,8 @@ module.exports = {
                 Status: "F",
                 Title: tittel,
                 VersionFormat: "A"
-              }
+              },
+              ...p360Attachments
             ],
             Status: "J",
             DocumentDate: new Date().toISOString(),
