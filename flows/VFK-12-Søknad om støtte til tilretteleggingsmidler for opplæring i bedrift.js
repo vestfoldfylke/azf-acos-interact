@@ -145,7 +145,9 @@ module.exports = {
               Hvilket_x0020_programomr_x00e5_d: programomrade,
               Periode_x0020_det_x0020_s_x00f8_: `${jsonData.Kandidaten.Soknaden_gjelder2.Perioden_det_sø} - ${jsonData.Kandidaten.Soknaden_gjelder2.Perioden_det_sø1}`,
               Antall_x0020_timer_x0020_pr_x002: jsonData.Belop.Informasjon6.Antall_timer_pr_uke.toString(),
-              Antall_x0020_uker_x0020_pr_x0020: jsonData.Belop.Informasjon6.Antall_uker_pr_ar.toString()
+              Antall_x0020_uker_x0020_pr_x0020: jsonData.Belop.Informasjon6.Antall_uker_pr_ar.toString(),
+              Tidligere_x0020_st_x00f8_tte: jsonData.Kandidaten.Har_det_tidlige,
+              Type_x0020_tidligere_x0020_st_x0: jsonData.Kandidaten.Velg_type_
             }
           }
         ]
