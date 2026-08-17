@@ -74,7 +74,7 @@ module.exports = {
             Title: `Rapportering - Regionalt kulturfond Vestfold - ${jsonData.Prosjekt.Info_om_prosjek.Prosjekttittel}`,
             // UnofficialTitle: '',
             Archive: "Saksdokument",
-            CaseNumber: nodeEnv === "production" ? "26/05972" : "26/00034",
+            CaseNumber: nodeEnv === "production" ? "26/12472" : "26/00034",
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '200025' : '200031', // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
             ResponsiblePersonEmail: nodeEnv === "production" ? "yvonne.pleym@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no",
             AccessCode: "U"
@@ -101,8 +101,8 @@ module.exports = {
         const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
-            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Rapportering%20%20Regionalt%20kulturfond%20Vestfold/AllItems.aspx",
-            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Rapportering%20%20Regionalt%20kulturfond%20Vestfold/AllItems.aspx",
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Rapportering%20%20Regionalt%20kulturfond%20Vestfold%202026/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Rapportering%20%20Regionalt%20kulturfond%20Vestfold%202026/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
