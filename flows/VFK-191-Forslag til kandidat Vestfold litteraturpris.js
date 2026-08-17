@@ -52,7 +52,7 @@ module.exports = {
           service: "DocumentService",
           method: "CreateDocument",
           parameter: {
-            AccessCode: "5",
+            AccessCode: "13",
             AccessGroup: "Fylkesbibliotek",
             Category: "Dokument inn",
             Contacts: [
@@ -74,7 +74,7 @@ module.exports = {
               },
               ...p360Attachments
             ],
-            Paragraph: "Offl. § 5",
+            Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
             // ResponsibleEnterpriseRecno: nodeEnv === 'production' ? '' : '',
             ResponsiblePersonEmail: "steinar.engeland@vestfoldfylke.no",
             Status: "J",
