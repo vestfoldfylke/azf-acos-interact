@@ -93,7 +93,7 @@ module.exports = {
             Title: `Rapportering 2025 - Tilskudd til kunstproduksjon - ${jsonData.Tilskudd_til_ku.Info_om_prosjek.Velg_tilskuddso}`,
             // UnofficialTitle: '',
             Archive: "Saksdokument",
-            CaseNumber: nodeEnv === "production" ? "25/16713" : "25/00098",
+            CaseNumber: nodeEnv === "production" ? "26/12647" : "25/00098",
             ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200025" : "200031", // Seksjon Kultur Dette finner du i p360, ved å trykke "Avansert Søk" > "Kontakt" > "Utvidet Søk" > så søker du etter det du trenger Eks: "Søkenavn": %Idrett%. Trykk på kontakten og se etter org nummer.
             ResponsiblePersonEmail: nodeEnv === "production" ? "yvonne.pleym@vestfoldfylke.no" : "jorn.roger.skaugen@vestfoldfylke.no",
             AccessCode: "U"
@@ -120,7 +120,7 @@ module.exports = {
         return [
           {
             testListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Rapportering%20%20tilskudd%20til%20kunstproduksjon/AllItems.aspx",
-            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Rapportering%20%20tilskudd%20til%20kunstproduksjon/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/V-Samfunnsutvikling/Lists/Rapportering%20%20tilskudd%20til%20kunstproduksjon%202026/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
