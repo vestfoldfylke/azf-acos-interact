@@ -78,10 +78,10 @@ module.exports = {
             ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262220" : "200733", // //Team fagopplæring VeiVis,
             // ResponsiblePersonEmail: '',
             Status: "J",
-            Title: "Nominasjon Årets lærebedrift 2025",
-            UnofficialTitle: `Nominasjon Årets lærebedrift 2025 - ${jsonData.DialogueInstance.Nominasjon.Årets_Lærebedri.Organisasjon.Lærebedriftens_}`,
+            Title: "Nominasjon Årets lærebedrift 2026",
+            UnofficialTitle: `Nominasjon Årets lærebedrift 2026 - ${jsonData.DialogueInstance.Nominasjon.Årets_Lærebedri.Organisasjon.Lærebedriftens_}`,
             Archive: "Saksdokument",
-            CaseNumber: nodeEnv === "production" ? "25/13900" : "25/00092"
+            CaseNumber: nodeEnv === "production" ? "26/13447" : "25/00092"
           }
         }
       }
