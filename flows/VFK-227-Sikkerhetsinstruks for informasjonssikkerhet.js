@@ -34,6 +34,12 @@ module.exports = {
   handleCase: {
     enabled: true,
     options: {
+      getCaseParameter: (flowStatus) => {
+        return {
+          Title: "Sikkerhetsinstruks for informasjonssikkerhet", // check for exisiting case with this title
+          ArchiveCode: flowStatus.parseJson.result.SavedValues.Integration.Hent_manuell_entra_bruker.extension_0fe49c4c681d427aa4cad2252aba12f5_employeeNumber
+        }
+      },
       mapper: (flowStatus) => {
         return {
           service: "CaseService",
