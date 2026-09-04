@@ -100,6 +100,10 @@ module.exports = {
                 ReferenceNumber: flowStatus.parseJson.result.SavedValues.Integration.Hent_elever__display_name_.Users.ssn,
                 Role: "Avsender",
                 IsUnofficial: true
+              },
+              {
+                ReferenceNumber: nodeEnv === "production" ? "recno:200125" : "recno:200162", // Team oppfølgingstjenesten
+                Role: "Kopi til"
               }
             ],
             DocumentDate: new Date().toISOString(),
