@@ -1,6 +1,6 @@
 const description = "Sender til elevmappe"
 const { schoolInfo } = require("../lib/data-sources/vfk-schools")
-// const { nodeEnv } = require('../config')
+const { nodeEnv } = require('../config')
 
 // Enkelt rammeverk for mapping av lange typetekster til kortere navn.
 // Bytt ut/legg til nøkler her ved behov.
