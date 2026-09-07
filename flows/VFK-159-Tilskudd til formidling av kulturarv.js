@@ -57,7 +57,7 @@ module.exports = {
           method: "CreateCase",
           parameter: {
             CaseType: "Sak",
-            Project: nodeEnv === "production" ? "25-152" : "24-2",
+            Project: nodeEnv === "production" ? "26-166" : "24-2",
             Title: `Søknad om utviklingsmidler til formidling av kulturarv - ${flowStatus.parseJson.result.DialogueInstance.Beskrivelse_av_.Om_prosjektet.Prosjekttittel}`,
             // UnofficialTitle: ,
             Status: "B",
@@ -180,7 +180,7 @@ module.exports = {
               Kontaktperson: contactPerson,
               Kort_x0020_beskrivelse_x0020_av_: jsonData.Beskrivelse_av_.Om_prosjektet.Kort_beskrivels,
               Full_x0020_beskrivelse_x0020_av_: jsonData.Beskrivelse_av_.Om_prosjektet.Full_beskrivels,
-              Formidling: jsonData.Beskrivelse_av_.Om_prosjektet.Beskriv_hvordan1,
+              // Formidling: jsonData.Beskrivelse_av_.Om_prosjektet.Beskriv_hvordan1,
               M_x00e5_lgruppe: jsonData.Beskrivelse_av_.Om_prosjektet.Beskriv_m\u00E5lgrup,
               Bidrag_x0020_til_x0020_bevaring_: jsonData.Beskrivelse_av_.M\u00E5l_og_effekter.Beskriv_hvordan,
               S_x00f8_knadsbel_x00f8_p: jsonData.Budsjett__finan.S\u00F8knadsbel\u00F8p2.S\u00F8knadsbel\u00F8p3,
