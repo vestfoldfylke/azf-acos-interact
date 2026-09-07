@@ -118,7 +118,7 @@ module.exports = {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
-        const jsonData = flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_3___Inntak
+        const jsonData = flowStatus.parseJson.result.DialogueInstance
         return [
           {
             testListUrl: "https://vestfoldfylke.sharepoint.com/sites/OPT-Fylkesadministrasjonopplring/Lists/Hringssvar%20lokal%20forskrift%20inntak%20og%20formidling%20til%20lreplass/AllItems.aspx",
@@ -127,30 +127,30 @@ module.exports = {
             uploadFormAttachments: false,
             fields: {
               Title: flowStatus.archive.result.DocumentNumber,
-              Fornavn: flowStatus.parseJson.result.DialogueInstance.Informasjon_om.Innsender.Fornavn,
-              Etternavn: flowStatus.parseJson.result.DialogueInstance.Informasjon_om.Innsender.Etternavn,
-              Hvisvirksomhet: `${flowStatus.parseJson.result.DialogueInstance.Informasjon_om.Organisasjon.Navn_på_organisasjon ?? ""} - ${flowStatus.parseJson.result.DialogueInstance.Informasjon_om.Organisasjon.Organisasjonsnummer ?? ""}`,
-              Innspilltils_x00f8_knadikapittel: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til___5_,
-              Innspill_x00a7_8ikapittel2: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til___8_,
-              Innspill_x0020__x00a7__x0020_9_x: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til__9_,
-              Innspill_x00a7_9ikapittel2: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til___10_,
-              Innspill_x0020__x00a7__x0020_11_: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til___11_,
-              Innspilltil_x00a7_19ikapittel3: jsonData.Innspill_til___19_,
-              Innspilltil_x00a7_20ikapittel3: jsonData.Innspill_til___20_,
-              Innspillutg_x00e5_tt_x00a7_20kap: jsonData.Innspill_til_utgått,
-              Innspilltil_x00a7_21ikapittel3: jsonData.Innspill_til___21_,
-              Innspilltil_x00a7_22ikapittel3: jsonData.Innspill_til___22_1,
-              Innspillutg_x00e5_tt_x00a7_22kap: jsonData.Innspill_til___22_,
-              Innspilltil_x00a7_23ikapittel4: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_4__.Innspill_til___23_,
-              Innspilltil_x00a7_24ikapittel3: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_4__.Innspill_til___24_,
-              Innspilltil_x00a7_25ikapittel3: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_4__.Innspill_til___25_,
-              Innspill_x0020__x00a7__x0020_26_: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_4__.Innspill_til___26_,
-              Innspill_x0020_til_x0020__x00a7_: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_5___Felles.Innspill_til___31_,
-              Innspill_x0020_til_x0020__x00a7_0: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_5___Felles.Innspill_til___32_,
-              Innspill_x0020_til_x0020__x00a7_1: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Kapittel_5___Felles.Innspill_til___33_,
-              Andremerknader: flowStatus.parseJson.result.DialogueInstance.Ny_lokal_inntaks_.Andre_merknader_ved,
+              Fornavn: jsonData.Informasjon_om.Innsender.Fornavn,
+              Etternavn: jsonData.Informasjon_om.Innsender.Etternavn,
+              Hvisvirksomhet: `${jsonData.Informasjon_om.Organisasjon.Navn_på_organisasjon ?? ""} - ${jsonData.Informasjon_om.Organisasjon.Organisasjonsnummer ?? ""}`,
+              Innspilltils_x00f8_knadikapittel: jsonData.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til___5_,
+              Innspill_x00a7_8ikapittel2: jsonData.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til___8_,
+              Innspill_x0020__x00a7__x0020_9_x: jsonData.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til__9_,
+              Innspill_x00a7_9ikapittel2: jsonData.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til___10_,
+              Innspill_x0020__x00a7__x0020_11_: jsonData.Ny_lokal_inntaks_.Kapittel_2___Inntak.Innspill_til___11_,
+              Innspilltil_x00a7_19ikapittel3: jsonData.Ny_lokal_inntaks_.Kapittel_3___Inntak.Innspill_til___19_,
+              Innspilltil_x00a7_20ikapittel3: jsonData.Ny_lokal_inntaks_.Kapittel_3___Inntak.Innspill_til___20_,
+              Innspillutg_x00e5_tt_x00a7_20kap: jsonData.Ny_lokal_inntaks_.Kapittel_3___Inntak.Innspill_til_utgått,
+              Innspilltil_x00a7_21ikapittel3: jsonData.Ny_lokal_inntaks_.Kapittel_3___Inntak.Innspill_til___21_,
+              Innspilltil_x00a7_22ikapittel3: jsonData.Ny_lokal_inntaks_.Kapittel_3___Inntak.Innspill_til___22_1,
+              Innspillutg_x00e5_tt_x00a7_22kap: jsonData.Ny_lokal_inntaks_.Kapittel_3___Inntak.Innspill_til___22_,
+              Innspilltil_x00a7_23ikapittel4: jsonData.Ny_lokal_inntaks_.Kapittel_4__.Innspill_til___23_,
+              Innspilltil_x00a7_24ikapittel3: jsonData.Ny_lokal_inntaks_.Kapittel_4__.Innspill_til___24_,
+              Innspilltil_x00a7_25ikapittel3: jsonData.Ny_lokal_inntaks_.Kapittel_4__.Innspill_til___25_,
+              Innspill_x0020__x00a7__x0020_26_: jsonData.Ny_lokal_inntaks_.Kapittel_4__.Innspill_til___26_,
+              Innspill_x0020_til_x0020__x00a7_: jsonData.Ny_lokal_inntaks_.Kapittel_5___Felles.Innspill_til___31_,
+              Innspill_x0020_til_x0020__x00a7_0: jsonData.Ny_lokal_inntaks_.Kapittel_5___Felles.Innspill_til___32_,
+              Innspill_x0020_til_x0020__x00a7_1: jsonData.Ny_lokal_inntaks_.Kapittel_5___Felles.Innspill_til___33_,
+              Andremerknader: jsonData.Ny_lokal_inntaks_.Andre_merknader_ved,
               Acosrefid: flowStatus.parseJson.result.Metadata.ReferenceId.Value
-            }
+          }
           }
         ]
       }
