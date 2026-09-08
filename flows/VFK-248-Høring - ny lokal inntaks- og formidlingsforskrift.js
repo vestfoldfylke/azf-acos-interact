@@ -150,7 +150,7 @@ module.exports = {
               Innspill_x0020_til_x0020__x00a7_1: jsonData.Ny_lokal_inntaks_.Kapittel_5___Felles.Innspill_til___33_,
               Andremerknader: jsonData.Ny_lokal_inntaks_.Andre_merknader_ved,
               Acosrefid: flowStatus.parseJson.result.Metadata.ReferenceId.Value
-          }
+            }
           }
         ]
       }
