@@ -20,16 +20,32 @@ module.exports = {
   syncPrivatePersonInnsender: {
     enabled: true,
     options: {
-      /*
-      condition: (flowStatus) => { // use this if you only need to archive some of the forms.
-        return flowStatus.parseXml.result.ArchiveData.Egendefinert1 === 'Privatperson'
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseJson.result.DialogueInstance.Bakgrunn_og.Tilhørighet.Jeg_svarer_på_vegne === "Meg selv som privatperson"
       },
-      */
       mapper: (flowStatus) => {
         // for å opprette person basert på fødselsnummer
         // Mapping av verdier fra XML-avleveringsfil fra Acos.
         return {
           ssn: flowStatus.parseJson.result.SavedValues.Login.UserID
+        }
+      }
+    }
+  },
+
+  syncEnterprise: {
+    enabled: true,
+    options: {
+      condition: (flowStatus) => {
+        // use this if you only need to archive some of the forms.
+        return flowStatus.parseJson.result.DialogueInstance.Bakgrunn_og.Tilhørighet.Jeg_svarer_på_vegne === "En organisasjon"
+      },
+      mapper: (flowStatus) => {
+        // for å opprette person basert på fødselsnummer
+        // Mapping av verdier fra XML-avleveringsfil fra Acos.
+        return {
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Bakgrunn_og.Organisasjon1.Organisasjon.Organisasjonsnummer.replaceAll(" ", "")
         }
       }
     }
