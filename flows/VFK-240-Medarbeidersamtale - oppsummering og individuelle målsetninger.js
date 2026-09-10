@@ -1,4 +1,4 @@
-const description = "Sikkerhetsinstruks for informasjonssikkerhet"
+const description = "Medarbeidersamtale - oppsummering og individuelle målsetninger"
 // const { nodeEnv } = require('../config')
 
 module.exports = {
@@ -147,7 +147,7 @@ module.exports = {
           company: "HR",
           department: "HR",
           description,
-          type: "Medarbeidersamtale - referat", // Required. A short searchable type-name that distinguishes the statistic element
+          type: "Medarbeidersamtale - oppsummering og individuelle målsetninger", // Required. A short searchable type-name that distinguishes the statistic element
           // optional fields:
           // tilArkiv: flowStatus.parseXml.result.ArchiveData.TilArkiv,
           documentNumber: flowStatus.archive?.result?.DocumentNumber || "tilArkiv er false" // Optional. anything you like
