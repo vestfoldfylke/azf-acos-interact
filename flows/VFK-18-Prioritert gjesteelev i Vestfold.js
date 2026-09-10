@@ -82,7 +82,7 @@ module.exports = {
               ...p360Attachments
             ],
             Paragraph: "Offl. § 13 jf. fvl. § 13 (1) nr.1",
-            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "200015" : "200018", // Seksjon Sektorstøtte, inntak og eksamen
+            ResponsibleEnterpriseRecno: nodeEnv === "production" ? "262222" : "200735", // Team inntak
             // ResponsiblePersonEmail: '',
             Status: "J",
             Title: "Prioritert gjesteelev",
