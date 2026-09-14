@@ -1,4 +1,4 @@
-const description = "Svar på høring - Ordensregler for voksne"
+const description = "Svar på høring - Regional plan for opplæring med handlingsprogram"
 const { nodeEnv } = require("../config")
 
 module.exports = {
