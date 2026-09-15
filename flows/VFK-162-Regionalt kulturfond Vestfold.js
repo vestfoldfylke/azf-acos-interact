@@ -6,6 +6,7 @@ module.exports = {
     enabled: true,
     doNotRemoveBlobs: false
   },
+
   parseJson: {
     enabled: true,
     options: {
@@ -39,7 +40,7 @@ module.exports = {
           method: "CreateCase",
           parameter: {
             CaseType: "Sak",
-            Project: nodeEnv === "production" ? "25-176" : "25-4",
+            Project: nodeEnv === "production" ? "26-181" : "25-4",
             Title: `Regionalt Kulturfond Vestfold - ${jsonData.Beskrivelse_av_.Om_prosjektet.Søknadskategori} - ${jsonData.Beskrivelse_av_.Om_prosjektet.Navn_på_prosjek} - ${jsonData.Informasjon_om_.Organisasjon1.Organisasjonsna1}`,
             // UnofficialTitle: ,
             Status: "B",
@@ -65,7 +66,7 @@ module.exports = {
       }
     }
   },
-  // Arkiverer dokumentet i 360
+
   archive: {
     enabled: true,
     options: {
@@ -127,6 +128,7 @@ module.exports = {
   closeCase: {
     enabled: false
   },
+
   sharepointList: {
     enabled: true,
     options: {
@@ -172,6 +174,7 @@ module.exports = {
       }
     }
   },
+
   statistics: {
     enabled: true,
     options: {
@@ -188,6 +191,7 @@ module.exports = {
       }
     }
   },
+
   failOnPurpose: {
     enabled: false
   }
