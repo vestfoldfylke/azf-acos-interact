@@ -86,7 +86,7 @@ module.exports = {
                 Sort: 1
               },
               {
-                ArchiveCode: "A55",
+                ArchiveCode: "A53",
                 ArchiveType: "FAGKLASSE PRINSIPP",
                 Sort: 2
               }
