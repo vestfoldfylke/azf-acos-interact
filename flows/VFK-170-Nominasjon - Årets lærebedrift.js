@@ -53,7 +53,7 @@ module.exports = {
           method: "CreateDocument",
           parameter: {
             AccessCode: "5",
-            AccessGroup: "Seksjon Fag- og yrkesopplæring",
+            AccessGroup: "Team fagopplæring VeiVis",
             Category: "Dokument inn",
             Contacts: [
               {
