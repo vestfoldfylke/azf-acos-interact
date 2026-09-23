@@ -157,7 +157,7 @@ module.exports = {
               Virksomhet: jsonData.Virksomhet || "Navn e-post",
               Enhet: jsonData.Enhet || "Arbeidssted mangler",
               Dokumentnummer_x0020_i_x0020_P36: flowStatus.archive.result.DocumentNumber || "Mangler dokumentnummer",
-              Leder: jsonData.Leder || "Mangler leder e-post",
+              Leder: jsonData.Leder || flowStatus.syncEmployee.result.archiveManager.name,
               AcosrefId: flowStatus.refId || "Mangler refId"
             }
           }
