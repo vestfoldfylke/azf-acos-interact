@@ -9,7 +9,7 @@ const TYPE_TO_VALG_MAP = {
   "Skrive seg ut av fag for å ta omvalg": "Omvalg",
   "Bruke lenger tid enn normert på trinnet (inkludert særskilt språkopplæring)": "Ut over normert tid",
   "1 eller IV - hvordan bestå fag når eleven er tatt inn på neste nivå med 1 eller IV (NUS, privatist, Mer opplæring)": "1 og IV",
-  "Endre opplæringsarena og fortsette opplæringen på VeiVis opplæring (krever et enkeltvedtak i tillegg).": "VeiVis OT",
+  "Endre opplæringsarena og fortsette opplæringen på VeiVis opplæring (krever et enkeltvedtak i tillegg).": "VeiVis opplæring",
   "Justere opplæringen på VeiVis eller endre opplæringen tilbake til skole": "Justert fullføringsplan eller plan for tilbakeføring",
   "Skrive seg ut av alle fag og følges opp av VeiVis OT": "VeiVis OT",
   "Skrive seg ut av skolen uten ønske om videre oppfølging av VeiVis OT (erstatter avklaringsskjema)": "Avbrudd uten oppfølging på VeiVis OT",
