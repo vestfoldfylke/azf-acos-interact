@@ -9,5 +9,6 @@ module.exports = async (_context, _myTimer) => {
     await roomService()
   } catch (error) {
     logger.errorException(error, "Statusrapportering feilet. Error: {@message}", error.response?.data || error.stack || error.toString())
+    await logger.flush()
   }
 }
