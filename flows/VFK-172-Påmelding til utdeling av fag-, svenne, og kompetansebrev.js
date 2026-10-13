@@ -32,7 +32,7 @@ module.exports = {
               Telefon: jsonData.Velkommen_til.Deltaker.Telefon1,
               Epost: jsonData.Velkommen_til.Deltaker.E_post,
               L_x00e6_refag: jsonData.Velkommen_til.Deltaker.Lærefag,
-              Deltagelse: jsonData.Velkommen_til.Invitasjon_til_.Kommer_du_15__a,
+              Deltagelse: jsonData.Velkommen_til.Invitasjon_til_.Kommer_du_11_,
               Samtykke: jsonData.Velkommen_til.Invitasjon_til_.Samtykke_til_fo
             }
           }
