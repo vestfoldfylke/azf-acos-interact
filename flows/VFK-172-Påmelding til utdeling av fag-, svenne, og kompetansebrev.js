@@ -29,11 +29,11 @@ module.exports = {
             fields: {
               Title: flowStatus.parseJson.result.SavedValues.Login.LastName || "Mangler etternavn", // husk å bruke internal name på kolonnen
               Fornavn: flowStatus.parseJson.result.SavedValues.Login.FirstName || "Mangler fornavn",
-              Telefon: jsonData.Velkommen_til_u.Deltaker.Telefon1,
-              Epost: jsonData.Velkommen_til_u.Deltaker.E_post,
-              L_x00e6_refag: jsonData.Velkommen_til_u.Deltaker.Lærefag,
-              Deltagelse: jsonData.Velkommen_til_u.Invitasjon_til_.Kommer_du_15__a,
-              Samtykke: jsonData.Velkommen_til_u.Invitasjon_til_.Samtykke_til_fo
+              Telefon: jsonData.Velkommen_til.Deltaker.Telefon1,
+              Epost: jsonData.Velkommen_til.Deltaker.E_post,
+              L_x00e6_refag: jsonData.Velkommen_til.Deltaker.Lærefag,
+              Deltagelse: jsonData.Velkommen_til.Invitasjon_til_.Kommer_du_15__a,
+              Samtykke: jsonData.Velkommen_til.Invitasjon_til_.Samtykke_til_fo
             }
           }
         ]
