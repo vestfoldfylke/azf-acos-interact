@@ -23,7 +23,7 @@ module.exports = {
         // for å opprette/oppdatere en virksomhet i P3360
         // Mapping av verdier fra XML-avleveringsfil fra Acos. Alle properties under må fylles ut og ha verdier for å opprette privatperson med fiktivt fødselsnummer
         return {
-          orgnr: flowStatus.parseJson.result.DialogueInstance.Tilskudd_til_øk.Informasjon_om_.Organisasjon.Organisasjonsnu.replaceAll(" ", "")
+          orgnr: flowStatus.parseJson.result.DialogueInstance.Tilskudd_til_økt.Informasjon_om_.Organisasjon.Organisasjonsnu.replaceAll(" ", "")
         }
       }
     }
@@ -51,7 +51,7 @@ module.exports = {
             Category: "Dokument inn",
             Contacts: [
               {
-                ReferenceNumber: jsonData.Tilskudd_til_øk.Informasjon_om_.Organisasjon.Organisasjonsnu.replaceAll(" ", ""),
+                ReferenceNumber: jsonData.Tilskudd_til_økt.Informasjon_om_.Organisasjon.Organisasjonsnu.replaceAll(" ", ""),
                 Role: "Avsender",
                 IsUnofficial: false
               }
@@ -69,7 +69,7 @@ module.exports = {
             ],
             Status: "J",
             DocumentDate: new Date().toISOString(),
-            Title: `Rapportering - Tilskuddsordning for økt inkludering 2024 - ${jsonData.Tilskudd_til_øk.Info_om_prosjek.Navn_på_samarbe}`,
+            Title: `Rapportering - Tilskuddsordning for økt inkludering 2024 - ${jsonData.Tilskudd_til_økt.Info_om_prosjek.Navn_på_samarbe}`,
             // UnofficialTitle: '',
             Archive: "Saksdokument",
             CaseNumber: nodeEnv === "production" ? "25/13196" : "25/00064",
@@ -103,9 +103,9 @@ module.exports = {
             uploadFormPdf: true,
             uploadFormAttachments: true,
             fields: {
-              Title: jsonData.Tilskudd_til_øk.Info_om_prosjek.Navn_på_prosjek, // husk å bruke internal name på kolonnen
-              Organisasjon: jsonData.Tilskudd_til_øk.Informasjon_om_.Organisasjon.Organisasjonsna,
-              Samarbeidsakt_x00f8_rer: jsonData.Tilskudd_til_øk.Info_om_prosjek.Navn_på_samarbe,
+              Title: jsonData.Tilskudd_til_økt.Info_om_prosjek.Navn_på_prosjek, // husk å bruke internal name på kolonnen
+              Organisasjon: jsonData.Tilskudd_til_økt.Informasjon_om_.Organisasjon.Organisasjonsna,
+              Samarbeidsakt_x00f8_rer: jsonData.Tilskudd_til_økt.Info_om_prosjek.Navn_på_samarbe,
               Gjennomf_x00f8_ring: jsonData.Rapport_og_eval.Rapport.Beskriv_kort_gj,
               Antall_x0020_personer: jsonData.Rapport_og_eval.Rapport.Hvor_mange_pers,
               Alders_x002d__x0020_eller_x0020_: jsonData.Rapport_og_eval.Rapport.Er_det_en_spesi,
