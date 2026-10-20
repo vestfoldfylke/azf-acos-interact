@@ -18,19 +18,23 @@ module.exports = {
     enabled: true,
     options: {
       mapper: (flowStatus) => {
-        const jsonData = flowStatus.parseJson.result.DialogueInstance.Beskriv_prosessen.Prosess
-        return [
-          {
-            testListUrl: "https://vestfoldfylke.sharepoint.com/:l:/r/sites/ORG-Organisasjonsektorteam/Lists/Forslag%20til%20forbedringsprosesser?e=Rj2Bt4",
-            prodListUrl: "https://vestfoldfylke.sharepoint.com/:l:/r/sites/ORG-Organisasjonsektorteam/Lists/Forslag%20til%20forbedringsprosesser?e=Rj2Bt4",
+        const processList = flowStatus.parseJson.result.DialogueInstance.Beskriv_prosessen.Prosess
+        if (!processList || processList.length === 0) throw new Error("Ingen prosesser i JSON filen")
+        const sharepointElements = []
+        for (const row of processList) {
+          const sharepointProcessElement = {
+            testListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/Forslag%20til%20forbedringsprosesser/AllItems.aspx",
+            prodListUrl: "https://vestfoldfylke.sharepoint.com/sites/ORG-Organisasjonsektorteam/Lists/Forslag%20til%20forbedringsprosesser/AllItems.aspx",
             uploadFormPdf: true,
             uploadFormAttachments: false,
             fields: {
-              Title: jsonData.Navn_på_prosessen,
-              Beskrivelseavprosess: jsonData.Hva_gjør_denne
+              Title: row.Navn_på_prosessen,
+              Beskrivelseavprosess: row.Hva_gjør_denne
             }
           }
-        ]
+          sharepointElements.push(sharepointProcessElement)
+        }
+        return sharepointElements
       }
     }
   }
