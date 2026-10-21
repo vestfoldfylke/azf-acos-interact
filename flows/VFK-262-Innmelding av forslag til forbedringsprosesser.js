@@ -30,6 +30,8 @@ module.exports = {
             fields: {
               Title: row.Navn_på_prosessen,
               Beskrivelseavprosess: row.Hva_gjør_denne,
+              Kontaktperson: row.Kontaktperson,
+              Tilh_x00f8_righet: row.Hvor_hører,
               Prioritering: flowStatus.parseJson.result.DialogueInstance.Beskriv_prosessen.Prioritering.Hvilken_prosess_bør,
               Innsender: `${flowStatus.parseJson.result.SavedValues.Login.FirstName ?? ""} ${flowStatus.parseJson.result.SavedValues.Login.LastName ?? ""}`
             }
