@@ -29,7 +29,9 @@ module.exports = {
             uploadFormAttachments: false,
             fields: {
               Title: row.Navn_på_prosessen,
-              Beskrivelseavprosess: row.Hva_gjør_denne
+              Beskrivelseavprosess: row.Hva_gjør_denne,
+              Prioritering: flowStatus.parseJson.result.DialogueInstance.Beskriv_prosessen.Prioritering.Hvilken_prosess_bør,
+              Innsender: `${flowStatus.parseJson.result.SavedValues.Login.FirstName ?? ""} ${flowStatus.parseJson.result.SavedValues.Login.LastName ?? ""}`
             }
           }
           sharepointElements.push(sharepointProcessElement)
