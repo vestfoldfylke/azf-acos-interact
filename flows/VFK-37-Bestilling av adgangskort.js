@@ -3,7 +3,7 @@ const description = "Sender til Sharepoint"
 
 module.exports = {
   config: {
-    enabled: true,
+    enabled: false, //skjemaet er avpublisert 21.10.26
     doNotRemoveBlobs: false
   },
   parseJson: {
