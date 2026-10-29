@@ -11,11 +11,11 @@ const TYPE_TO_VALG_MAP = {
   "1 eller IV - hvordan bestå fag når eleven er tatt inn på neste nivå med 1 eller IV (NUS, privatist, Mer opplæring)": "1 og IV",
   "Endre opplæringsarena og fortsette opplæringen på VeiVis opplæring (krever et enkeltvedtak i tillegg).": "VeiVis opplæring",
   "Justere opplæringen på VeiVis eller endre opplæringen tilbake til skole": "Justert fullføringsplan eller plan for tilbakeføring",
-  "Skrive seg ut av alle fag og følges opp av VeiVis OT": "VeiVis OT",
+  "Skrive seg ut av alle fag og følges opp av VeiVis OT (erstatter avklaringsskjema)": "VeiVis OT",
   "Skrive seg ut av skolen uten ønske om videre oppfølging av VeiVis OT (erstatter avklaringsskjema)": "Avbrudd uten oppfølging på VeiVis OT",
   "Skrive seg ut av skolen for å ta opplæringen i bedrift (erstatter avklaringsskjema)": "Opplæring i bedrift",
   "Skrive seg ut av fag for å kombinere opplæring i skole og opplæring i bedrift": "Kombinasjon skole og bedrift",
-  "Slutte i kroppsøving Vg1 fordi faget allerede er bestått med termin to karakter på Vg1. ": "Slutte i kroppsøving",
+  "Slutte i kroppsøving Vg1 ved omvalg": "Slutte i kroppsøving",
   "Slutte i YFF for å ta privatisteksamen i programfag/morsmål. (Dette gjelder for elever som skal gå påbygg 3 eller HO 3-årig løp eller ta omvalg).": "Slutte i YFF",
   "Endre skole eller endre utdanningsprogram (erstatter avklaringsskjema)": "Endre skole eller utdanningsprogram"
 }
