@@ -15,7 +15,7 @@ jobs:
     with:
       azure_appname: "vfkdlzacosacosfunc" # required
       azure_functionapp_package_path: "." # required
-      audit_severity: "critical" # this one is optional and defaults to "moderate" if not set. Can be one of (null, info, low, moderate, high, critical, none)
+      audit_severity: "high" # this one is optional and defaults to "moderate" if not set. Can be one of (null, info, low, moderate, high, critical, none)
     secrets:
       azure_publishprofile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }} # required
 
